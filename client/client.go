@@ -20,7 +20,7 @@ import (
 // not all Client methods are safe.
 type Client struct {
 	// HTTPClient to use for requests. Set to http.DefaultClient by New.
-	HTTPClient *http.Client
+	HTTPClient
 
 	// Value of Authorization header.
 	Authorization string
@@ -34,7 +34,11 @@ type Client struct {
 	// Mutex that is used for access coordination to Session object.
 	SessionLck sync.RWMutex
 
-	argsUnmarshallers map[string]jmap.FuncArgsUnmarshal
+	argsUnmarshallers map[string]jmap.NewInvocationArgumentsFunc
+}
+
+type HTTPClient interface {
+	Do(*http.Request) (*http.Response, error)
 }
 
 // New creates new JMAP Core client using http.DefaultClient for all requests.
@@ -48,12 +52,12 @@ func New(sessionURL, authHeader string) (*Client, error) {
 // requests.
 //
 // It fetches Session object right after initialzation.
-func NewWithClient(cl *http.Client, sessionURL, authHeader string) (*Client, error) {
+func NewWithClient(cl HTTPClient, sessionURL, authHeader string) (*Client, error) {
 	c := &Client{
 		HTTPClient:        cl,
 		SessionEndpoint:   sessionURL,
 		Authorization:     authHeader,
-		argsUnmarshallers: make(map[string]jmap.FuncArgsUnmarshal),
+		argsUnmarshallers: make(map[string]jmap.NewInvocationArgumentsFunc),
 	}
 	_, err := c.UpdateSession()
 	return c, err
@@ -67,7 +71,7 @@ func NewWithClient(cl *http.Client, sessionURL, authHeader string) (*Client, err
 //
 // This method must not be called when there is running requests.
 // You probably want to call it before any operations.
-func (c *Client) Enable(unmarshallers map[string]jmap.FuncArgsUnmarshal) {
+func (c *Client) Enable(unmarshallers map[string]jmap.NewInvocationArgumentsFunc) {
 	for k, v := range unmarshallers {
 		c.argsUnmarshallers[k] = v
 	}
@@ -170,9 +174,8 @@ func (c *Client) RawSend(r *jmap.Request) (*jmap.Response, error) {
 }
 
 // Echo sends empty Core/echo request, testing server connectivity.
-func (c *Client) Echo() error {
-	c.Enable(jmap.RawUnmarshallers([]string{"Core/echo"}))
-	_, err := c.RawSend(&jmap.Request{
+func (c *Client) Echo() (*jmap.Response, error) {
+	return c.RawSend(&jmap.Request{
 		Using: []string{jmap.CoreCapabilityName},
 		Calls: []jmap.Invocation{
 			{
@@ -181,7 +184,6 @@ func (c *Client) Echo() error {
 				Args:   map[string]interface{}{},
 			},
 		}})
-	return err
 }
 
 // Upload sends binary data to the server and returns blob ID and some
