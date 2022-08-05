@@ -184,6 +184,10 @@ func (id *ID) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
+	if *id == "" {
+		return nil
+	}
+
 	if !id.Valid() {
 		return ErrInvalidId
 	}
