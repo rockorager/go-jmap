@@ -3,6 +3,7 @@ package client
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -34,7 +35,7 @@ type Client struct {
 	// Mutex that is used for access coordination to Session object.
 	SessionLck sync.RWMutex
 
-	argsUnmarshallers map[string]jmap.NewInvocationArgumentsFunc
+	argsUnmarshallers map[string]jmap.FuncArgsUnmarshal
 }
 
 type HTTPClient interface {
@@ -57,7 +58,7 @@ func NewWithClient(cl HTTPClient, sessionURL, authHeader string) (*Client, error
 		HTTPClient:        cl,
 		SessionEndpoint:   sessionURL,
 		Authorization:     authHeader,
-		argsUnmarshallers: make(map[string]jmap.NewInvocationArgumentsFunc),
+		argsUnmarshallers: make(map[string]jmap.FuncArgsUnmarshal),
 	}
 	_, err := c.UpdateSession()
 	return c, err
@@ -71,7 +72,7 @@ func NewWithClient(cl HTTPClient, sessionURL, authHeader string) (*Client, error
 //
 // This method must not be called when there is running requests.
 // You probably want to call it before any operations.
-func (c *Client) Enable(unmarshallers map[string]jmap.NewInvocationArgumentsFunc) {
+func (c *Client) Enable(unmarshallers map[string]jmap.FuncArgsUnmarshal) {
 	for k, v := range unmarshallers {
 		c.argsUnmarshallers[k] = v
 	}
@@ -130,6 +131,14 @@ func (c *Client) lazyInitSession() (jmap.Session, error) {
 //
 // It initializes c.Session if it is empty.
 func (c *Client) RawSend(r *jmap.Request) (*jmap.Response, error) {
+	return c.RawSendWithContext(context.Background(), r)
+}
+
+// RawSendWithContext sends manually constructed jmap.Request object and
+// returns parsed jmap.Response object.
+//
+// It initializes c.Session if it is empty.
+func (c *Client) RawSendWithContext(ctx context.Context, r *jmap.Request) (*jmap.Response, error) {
 	if c.SessionEndpoint == "" {
 		return nil, fmt.Errorf("jmap/client: SessionEndpoint is empty")
 	}
@@ -152,7 +161,7 @@ func (c *Client) RawSend(r *jmap.Request) (*jmap.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	req, err := http.NewRequest("POST", session.APIURL, bytes.NewReader(reqBlob))
+	req, err := http.NewRequestWithContext(ctx,"POST", session.APIURL, bytes.NewReader(reqBlob))
 	if err != nil {
 		return nil, err
 	}
