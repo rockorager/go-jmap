@@ -1,9 +1,7 @@
 go-jmap
-[![Travis CI](https://img.shields.io/travis/com/foxcpp/go-jmap.svg?style=flat-square&logo=Linux)](https://travis-ci.com/foxcpp/go-jmap)
-[![CodeCov](https://img.shields.io/codecov/c/github/foxcpp/go-jmap.svg?style=flat-square)](https://codecov.io/gh/foxcpp/go-jmap)
-[![Reference](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](https://godoc.org/github.com/foxcpp/go-jmap)
-[![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg?style=flat-square)](https://github.com/emersion/stability-badges#experimental)
 ==========
+
+Note: this is an actively maintained fork of [github.com/foxcpp/go-jmap](https://github.com/foxcpp/go-jmap)
 
 JMAP Core client Go library.
 

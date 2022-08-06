@@ -1,4 +1,4 @@
-module github.com/foxcpp/go-jmap
+module git.sr.ht/~rockorager/go-jmap
 
 require (
 	github.com/google/go-cmp v0.3.0 // indirect

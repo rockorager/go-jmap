@@ -3,7 +3,7 @@ package client
 import (
 	"strconv"
 
-	"github.com/foxcpp/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap"
 )
 
 // Batch structure is a helper that makes it easier to construct series of

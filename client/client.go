@@ -36,6 +36,8 @@ type Client struct {
 	SessionLck sync.RWMutex
 
 	argsUnmarshallers map[string]jmap.FuncArgsUnmarshal
+
+	ctx context.Context
 }
 
 type HTTPClient interface {
@@ -59,6 +61,7 @@ func NewWithClient(cl HTTPClient, sessionURL, authHeader string) (*Client, error
 		SessionEndpoint:   sessionURL,
 		Authorization:     authHeader,
 		argsUnmarshallers: make(map[string]jmap.FuncArgsUnmarshal),
+		ctx:               context.Background(),
 	}
 	_, err := c.UpdateSession()
 	return c, err
@@ -76,6 +79,12 @@ func (c *Client) Enable(unmarshallers map[string]jmap.FuncArgsUnmarshal) {
 	for k, v := range unmarshallers {
 		c.argsUnmarshallers[k] = v
 	}
+}
+
+// Context sets the default context to use for http requests. By default,
+// context.Background() will be used
+func (c *Client) Context(ctx context.Context) {
+	c.ctx = ctx
 }
 
 // UpdateSession sets c.Session and returns it.
@@ -131,7 +140,7 @@ func (c *Client) lazyInitSession() (jmap.Session, error) {
 //
 // It initializes c.Session if it is empty.
 func (c *Client) RawSend(r *jmap.Request) (*jmap.Response, error) {
-	return c.RawSendWithContext(context.Background(), r)
+	return c.RawSendWithContext(c.ctx, r)
 }
 
 // RawSendWithContext sends manually constructed jmap.Request object and
@@ -161,7 +170,7 @@ func (c *Client) RawSendWithContext(ctx context.Context, r *jmap.Request) (*jmap
 	if err != nil {
 		return nil, err
 	}
-	req, err := http.NewRequestWithContext(ctx,"POST", session.APIURL, bytes.NewReader(reqBlob))
+	req, err := http.NewRequestWithContext(ctx, "POST", session.APIURL, bytes.NewReader(reqBlob))
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +201,8 @@ func (c *Client) Echo() (*jmap.Response, error) {
 				CallID: "echo0",
 				Args:   map[string]interface{}{},
 			},
-		}})
+		},
+	})
 }
 
 // Upload sends binary data to the server and returns blob ID and some
