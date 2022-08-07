@@ -36,7 +36,7 @@ Reference: https://jmap.io/spec-core.html List below is nowhere complete.
       * [x]  Object/get
       * [x]  Object/changes
       * [x]  Object/set
-      * [ ]  Object/copy
+      * [x]  Object/copy
       * [x]  Object/query
       * [x]  Object/queryChanges
 
