@@ -7,68 +7,68 @@ JMAP Core client Go library.
 ## Status
 Reference: https://jmap.io/spec-core.html List below is nowhere complete.
 
-    * [x]  Fundamental types
-      
-      * [x]  Int
-      * [x]  UnsignedInt
-      * [x]  Date
-      * [x]  UTCDate
-      * [x]  Id
+* [x]  Fundamental types
 
-    * [x]  Autodiscovery
+* [x]  Int
+* [x]  UnsignedInt
+* [x]  Date
+* [x]  UTCDate
+* [x]  Id
 
-    * [ ]  Structures for base JMAP Core objects
-      
-      * [x]  Session
-      * [x]  Account
-      * [x]  Core Capabilities
-      * [x]  Request-level errors
-      * [x]  Invocation
-        
-        * [x]  Method-level errors
-        * [x]  Decode Invocation "subtypes" using type -> decoder mapping.
-      * [x]  Request
-      * [x]  Response
-      * [ ]  Set-level errors
+* [x]  Autodiscovery
 
-    * [ ]  Core request objects
-      
-      * [x]  Object/get
-      * [x]  Object/changes
-      * [x]  Object/set
-      * [x]  Object/copy
-      * [x]  Object/query
-      * [x]  Object/queryChanges
+* [ ]  Structures for base JMAP Core objects
 
-    * [x]  Core/echo
+* [x]  Session
+* [x]  Account
+* [x]  Core Capabilities
+* [x]  Request-level errors
+* [x]  Invocation
 
-    * [ ]  Binary data I/O
-      
-      * [x]  Downloading
-      * [x]  Uploading
-      * [ ]  Blob/Copy method
+* [x]  Method-level errors
+* [x]  Decode Invocation "subtypes" using type -> decoder mapping.
+* [x]  Request
+* [x]  Response
+* [ ]  Set-level errors
 
-    * [ ]  Push
-      
-      * [ ]  StateChange structure
-      * [ ]  PushSubscription structure
-        
-        * [ ]  PushSubscription/get
-        * [ ]  PushSubscription/set
-      * [ ]  Event Source
+* [ ]  Core request objects
 
-    * [x]  Client interface
-      
-      * [x]  Get Session object
-      * [x]  Interface to send request objects directly
-      * [x]  "Call batch builder" interface
-      * [x]  Binary I/O interface
+* [x]  Object/get
+* [x]  Object/changes
+* [x]  Object/set
+* [x]  Object/copy
+* [x]  Object/query
+* [x]  Object/queryChanges
 
-    * [ ]  Server interface
-      
-      * [ ]  Base backend interface
-      * [ ]  Binary I/O backend interface
-      * [ ]  Method call dispatching
+* [x]  Core/echo
+
+* [ ]  Binary data I/O
+
+* [x]  Downloading
+* [x]  Uploading
+* [ ]  Blob/Copy method
+
+* [ ]  Push
+
+* [ ]  StateChange structure
+* [ ]  PushSubscription structure
+
+* [ ]  PushSubscription/get
+* [ ]  PushSubscription/set
+* [ ]  Event Source
+
+* [x]  Client interface
+
+* [x]  Get Session object
+* [x]  Interface to send request objects directly
+* [x]  "Call batch builder" interface
+* [x]  Binary I/O interface
+
+* [ ]  Server interface
+
+* [ ]  Base backend interface
+* [ ]  Binary I/O backend interface
+* [ ]  Method call dispatching
 
 
 
