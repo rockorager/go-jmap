@@ -9,66 +9,66 @@ Reference: https://jmap.io/spec-core.html List below is nowhere complete.
 
 * [x]  Fundamental types
 
-* [x]  Int
-* [x]  UnsignedInt
-* [x]  Date
-* [x]  UTCDate
-* [x]  Id
+	* [x]  Int
+	* [x]  UnsignedInt
+	* [x]  Date
+	* [x]  UTCDate
+	* [x]  Id
 
 * [x]  Autodiscovery
 
 * [ ]  Structures for base JMAP Core objects
 
-* [x]  Session
-* [x]  Account
-* [x]  Core Capabilities
-* [x]  Request-level errors
-* [x]  Invocation
+	* [x]  Session
+	* [x]  Account
+	* [x]  Core Capabilities
+	* [x]  Request-level errors
+	* [x]  Invocation
 
-* [x]  Method-level errors
-* [x]  Decode Invocation "subtypes" using type -> decoder mapping.
-* [x]  Request
-* [x]  Response
-* [ ]  Set-level errors
+	* [x]  Method-level errors
+	* [x]  Decode Invocation "subtypes" using type -> decoder mapping.
+	* [x]  Request
+	* [x]  Response
+	* [ ]  Set-level errors
 
-* [ ]  Core request objects
+* [x]  Core request objects
 
-* [x]  Object/get
-* [x]  Object/changes
-* [x]  Object/set
-* [x]  Object/copy
-* [x]  Object/query
-* [x]  Object/queryChanges
+	* [x]  Object/get
+	* [x]  Object/changes
+	* [x]  Object/set
+	* [x]  Object/copy
+	* [x]  Object/query
+	* [x]  Object/queryChanges
 
-* [x]  Core/echo
+	* [x]  Core/echo
 
 * [ ]  Binary data I/O
 
-* [x]  Downloading
-* [x]  Uploading
-* [ ]  Blob/Copy method
+	* [x]  Downloading
+	* [x]  Uploading
+	* [ ]  Blob/Copy method
 
 * [ ]  Push
 
-* [ ]  StateChange structure
-* [ ]  PushSubscription structure
+	* [ ]  StateChange structure
+	* [ ]  PushSubscription structure
 
-* [ ]  PushSubscription/get
-* [ ]  PushSubscription/set
-* [ ]  Event Source
+	* [ ]  PushSubscription/get
+	* [ ]  PushSubscription/set
+	* [ ]  Event Source
 
 * [x]  Client interface
 
-* [x]  Get Session object
-* [x]  Interface to send request objects directly
-* [x]  "Call batch builder" interface
-* [x]  Binary I/O interface
+	* [x]  Get Session object
+	* [x]  Interface to send request objects directly
+	* [x]  "Call batch builder" interface
+	* [x]  Binary I/O interface
 
 * [ ]  Server interface
 
-* [ ]  Base backend interface
-* [ ]  Binary I/O backend interface
-* [ ]  Method call dispatching
+	* [ ]  Base backend interface
+	* [ ]  Binary I/O backend interface
+	* [ ]  Method call dispatching
 
 
 
