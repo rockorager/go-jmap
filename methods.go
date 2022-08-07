@@ -8,7 +8,7 @@ package jmap
 //
 // Objects of type Foo are fetched via a call to Foo/get The ids
 // argument may be null to fetch all at once.
-type GetRequestArgs struct {
+type GetRequest struct {
 	// The id of the account to use.
 	AccountID ID `json:"accountId"`
 
@@ -28,7 +28,7 @@ type GetRequestArgs struct {
 // This is a standard “/get” method as described in [@!RFC8620], Section 5.1.
 //
 // Objects of type Foo are fetched via a call to Foo/get
-type GetResponseArgs struct {
+type GetResponse struct {
 	// The id of the account used for the call.
 	AccountID ID `json:"accountId"`
 
@@ -67,7 +67,7 @@ type GetResponseArgs struct {
 // Foo/get response will change. The Foo/changes method allows a client to
 // efficiently update the state of its Foo cache to match the new state on the
 // server.
-type ChangesRequestArgs struct {
+type ChangesRequest struct {
 	// The id of the account to use.
 	AccountID ID `json:"accountId"`
 
@@ -87,7 +87,7 @@ type ChangesRequestArgs struct {
 
 // This is a standard “/changes” method as described in [@!RFC8620], Section
 // 5.2
-type ChangesResponseArgs struct {
+type ChangesResponse struct {
 	// The id of the account used for the call.
 	AccountID ID `json:"accountId"`
 
@@ -122,7 +122,7 @@ type ChangesResponseArgs struct {
 // This allows the server to sort out ordering and dependencies that may exist
 // if doing multiple operations at once (for example, to ensure there is always
 // a minimum number of a certain record type).
-type SetRequestArgs struct {
+type SetRequest struct {
 	// The id of the account to use.
 	AccountID ID `json:"accountId"`
 
@@ -193,7 +193,7 @@ type SetRequestArgs struct {
 // This allows the server to sort out ordering and dependencies that may exist
 // if doing multiple operations at once (for example, to ensure there is always
 // a minimum number of a certain record type).
-type SetResponseArgs struct {
+type SetResponse struct {
 	// The id of the account used for the call.
 	AccountID ID `json:"accountId"`
 
@@ -230,11 +230,98 @@ type SetResponseArgs struct {
 	Destroyed []ID `json:"destroyed"`
 }
 
+// The only way to move Foo records between two different accounts is to copy
+// them using the Foo/copy method; once the copy has succeeded, delete the
+// original. The onSuccessDestroyOriginal argument allows you to try to do this
+// in one method call; however, note that the two different actions are not
+// atomic, so it is possible for the copy to succeed but the original not to be
+// destroyed for some reason.
+//
+// The copy is conceptually in three phases:
+//
+//     Reading the current values from the “from” account. Writing the new
+//     copies to the other account. Destroying the originals in the “from”
+//     account, if requested.
+//
+// Data may change in between phases due to concurrent requests.
+type CopyRequest struct {
+	// The id of the account to copy records from.
+	FromAccountID ID `json:"fromAccountId,omitempty"`
+
+	// This is a state string as returned by the Foo/get method. If
+	// supplied, the string must match the current state of the account
+	// referenced by the fromAccountId when reading the data to be copied;
+	// otherwise, the method will be aborted and a stateMismatch error
+	// returned. If null, the data will be read from the current state.
+	IfFrominState string `json:"ifFromInState,omitempty"`
+
+	// The id of the account to copy records to. This MUST be different to
+	// the fromAccountId.
+	AccountID ID `json:"accountId,omitempty"`
+
+	// This is a state string as returned by the Foo/get method. If
+	// supplied, the string must match the current state of the account
+	// referenced by the accountId; otherwise, the method will be aborted
+	// and a stateMismatch error returned. If null, any changes will be
+	// applied to the current state.
+	IfInState string `json:"ifInState,omitempty"`
+
+	// A map of the creation id to a Foo object. The Foo object MUST
+	// contain an id property, which is the id (in the fromAccount) of the
+	// record to be copied. When creating the copy, any other properties
+	// included are used instead of the current value for that property on
+	// the original.
+	Create map[ID]interface{} `json:"create,omitempty"`
+
+	// If true, an attempt will be made to destroy the original records
+	// that were successfully copied: after emitting the Foo/copy response,
+	// but before processing the next method, the server MUST make a single
+	// call to Foo/set to destroy the original of each successfully copied
+	// record; the output of this is added to the responses as normal, to
+	// be returned to the client.
+	OnSuccessDestroyOriginal bool `json:"onSuccessDestroyOriginal,omitempty"`
+
+	// This argument is passed on as the ifInState argument to the implicit
+	// Foo/set call, if made at the end of this request to destroy the
+	// originals that were successfully copied.
+	DestroyFromIfInState string `json:"destroyFromIfInState,omitempty"`
+}
+
+type CopyResponse struct {
+	// The id of the account records were copied from.
+	FromAccountID ID `json:"fromAccountId,omitempty"`
+
+	// The id of the account records were copied to.
+	AccountID ID `json:"accountId,omitempty"`
+
+	// The state string that would have been returned by Foo/get on the
+	// account records that were copied to before making the requested
+	// changes, or null if the server doesn’t know what the previous state
+	// string was.
+	OldState string `json:"oldState,omitempty"`
+
+	// The state string that will now be returned by Foo/get on the account
+	// records were copied to.
+	NewState string `json:"newState,omitempty"`
+
+	// A map of the creation id to an object containing any properties of
+	// the copied Foo object that are set by the server (such as the id in
+	// most object types; note, the id is likely to be different to the id
+	// of the object in the account it was copied from).
+	//
+	// This argument is null if no Foo objects were successfully copied.
+	Created map[ID]interface{} `json:"created,omitempty"`
+
+	// A map of the creation id to a SetError object for each record that
+	// failed to be copied, or null if none.
+	NotCreated map[ID]MethodErrorArgs `json:"notCreated,omitempty"`
+}
+
 // A query on the set of Foos in an account is made by calling Foo/query. This
 // takes a number of arguments to determine which records to include, how they
 // should be sorted, and which part of the result should be returned (the full
 // list may be very long). The result is returned as a list of Foo ids.
-type QueryRequestArgs struct {
+type QueryRequest struct {
 	// The id of the account to use.
 	AccountID ID `json:"accountId"`
 
@@ -368,7 +455,7 @@ type SortComparator struct {
 	Collation string `json:"collation"`
 }
 
-type QueryResponseArgs struct {
+type QueryResponse struct {
 	// The id of the account used for the call.
 	AccountID ID `json:"accountId"`
 
@@ -425,7 +512,7 @@ type QueryResponseArgs struct {
 // The Foo/queryChanges method allows a client to efficiently update the state
 // of a cached query to match the new state on the server. It takes the
 // following arguments:
-type QueryChangesRequestArgs struct {
+type QueryChangesRequest struct {
 	// The id of the account to use.
 	AccountID ID `json:"accountId"`
 
@@ -468,7 +555,7 @@ type QueryChangesRequestArgs struct {
 // The Foo/queryChanges method allows a client to efficiently update the state
 // of a cached query to match the new state on the server. It takes the
 // following arguments:
-type QueryChangesResponseArgs struct {
+type QueryChangesResponse struct {
 	// The id of the account used for the call.
 	AccountID ID `json:"accountId"`
 
