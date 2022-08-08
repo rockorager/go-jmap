@@ -323,13 +323,13 @@ type CopyResponse struct {
 // list may be very long). The result is returned as a list of Foo ids.
 type QueryRequest struct {
 	// The id of the account to use.
-	AccountID ID `json:"accountId"`
+	AccountID ID `json:"accountId,omitempty"`
 
 	// Determines the set of Foos returned in the results. If null, all
 	// objects in the account of this type are included in the results.
 	//
 	// Each implementation must implement it's own Filter
-	// Filter interface{} `json:"filter"`
+	Filter interface{} `json:"filter,omitempty"`
 
 	// Lists the names of properties to compare between two Foo records,
 	// and how to compare them, to determine which comes first in the sort.
@@ -354,7 +354,7 @@ type QueryRequest struct {
 	// If the index is greater than or equal to the total number of objects
 	// in the results list, then the ids array in the response will be
 	// empty, but this is not an error.
-	Position Int `json:"position"`
+	Position Int `json:"position,omitempty"`
 
 	// A Foo id. If supplied, the position argument is ignored. The index
 	// of this id in the results will be used in combination with the
@@ -374,13 +374,13 @@ type QueryRequest struct {
 	//
 	// A client can use anchor instead of position to find the index of an
 	// id within a large set of results.
-	Anchor ID `json:"anchor"`
+	Anchor ID `json:"anchor,omitempty"`
 
 	// The index of the first result to return relative to the index of the
 	// anchor, if an anchor is given. This MAY be negative. For example, -1
 	// means the Foo immediately preceding the anchor is the first result
 	// in the list returned (see below for more details).
-	AnchorOffset Int `json:"anchorOffset"`
+	AnchorOffset Int `json:"anchorOffset,omitempty"`
 
 	// The maximum number of results to return. If null, no limit presumed.
 	// The server MAY choose to enforce a maximum limit argument. In this
@@ -388,13 +388,13 @@ type QueryRequest struct {
 	// clamped to the maximum; the new limit is returned with the response
 	// so the client is aware. If a negative value is given, the call MUST
 	// be rejected with an invalidArguments error.
-	Limit UnsignedInt `json:"limit"`
+	Limit UnsignedInt `json:"limit,omitempty"`
 
 	// Does the client wish to know the total number of results in the
 	// query? This may be slow and expensive for servers to calculate,
 	// particularly with complex filters, so clients should take care to
 	// only request the total when needed.
-	CalculateTotal bool `json:"calculateTotal"`
+	CalculateTotal bool `json:"calculateTotal,omitempty"`
 }
 
 type FilterOperator string
