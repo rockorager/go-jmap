@@ -1,5 +1,7 @@
 package jmap
 
+import "encoding/json"
+
 // The types with suffix Args are intended to satisfy the Invocation.Args
 // object These types are the standard types. Individual specifications may add
 // to them.
@@ -181,11 +183,46 @@ type SetRequest struct {
 	// also a valid PatchObject. The client may choose to optimise network
 	// usage by just sending the diff or may send the whole object; the
 	// server processes it the same either way.
-	Update map[ID]interface{} `json:"update"`
+	Update map[ID]map[string]interface{} `json:"update"`
 
 	// A list of ids for Foo objects to permanently delete, or null if no
 	// objects are to be destroyed.
 	Destroy []ID `json:"destroy"`
+}
+
+// Patch represents a patch which can be used in a set.Update call.
+// All paths MUST also conform to the following restrictions; if there is any
+// violation, the update MUST be rejected with an invalidPatch error:
+//
+//     The pointer MUST NOT reference inside an array (i.e., you MUST NOT
+//     insert/delete from an array; the array MUST be replaced in its entirety
+//     instead). All parts prior to the last (i.e., the value after the final
+//     slash) MUST already exist on the object being patched. There MUST NOT be
+//     two patches in the Patch where the pointer of one is the prefix of
+//     the pointer of the other, e.g., “alerts/1/offset” and “alerts”.
+type Patch struct {
+	Path  string
+	Value interface{}
+}
+
+
+func (p *Patch) MarshalJSON() ([]byte, error) {
+	m := make(map[string]interface{})
+	m[p.Path] = p.Value
+	return json.Marshal(m)
+}
+
+func (p *Patch) UnmarshalJSON(data []byte) error {
+	var patch map[string]interface{}
+	err := json.Unmarshal(data, &patch)
+	if err != nil {
+		return err
+	}
+	for k, v := range patch {
+		p.Path = k
+		p.Value = v
+	}
+	return nil
 }
 
 // Modifying the state of Foo objects on the server is done via the Foo/set
