@@ -32,13 +32,21 @@ type mailAccount struct {
 	MailCapability *Capability
 }
 
-func NewService(username string, password string) (*MailService, error) {
-	return NewServiceWithClient(http.DefaultClient, username, password)
+// NewService creates a new mail service with Basic authentication
+func NewService(sessionURL string, username string, password string) (*MailService, error) {
+	auth := authHeader(username, password)
+	return NewServiceWithClient(http.DefaultClient, sessionURL, auth)
 }
 
-func NewServiceWithClient(hc client.HTTPClient, username string, password string) (*MailService, error) {
-	auth := authHeader(username, password)
-	c, err := client.NewWithClient(hc, "https://jmap.fastmail.com:443/.well-known/jmap", auth)
+func NewServiceWithOauth(sessionURL string, token string) (*MailService, error) {
+	auth := "Bearer " + token
+	return NewServiceWithClient(http.DefaultClient, sessionURL, auth)
+
+}
+
+
+func NewServiceWithClient(hc client.HTTPClient, sessionURL string, auth string) (*MailService, error) {
+	c, err := client.NewWithClient(hc, sessionURL, auth)
 	if err != nil {
 		return nil, err
 	}

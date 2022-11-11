@@ -18,7 +18,7 @@ func TestMailboxRequests(t *testing.T) {
 	}
 
 	username := "john@example.com"
-	mail, err := NewServiceWithClient(c, username, "")
+	mail, err := NewServiceWithClient(c, "", "")
 	if err != nil {
 		t.Fatalf("error creating test client")
 	}
@@ -123,7 +123,7 @@ func TestMailboxResponses(t *testing.T) {
 	}
 
 	username := "john@example.com"
-	mail, err := NewServiceWithClient(c, username, "")
+	mail, err := NewServiceWithClient(c, "", "")
 	if err != nil {
 		t.Fatalf("error creating test client")
 	}
