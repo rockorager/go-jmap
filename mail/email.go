@@ -528,7 +528,7 @@ func (f *EmailFilter) AddCondition(cond EmailFilterCondition) {
 type EmailFilterCondition interface{}
 
 // A Mailbox id.  An Email must be in this Mailbox to match the condition.
-type EmailFilterConditionIMailbox struct {
+type EmailFilterConditionInMailbox struct {
 	InMailbox jmap.ID `json:"inMailbox,omitempty"`
 }
 
