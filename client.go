@@ -19,11 +19,12 @@ type Client struct {
 	// authentication.
 	HttpClient *http.Client
 
-	// The JMAP Session Resource Endpoint
-	Endpoint string
+	// The JMAP Session Resource Endpoint. If the client detects the Session
+	// object needs refetching, it will automatically do so
+	SessionEndpoint string
 
-	// the JMAP session object
-	session *Session
+	// the JMAP Session object
+	Session *Session
 }
 
 // Set the HttpClient to a client which authenticates using the provided
@@ -59,11 +60,11 @@ func (c *Client) WithAccessToken(token string) *Client {
 // if you need to access information from the Session object prior to the first
 // request
 func (c *Client) Authenticate() (*Session, error) {
-	if c.Endpoint == "" {
+	if c.SessionEndpoint == "" {
 		return nil, fmt.Errorf("no session url is set")
 	}
 
-	req, err := http.NewRequest("GET", c.Endpoint, nil)
+	req, err := http.NewRequest("GET", c.SessionEndpoint, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -88,13 +89,13 @@ func (c *Client) Authenticate() (*Session, error) {
 	if err != nil {
 		return nil, err
 	}
-	c.session = s
+	c.Session = s
 	return s, nil
 }
 
 // Do performs a JMAP request and returns the response
 func (c *Client) Do(req *Request) (*Response, error) {
-	if c.session == nil {
+	if c.Session == nil {
 		_, err := c.Authenticate()
 		if err != nil {
 			return nil, err
@@ -104,7 +105,7 @@ func (c *Client) Do(req *Request) (*Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	httpReq, err := http.NewRequest("POST", c.session.APIURL, bytes.NewReader(body))
+	httpReq, err := http.NewRequest("POST", c.Session.APIURL, bytes.NewReader(body))
 	if err != nil {
 		return nil, err
 	}
@@ -141,17 +142,17 @@ func (c *Client) Do(req *Request) (*Response, error) {
 // - Blob ID may become invalid after some time if it is unused.
 // - Blob ID is usable only by the uploader until it is used, even for shared accounts.
 func (c *Client) Upload(accountID string, blob io.Reader) (*BlobInfo, error) {
-	if c.Endpoint == "" {
+	if c.SessionEndpoint == "" {
 		return nil, fmt.Errorf("jmap/client: SessionEndpoint is empty")
 	}
-	if c.session == nil {
+	if c.Session == nil {
 		_, err := c.Authenticate()
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	url := strings.Replace(c.session.UploadURL, "{accountId}", accountID, -1)
+	url := strings.Replace(c.Session.UploadURL, "{accountId}", accountID, -1)
 	req, err := http.NewRequest("POST", url, blob)
 	if err != nil {
 		return nil, err
@@ -184,10 +185,10 @@ func (c *Client) Upload(accountID string, blob io.Reader) (*BlobInfo, error) {
 
 // Download downloads binary data by its Blob ID from the server.
 func (c *Client) Download(accountID string, blobID string) (io.ReadCloser, error) {
-	if c.Endpoint == "" {
+	if c.SessionEndpoint == "" {
 		return nil, fmt.Errorf("jmap/client: SessionEndpoint is empty")
 	}
-	if c.session == nil {
+	if c.Session == nil {
 		_, err := c.Authenticate()
 		if err != nil {
 			return nil, err
@@ -200,7 +201,7 @@ func (c *Client) Download(accountID string, blobID string) (io.ReadCloser, error
 		"{type}", "application/octet-stream", // TODO: are any other values necessary?
 		"{name}", "filename",
 	)
-	tgtUrl := urlRepl.Replace(c.session.DownloadURL)
+	tgtUrl := urlRepl.Replace(c.Session.DownloadURL)
 	req, err := http.NewRequest("GET", tgtUrl, nil)
 	if err != nil {
 		return nil, err

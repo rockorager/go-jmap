@@ -16,3 +16,32 @@ type BlobInfo struct {
 	// The size of the file in octets.
 	Size uint64 `json:"size"`
 }
+
+// Binary data may be copied between two different accounts using the Blob/copy
+// method rather than having to download and then reupload on the client.
+type BlobCopy struct {
+	// The ID of the account to copy blobs from
+	FromAccountID string `json:"fromAccountId,omitempty"`
+	
+	// The ID of the account to copy blobs to
+	AccountID string `json:"accountId,omitempty"`
+
+	// A list of IDs of blobs to copy
+	BlobIDs []string `json:"blobIds,omitempty"`
+}
+
+type BlobCopyResponse struct {
+	// The ID of the account blobs were copied from
+	FromAccountID string `json:"fromAccountId,omitempty"`
+
+	// The ID of the account blobs were copied to
+	AccountID string `json:"accountId,omitempty"`
+
+	// A map of the blobId in the fromAccount to the ID of the blob in the
+	// account it was copied to. Map is null if no blobs were copied
+	Copied map[string]string `json:"blobIds,omitempty"`
+
+	// A map of blobId to a SetError object for each blob that failed to be
+	// copied, or null if none.
+	NotCopied map[id]SetError `json:"notCopied,omitempty"`
+}

@@ -34,7 +34,7 @@ original project.
 
   - [x] Blob/Downloading
   - [x] Blob/Uploading
-  - [ ] Blob/Copy method
+  - [x] Blob/Copy method
 
   - [ ] Push
     - [ ] StateChange structure
