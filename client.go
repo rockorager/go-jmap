@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 
 	"golang.org/x/oauth2"
 )
@@ -116,8 +117,9 @@ func (c *Client) Do(req *Request) (*Response, error) {
 	defer httpResp.Body.Close()
 
 	if httpResp.StatusCode != 200 {
-		return nil, fmt.Errorf("error: %d", httpResp.StatusCode)
+		return nil, decodeHttpError(httpResp)
 	}
+
 	data, err := io.ReadAll(httpResp.Body)
 	if err != nil {
 		return nil, err
@@ -129,4 +131,104 @@ func (c *Client) Do(req *Request) (*Response, error) {
 	}
 
 	return resp, nil
+}
+
+// Upload sends binary data to the server and returns blob ID and some
+// associated meta-data.
+//
+// There are some caveats to keep in mind:
+// - Server may return the same blob ID for multiple uploads of the same blob.
+// - Blob ID may become invalid after some time if it is unused.
+// - Blob ID is usable only by the uploader until it is used, even for shared accounts.
+func (c *Client) Upload(accountID string, blob io.Reader) (*BlobInfo, error) {
+	if c.Endpoint == "" {
+		return nil, fmt.Errorf("jmap/client: SessionEndpoint is empty")
+	}
+	if c.session == nil {
+		_, err := c.Authenticate()
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	url := strings.Replace(c.session.UploadURL, "{accountId}", accountID, -1)
+	req, err := http.NewRequest("POST", url, blob)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.HttpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		return nil, decodeHttpError(resp)
+	}
+
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	info := &BlobInfo{}
+	err = json.Unmarshal(data, info)
+	if err != nil {
+		return nil, err
+	}
+
+	return info, nil
+}
+
+// Download downloads binary data by its Blob ID from the server.
+func (c *Client) Download(accountID string, blobID string) (io.ReadCloser, error) {
+	if c.Endpoint == "" {
+		return nil, fmt.Errorf("jmap/client: SessionEndpoint is empty")
+	}
+	if c.session == nil {
+		_, err := c.Authenticate()
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	urlRepl := strings.NewReplacer(
+		"{accountId}", accountID,
+		"{blobId}", blobID,
+		"{type}", "application/octet-stream", // TODO: are any other values necessary?
+		"{name}", "filename",
+	)
+	tgtUrl := urlRepl.Replace(c.session.DownloadURL)
+	req, err := http.NewRequest("GET", tgtUrl, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := c.HttpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode/100 != 2 {
+		defer resp.Body.Close()
+		return nil, decodeHttpError(resp)
+	}
+
+	return resp.Body, nil
+}
+
+func decodeHttpError(resp *http.Response) error {
+	contentType := resp.Header.Get("Content-Type")
+	if contentType != "application/json" {
+		return fmt.Errorf("HTTP %d %s", resp.StatusCode, resp.Status)
+	}
+
+	var requestErr error
+	if err := json.NewDecoder(resp.Body).Decode(&requestErr); err != nil {
+		return fmt.Errorf("HTTP %d %s (failed to decode JSON body: %v)", resp.StatusCode, resp.Status, err)
+	}
+
+	return requestErr
 }
