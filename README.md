@@ -1,76 +1,99 @@
 # go-jmap
 
-Note: this is an actively maintained fork of [github.com/foxcpp/go-jmap](https://github.com/foxcpp/go-jmap)
+A JMAP client library. go-jmap is a library for interacting with JMAP servers.
+It includes a client for making requests, and data structures for the Core and
+Mail specifications.
 
-JMAP Core client Go library.
+Note: this library started as a fork of [github.com/foxcpp/go-jmap](https://github.com/foxcpp/go-jmap)
+It has since undergone massive restructuring, and it only loosely based on the
+original project.
 
 ## Status
-Reference: https://jmap.io/spec-core.html List below is nowhere complete.
 
-* [x]  Fundamental types
+- [x] Client interface
 
-	* [x]  Int
-	* [x]  UnsignedInt
-	* [x]  Date
-	* [x]  UTCDate
-	* [x]  Id
+  - [x] Access Token authentication (client.WithTokenAuth)
+  - [x] Basic authentication (client.WithBasicAuth)
+  - [x] Chain method calls (Request.Invoke(method...))
+  - [x] BYO http.Client
 
-* [x]  Autodiscovery
+- [ ] Core ([RFC 8620](https://tools.ietf.org/html/rfc8620))
 
-* [ ]  Structures for base JMAP Core objects
+  - [ ] Autodiscovery
+  - [x] Session
+  - [x] Account
+  - [x] Core Capabilities
+  - [x] Invocation
+  - [x] Request
+  - [x] Response
+  - [ ] Request-level errors
+  - [ ] Method-level errors
+  - [ ] Set-level errors
 
-	* [x]  Session
-	* [x]  Account
-	* [x]  Core Capabilities
-	* [x]  Request-level errors
-	* [x]  Invocation
+  - [x] Core/echo
 
-	* [x]  Method-level errors
-	* [x]  Decode Invocation "subtypes" using type -> decoder mapping.
-	* [x]  Request
-	* [x]  Response
-	* [ ]  Set-level errors
+  - [x] Blob/Downloading
+  - [x] Blob/Uploading
+  - [ ] Blob/Copy method
 
-* [x]  Core request objects
+  - [ ] Push
+    - [ ] StateChange structure
+    - [ ] PushSubscription structure
+    - [ ] PushSubscription/get
+    - [ ] PushSubscription/set
+    - [ ] Event Source
 
-	* [x]  Object/get
-	* [x]  Object/changes
-	* [x]  Object/set
-	* [x]  Object/copy
-	* [x]  Object/query
-	* [x]  Object/queryChanges
+- [ ] Mail ([RFC 8621](https://tools.ietf.org/html/rfc8621))
 
-	* [x]  Core/echo
+  - [x] Capability
 
-* [ ]  Binary data I/O
+  - [x] Mailbox
 
-	* [x]  Downloading
-	* [x]  Uploading
-	* [ ]  Blob/Copy method
+    - [x] Get
+    - [x] Changes
+    - [x] Query
+    - [x] QueryChanges
+    - [x] Set
 
-* [ ]  Push
+  - [x] Threads
 
-	* [ ]  StateChange structure
-	* [ ]  PushSubscription structure
+    - [x] Get
+    - [x] Changes
 
-	* [ ]  PushSubscription/get
-	* [ ]  PushSubscription/set
-	* [ ]  Event Source
+  - [x] Emails
 
-* [x]  Client interface
+    - [x] Get
+    - [x] Changes
+    - [x] Query
+    - [x] QueryChanges
+    - [x] Set
+    - [x] Copy
+    - [x] Import
+    - [x] Parse
 
-	* [x]  Get Session object
-	* [x]  Interface to send request objects directly
-	* [x]  "Call batch builder" interface
-	* [x]  Binary I/O interface
+  - [x] SearchSnippets
 
-* [ ]  Server interface
+    - [x] Get
 
-	* [ ]  Base backend interface
-	* [ ]  Binary I/O backend interface
-	* [ ]  Method call dispatching
+  - [ ] Identities
 
+    - [ ] Get
+    - [ ] Changes
+    - [ ] Set
 
+  - [ ] EmailSubmission
+
+    - [ ] Get
+    - [ ] Changes
+    - [ ] Query
+    - [ ] QueryChanges
+    - [ ] Set
+
+  - [ ] VacationResponse
+
+    - [ ] Get
+
+  - [ ] Client Macros
 
 ## Related standards
 
@@ -87,7 +110,7 @@ Reference: https://jmap.io/spec-core.html List below is nowhere complete.
 - [RFC 6901]
   JavaScript Object Notation (JSON) Pointer
 
-## License 
+## License
 
 The code is under MIT license.
 
@@ -96,7 +119,6 @@ on) contents of draft-ietf-jmap-core-17 and is subject to the IETF Trust
 Provisions. See https://trustee.ietf.org/trust-legal-provisions.html for
 details. See included draft-ietf-jmap-core-17.txt for related copyright
 notices.
-
 
 [RFC 8620]: https://tools.ietf.org/html/rfc8620
 [RFC 8621]: https://tools.ietf.org/html/rfc8621
