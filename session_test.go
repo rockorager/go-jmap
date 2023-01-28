@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"gotest.tools/assert"
-	"gotest.tools/assert/cmp"
+	"github.com/stretchr/testify/assert"
 )
 
 var sessionBlob = `{
@@ -69,24 +68,30 @@ var sessionBlob = `{
 }`
 
 func TestSessionUnmarshal(t *testing.T) {
+	assert := assert.New(t)
 	s := Session{}
-	assert.NilError(t, json.Unmarshal([]byte(sessionBlob), &s), "json.Unmarshal")
+	err := json.Unmarshal([]byte(sessionBlob), &s)
+	assert.NoError(err)
 
-	assert.Check(t, cmp.Equal(UnsignedInt(50000000), s.CoreCapability.MaxSizeUpload))
-	assert.Check(t, cmp.Equal("john@example.com", s.Accounts["A13824"].Name))
+	assert.Equal(uint64(50000000), s.CoreCapability.MaxSizeUpload)
+	assert.Equal("john@example.com", s.Accounts["A13824"].Name)
 }
 
 func TestSessionMarshal(t *testing.T) {
+	assert := assert.New(t)
 	s := Session{}
-	assert.NilError(t, json.Unmarshal([]byte(sessionBlob), &s), "json.Unmarshal")
+	err := json.Unmarshal([]byte(sessionBlob), &s)
+	assert.NoError(err)
 
 	blob, err := json.MarshalIndent(s, "", "  ")
-	assert.NilError(t, err, "json.Marshal")
+	assert.NoError(err)
 
 	// We can't just compare []byte because order of fields may be different.
 	var original, remarshaled map[string]interface{}
-	assert.NilError(t, json.Unmarshal([]byte(sessionBlob), &original))
-	assert.NilError(t, json.Unmarshal(blob, &remarshaled))
+	err = json.Unmarshal([]byte(sessionBlob), &original)
+	assert.NoError(err)
+	err = json.Unmarshal(blob, &remarshaled)
+	assert.NoError(err)
 
-	assert.Check(t, cmp.DeepEqual(original, remarshaled))
+	assert.Equal(original, remarshaled)
 }

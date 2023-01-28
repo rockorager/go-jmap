@@ -2,8 +2,6 @@ package mail
 
 import (
 	"errors"
-
-	"git.sr.ht/~rockorager/go-jmap"
 )
 
 // urn:ietf:params:jmap:mail represents support for the Mailbox, Thread, Email,
@@ -15,17 +13,17 @@ type Capability struct {
 	// assigned to a single Email object (see Section 4). This MUST be an
 	// integer >= 1, or null for no limit (or rather, the limit is always
 	// the number of Mailboxes in the account).
-	MaxMailboxesPerEmail jmap.UnsignedInt `json:"maxMailboxesPerEmail"`
+	MaxMailboxesPerEmail uint64 `json:"maxMailboxesPerEmail"`
 
 	// The maximum depth of the Mailbox hierarchy (i.e., one more than the
 	// maximum number of ancestors a Mailbox may have), or null for no
 	// limit.
-	MaxMailboxDepth jmap.UnsignedInt `json:"maxMailboxDepth"`
+	MaxMailboxDepth uint64 `json:"maxMailboxDepth"`
 
 	// The maximum length, in (UTF-8) octets, allowed for the name of a
 	// Mailbox. This MUST be at least 100, although it is recommended
 	// servers allow more.
-	MaxSizeMailboxName jmap.UnsignedInt `json:"maxSizeMailboxName"`
+	MaxSizeMailboxName uint64 `json:"maxSizeMailboxName"`
 
 	// The maximum total size of attachments, in octets, allowed for a
 	// single Email object. A server MAY still reject the import or
@@ -49,7 +47,7 @@ type Capability struct {
 	// (50 MB). The enforced server limit may be for a message size of
 	// 70000000 octets. Even with base64 encoding and a 2 MB HTML body, 50
 	// MB attachments would fit under this limit.
-	MaxSizeAttachmentsPerEmail jmap.UnsignedInt `json:"maxSizeAttachmentsPerEmail"`
+	MaxSizeAttachmentsPerEmail uint64 `json:"maxSizeAttachmentsPerEmail"`
 
 	// A list of all the values the server supports for the “property”
 	// field of the Comparator object in an Email/query sort (see Section

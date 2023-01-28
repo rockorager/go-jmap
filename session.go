@@ -50,33 +50,33 @@ const (
 type CoreCapability struct {
 	// The maximum file size, in octets, that the server will accept for a
 	// single file upload (for any purpose).
-	MaxSizeUpload UnsignedInt `json:"maxSizeUpload"`
+	MaxSizeUpload uint64 `json:"maxSizeUpload"`
 
 	// The maximum number of concurrent requests the server will accept to the
 	// upload endpoint.
-	MaxConcurrentUpload UnsignedInt `json:"maxConcurrentUpload"`
+	MaxConcurrentUpload uint64 `json:"maxConcurrentUpload"`
 
 	// The maximum size, in octets, that the server will accept for a single
 	// request to the API endpoint.
-	MaxSizeRequest UnsignedInt `json:"maxSizeRequest"`
+	MaxSizeRequest uint64 `json:"maxSizeRequest"`
 
 	// The maximum number of concurrent requests the server will accept to the
 	// API endpoint.
-	MaxConcurrentRequests UnsignedInt `json:"maxConcurrentRequests"`
+	MaxConcurrentRequests uint64 `json:"maxConcurrentRequests"`
 
 	// The maximum number of method calls the server will accept in a single
 	// request to the API endpoint.
-	MaxCallsInRequest UnsignedInt `json:"maxCallsInRequest"`
+	MaxCallsInRequest uint64 `json:"maxCallsInRequest"`
 
 	// The maximum number of objects that the client may request in a single
 	// /get type method call.
-	MaxObjectsInGet UnsignedInt `json:"maxObjectsInGet"`
+	MaxObjectsInGet uint64 `json:"maxObjectsInGet"`
 
 	// The maximum number of objects the client may send to create, update or
 	// destroy in a single /set type method call. This is the combined total, e.g.
 	// if the maximum is 10 you could not create 7 objects and destroy 6, as this
 	// would be 13 actions, which exceeds the limit.
-	MaxObjectsInSet UnsignedInt `json:"maxObjectsInSet"`
+	MaxObjectsInSet uint64 `json:"maxObjectsInSet"`
 
 	// A list of identifiers for algorithms registered in the collation
 	// registry defined in RFC 4790 that the server supports for sorting
@@ -127,12 +127,12 @@ type Session struct {
 
 	// A map of account id to Account object for each account the user has
 	// access to.
-	Accounts map[ID]Account `json:"accounts"`
+	Accounts map[string]Account `json:"accounts"`
 
 	// A map of capability URIs (as found in Capabilities) to the
 	// account id to be considered the user’s main or default account for data
 	// pertaining to that capability.
-	PrimaryAccounts map[string]ID `json:"primaryAccounts"`
+	PrimaryAccounts map[string]string `json:"primaryAccounts"`
 
 	// The username associated with the given credentials, or the empty string
 	// if none.
