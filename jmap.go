@@ -14,6 +14,9 @@ import (
 	"regexp"
 )
 
+func init() {
+	RegisterMethod("error", newMethodError)
+}
 
 // ID is a unique identifier assigned by the server. The character set must
 // contain only ASCII alphanumerics, hyphen, or underscore and the ID must be

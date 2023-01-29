@@ -64,7 +64,7 @@ type Get struct {
 	MaxBodyValueBytes uint64 `json:"maxBodyValueBytes,omitempty"`
 }
 
-func (m *Get) Name() string { return "Mailbox/get" }
+func (m *Get) Name() string { return "Email/get" }
 
 func (m *Get) Requires() string { return mail.URI }
 

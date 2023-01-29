@@ -27,7 +27,7 @@ type Changes struct {
 	MaxChanges uint64 `json:"maxChanges"`
 }
 
-func (m *Changes) Name() string { return "Mailbox/changes" }
+func (m *Changes) Name() string { return "Email/changes" }
 
 func (m *Changes) Requires() string { return mail.URI }
 

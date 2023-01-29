@@ -26,9 +26,7 @@ type Import struct {
 	Emails map[string]*EmailImport `json:"emails,omitempty"`
 }
 
-func (m *Import) Name() string {
-	return "Email/import"
-}
+func (m *Import) Name() string { return "Email/import" }
 
 func (m *Import) Requires() string { return mail.URI }
 

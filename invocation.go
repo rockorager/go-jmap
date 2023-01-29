@@ -39,7 +39,7 @@ func (i *Invocation) UnmarshalJSON(data []byte) error {
 	}
 	newFn, ok := methods[i.Name]
 	if !ok {
-		return fmt.Errorf("method 'i.Name' not registered")
+		return fmt.Errorf("method '%s' not registered", i.Name)
 	}
 	i.Args = newFn()
 	if err := json.Unmarshal(raw[1], i.Args); err != nil {
