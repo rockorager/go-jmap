@@ -10,6 +10,8 @@ package jmap
 
 import (
 	"encoding/json"
+	"fmt"
+	"regexp"
 )
 
 func init() {
@@ -19,6 +21,23 @@ func init() {
 		&MethodError{},
 	)
 	RegisterMethods()
+}
+
+type ID string
+
+var idRegexp = regexp.MustCompile(`^[A-Za-z0-9\-_]+$`)
+
+func (id ID) MarshalJSON() ([]byte, error) {
+	if len(string(id)) < 1 {
+		return nil, fmt.Errorf("invalid ID: too short")
+	}
+	if len(string(id)) > 255 {
+		return nil, fmt.Errorf("invalid ID: too long")
+	}
+	if !idRegexp.MatchString(string(id)) {
+		return nil, fmt.Errorf("invalid ID: invalid characters")
+	}
+	return json.Marshal(string(id))
 }
 
 // Patch represents a patch which can be used in a set.Update call.
@@ -81,7 +100,7 @@ const (
 //
 // The array MUST be sorted in order of index, with the lowest index first.
 type AddedItem struct {
-	ID    string `json:"id"`
+	ID    ID     `json:"id"`
 	Index uint64 `json:"index"`
 }
 

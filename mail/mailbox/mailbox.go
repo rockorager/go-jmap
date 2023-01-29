@@ -23,7 +23,7 @@ func init() {
 // The Email id does not change if the Email changes Mailboxes.
 type Mailbox struct {
 	// The id of the Mailbox.
-	ID string `json:"id,omitempty"`
+	ID jmap.ID `json:"id,omitempty"`
 
 	// User-visible name for the Mailbox, e.g., “Inbox”. This MUST be a
 	// Net-Unicode string [@!RFC5198] of at least 1 character in length,
@@ -37,7 +37,7 @@ type Mailbox struct {
 	// Mailbox is at the top level. Mailboxes form acyclic graphs (forests)
 	// directed by the child-to-parent relationship. There MUST NOT be a
 	// loop.
-	ParentID string `json:"parentId,omitempty"`
+	ParentID jmap.ID `json:"parentId,omitempty"`
 
 	// Identifies Mailboxes that have a particular common purpose (e.g.,
 	// the “inbox”), regardless of the name property (which may be

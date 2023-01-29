@@ -6,7 +6,7 @@ import "git.sr.ht/~rockorager/go-jmap"
 // but with the following additional request argument: onDestroyRemoveEmails
 type Set struct {
 	// The id of the account to use.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// This is a state string as returned by the Foo/get method
 	// (representing the state of all objects of this type in the account).
@@ -23,7 +23,7 @@ type Set struct {
 	//
 	// The client MUST omit any properties that may only be set by the
 	// server (for example, the id property on most object types).
-	Create map[string]*Mailbox `json:"create,omitempty"`
+	Create map[jmap.ID]*Mailbox `json:"create,omitempty"`
 
 	// A map of an id to a Patch object to apply to the current Foo object
 	// with that id, or null if no objects are to be updated.
@@ -63,11 +63,11 @@ type Set struct {
 	// also a valid PatchObject. The client may choose to optimise network
 	// usage by just sending the diff or may send the whole object; the
 	// server processes it the same either way.
-	Update map[string]*jmap.Patch `json:"update,omitempty"`
+	Update map[jmap.ID]*jmap.Patch `json:"update,omitempty"`
 
 	// A list of ids for Foo objects to permanently delete, or null if no
 	// objects are to be destroyed.
-	Destroy []string `json:"destroy,omitempty"`
+	Destroy []jmap.ID `json:"destroy,omitempty"`
 
 	// If false, any attempt to destroy a Mailbox that still has Emails in
 	// it will be rejected with a mailboxHasEmail SetError. If true, any
@@ -91,7 +91,7 @@ func (m *Set) NewResponse() interface{} {
 
 type SetResponse struct {
 	// The id of the account used for the call.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// The state string that would have been returned by Foo/get before
 	// making the requested changes, or null if the server doesn’t know
@@ -108,7 +108,7 @@ type SetResponse struct {
 	// set to a default by the server.
 	//
 	// This argument is null if no Foo objects were successfully created.
-	Created map[string]*Mailbox `json:"created,omitempty"`
+	Created map[jmap.ID]*Mailbox `json:"created,omitempty"`
 
 	// The keys in this map are the ids of all Foos that were successfully
 	// updated.
@@ -119,18 +119,18 @@ type SetResponse struct {
 	// changes to server-set or computed properties.
 	//
 	// This argument is null if no Foo objects were successfully updated.
-	Updated map[string]*Mailbox `json:"updated,omitempty"`
+	Updated map[jmap.ID]*Mailbox `json:"updated,omitempty"`
 
 	// An array of ids for records that have been destroyed since the old
 	// state.
-	Destroyed []string `json:"destroyed,omitempty"`
+	Destroyed []jmap.ID `json:"destroyed,omitempty"`
 
 	// A map of ID to a SetError for each record that failed to be created
-	NotCreated map[string]*jmap.SetError `json:"notCreated,omitempty"`
+	NotCreated map[jmap.ID]*jmap.SetError `json:"notCreated,omitempty"`
 
 	// A map of ID to a SetError for each record that failed to be updated
-	NotUpdated map[string]*jmap.SetError `json:"notUpdated,omitempty"`
+	NotUpdated map[jmap.ID]*jmap.SetError `json:"notUpdated,omitempty"`
 
 	// A map of ID to a SetError for each record that failed to be destroyed
-	NotDestroyed map[string]*jmap.SetError `json:"notDestroyed,omitempty"`
+	NotDestroyed map[jmap.ID]*jmap.SetError `json:"notDestroyed,omitempty"`
 }

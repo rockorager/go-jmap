@@ -127,12 +127,12 @@ type Session struct {
 
 	// A map of account id to Account object for each account the user has
 	// access to.
-	Accounts map[string]Account `json:"accounts"`
+	Accounts map[ID]Account `json:"accounts"`
 
 	// A map of capability URIs (as found in Capabilities) to the
 	// account id to be considered the user’s main or default account for data
 	// pertaining to that capability.
-	PrimaryAccounts map[string]string `json:"primaryAccounts"`
+	PrimaryAccounts map[string]ID `json:"primaryAccounts"`
 
 	// The username associated with the given credentials, or the empty string
 	// if none.

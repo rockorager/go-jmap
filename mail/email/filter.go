@@ -28,12 +28,12 @@ func (fo *FilterOperator) implementsFilter() {}
 // be used to create complex filtering
 type FilterCondition struct {
 	// A Mailbox id.  An Email must be in this Mailbox to match the condition.
-	InMailbox string `json:"inMailbox,omitempty"`
+	InMailbox jmap.ID `json:"inMailbox,omitempty"`
 
 	// A list of Mailbox ids.  An Email must be in at least one Mailbox not in this
 	// list to match the condition.  This is to allow messages solely in trash/spam
 	// to be easily excluded from a search.
-	InMailboxOtherThan []string `json:"inMailboxOtherThan,omitempty"`
+	InMailboxOtherThan []jmap.ID `json:"inMailboxOtherThan,omitempty"`
 
 	// The "receivedAt" date-time of the Email must be before this date- time to
 	// match the condition.

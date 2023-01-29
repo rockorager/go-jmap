@@ -1,5 +1,7 @@
 package mailbox
 
+import "git.sr.ht/~rockorager/go-jmap"
+
 // This is a standard “/changes” method as described in [@!RFC8620], Section
 // 5.2.
 //
@@ -10,7 +12,7 @@ package mailbox
 // server.
 type Changes struct {
 	// The id of the account to use.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// The current state of the client. This is the string that was
 	// returned as the state argument in the Foo/get response. The server
@@ -42,7 +44,7 @@ func (m *Changes) NewResponse() interface{} {
 // 5.2 but with one extra argument to the response: updatedProperties
 type ChangesResponse struct {
 	// The id of the account used for the call.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// This is the sinceState argument echoed back; it’s the state from
 	// which the server is returning changes.
@@ -59,15 +61,15 @@ type ChangesResponse struct {
 
 	// An array of ids for records that have been created since the old
 	// state.
-	Created []string `json:"created,omitempty"`
+	Created []jmap.ID `json:"created,omitempty"`
 
 	// An array of ids for records that have been updated since the old
 	// state.
-	Updated []string `json:"updated,omitempty"`
+	Updated []jmap.ID `json:"updated,omitempty"`
 
 	// An array of ids for records that have been destroyed since the old
 	// state.
-	Destroyed []string `json:"destroyed,omitempty"`
+	Destroyed []jmap.ID `json:"destroyed,omitempty"`
 
 	// If only the “totalEmails”, “unreadEmails”, “totalThreads”, and/or
 	// “unreadThreads” Mailbox properties have changed since the old state,

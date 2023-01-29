@@ -8,7 +8,7 @@ import "git.sr.ht/~rockorager/go-jmap"
 // argument may be null to fetch all at once.
 type Get struct {
 	// The id of the account to use.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// The ids of the Foo objects to return. If null, then all records of
 	// the data type are returned, if this is supported for that data type
@@ -44,7 +44,7 @@ func (m *Get) NewResponse() interface{} {
 // This is a standard “/get” method as described in [@!RFC8620], Section 5.1.
 type GetResponse struct {
 	// The id of the account used for the call.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// A (preferably short) string representing the state on the server for
 	// all the data of this type in the account (not just the objects

@@ -1,6 +1,10 @@
 package email
 
-import "time"
+import (
+	"time"
+
+	"git.sr.ht/~rockorager/go-jmap"
+)
 
 // The "Email/import" method adds messages [RFC5322] to the set of Emails in an
 // account.  The server MUST support messages with Email Address
@@ -8,7 +12,7 @@ import "time"
 // uploaded as blobs using the standard upload mechanism.
 type Import struct {
 	// The id of the account used for the call.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// This is a state string as returned by the Foo/get method
 	// (representing the state of all objects of this type in the account).
@@ -35,22 +39,22 @@ func (m *Import) NewResponse() interface{} {
 
 type EmailImport struct {
 	// The id of the blob containing the raw message [RFC5322].
-	BlobID string `json:"blobId,omitempty"`
+	BlobID jmap.ID `json:"blobId,omitempty"`
 
 	// The ids of the Mailboxes to assign this Email to.  At least one
 	// Mailbox MUST be given.
-	MailboxIDs map[string]bool `json:"mailboxIds,omitempty"`
+	MailboxIDs map[jmap.ID]bool `json:"mailboxIds,omitempty"`
 
 	// The keywords to apply to the Email.
 	Keywords map[string]bool `json:"keywords,omitempty"`
 
-	// The "receivedAt" date to set on the Email.
+	// The "receivedAt" date to set on the Email. The value must be in UTC
 	ReceivedAt time.Time `json:"receivedAt,omitempty"`
 }
 
 type ImportResponse struct {
 	// The id of the account used for the call.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// The state string that would have been returned by Foo/get before
 	// making the requested changes, or null if the server doesn’t know
@@ -67,11 +71,10 @@ type ImportResponse struct {
 	// set to a default by the server.
 	//
 	// This argument is null if no Foo objects were successfully created.
-	Created map[string]*Email `json:"created,omitempty"`
+	Created map[jmap.ID]*Email `json:"created,omitempty"`
 
 	// A map of the creation id to a SetError object for each Email that
 	// failed to be created, or null if all successful.  The possible
 	// errors are defined above.
-	// TODO
-	// NotCreated map[string]*jmap.MethodErrorArgs `json:"notCreated,omitempty"`
+	NotCreated map[jmap.ID]*jmap.SetError `json:"notCreated,omitempty"`
 }

@@ -10,7 +10,7 @@ import (
 func TestQuery(t *testing.T) {
 	assert := assert.New(t)
 	query := &Query{
-		AccountID: "xyz",
+		Account: "xyz",
 		Filter: &FilterCondition{
 			Name: "Inbox",
 		},

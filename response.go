@@ -20,7 +20,7 @@ type Response struct {
 
 	// A map of (client-specified) creation id to the id the server assigned
 	// when a record was successfully created.
-	CreatedIDs map[string]string `json:"createdIds,omitempty"`
+	CreatedIDs map[ID]ID `json:"createdIds,omitempty"`
 
 	// The current value of the “state” string on the JMAP Session object, as
 	// described in section 2. Clients may use this to detect if this object

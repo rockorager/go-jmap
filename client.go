@@ -141,7 +141,7 @@ func (c *Client) Do(req *Request) (*Response, error) {
 // - Server may return the same blob ID for multiple uploads of the same blob.
 // - Blob ID may become invalid after some time if it is unused.
 // - Blob ID is usable only by the uploader until it is used, even for shared accounts.
-func (c *Client) Upload(accountID string, blob io.Reader) (*BlobInfo, error) {
+func (c *Client) Upload(accountID ID, blob io.Reader) (*BlobInfo, error) {
 	if c.SessionEndpoint == "" {
 		return nil, fmt.Errorf("jmap/client: SessionEndpoint is empty")
 	}
@@ -152,7 +152,7 @@ func (c *Client) Upload(accountID string, blob io.Reader) (*BlobInfo, error) {
 		}
 	}
 
-	url := strings.Replace(c.Session.UploadURL, "{accountId}", accountID, -1)
+	url := strings.Replace(c.Session.UploadURL, "{accountId}", string(accountID), -1)
 	req, err := http.NewRequest("POST", url, blob)
 	if err != nil {
 		return nil, err
@@ -184,7 +184,7 @@ func (c *Client) Upload(accountID string, blob io.Reader) (*BlobInfo, error) {
 }
 
 // Download downloads binary data by its Blob ID from the server.
-func (c *Client) Download(accountID string, blobID string) (io.ReadCloser, error) {
+func (c *Client) Download(accountID ID, blobID ID) (io.ReadCloser, error) {
 	if c.SessionEndpoint == "" {
 		return nil, fmt.Errorf("jmap/client: SessionEndpoint is empty")
 	}
@@ -196,9 +196,9 @@ func (c *Client) Download(accountID string, blobID string) (io.ReadCloser, error
 	}
 
 	urlRepl := strings.NewReplacer(
-		"{accountId}", accountID,
-		"{blobId}", blobID,
-		"{type}", "application/octet-stream", // TODO: are any other values necessary?
+		"{accountId}", string(accountID),
+		"{blobId}", string(blobID),
+		"{type}", "application/octet-stream",
 		"{name}", "filename",
 	)
 	tgtUrl := urlRepl.Replace(c.Session.DownloadURL)

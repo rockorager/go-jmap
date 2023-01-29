@@ -1,5 +1,7 @@
 package email
 
+import "git.sr.ht/~rockorager/go-jmap"
+
 // This method allows you to parse blobs as messages [RFC5322] to get
 // Email objects.  The server MUST support messages with EAI headers
 // [RFC6532].  This can be used to parse and display attached messages
@@ -22,10 +24,10 @@ package email
 // imported.  Otherwise, this too is null if fetched.
 type Parse struct {
 	// The id of the account to use.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// The ids of the blobs to parse.
-	BlobIDs []string `json:"blobIds,omitempty"`
+	BlobIDs []jmap.ID `json:"blobIds,omitempty"`
 
 	// If supplied, only the properties listed in the array are returned
 	// for each Foo object. If null, all properties of the object are
@@ -82,16 +84,16 @@ func (m *Parse) NewResponse() interface{} {
 
 type ParseResponse struct {
 	// The id of the account used for the call
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// A map of blob id to parsed Email representation for each
 	// successfully parsed blob, or null if none.
-	Parsed map[string]*Email `json:"parsed,omitempty"`
+	Parsed map[jmap.ID]*Email `json:"parsed,omitempty"`
 
 	// A list of ids given that corresponded to blobs that could not be
 	// parsed as Emails, or null if none.
-	NotParsable []string `json:"notParsable,omitempty"`
+	NotParsable []jmap.ID `json:"notParsable,omitempty"`
 
 	// A list of blob ids given that could not be found, or null if none.
-	NotFound []string `json:"notFound,omitempty"`
+	NotFound []jmap.ID `json:"notFound,omitempty"`
 }

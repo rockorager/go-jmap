@@ -24,22 +24,22 @@ func init() {
 type Email struct {
 	// The id of the Email object. Note that this is the JMAP object id,
 	// NOT the Message-ID header field value of the message [@!RFC5322].
-	ID string `json:"id,omitempty"`
+	ID jmap.ID `json:"id,omitempty"`
 
 	// The id representing the raw octets of the message [@!RFC5322] for
 	// this Email. This may be used to download the raw original message or
 	// to attach it directly to another Email, etc.
-	BlobID string `json:"blobId,omitempty"`
+	BlobID jmap.ID `json:"blobId,omitempty"`
 
 	// The id of the Thread to which this Email belongs.
-	ThreadID string `json:"threadId,omitempty"`
+	ThreadID jmap.ID `json:"threadId,omitempty"`
 
 	// The set of Mailbox ids this Email belongs to. An Email in the mail
 	// store MUST belong to one or more Mailboxes at all times (until it
 	// is destroyed). The set is represented as an object, with each key
 	// being a Mailbox id. The value for each key in the object MUST be
 	// true.
-	MailboxIDs map[string]bool `json:"mailboxIds,omitempty"`
+	MailboxIDs map[jmap.ID]bool `json:"mailboxIds,omitempty"`
 
 	// A set of keywords that apply to the Email. The set is represented as
 	// an object, with the keys being the keywords. The value for each key
@@ -218,7 +218,7 @@ type BodyPart struct {
 	// the server is using a secure hash of the data for the blob id. If
 	// the transfer encoding is unknown, it is treated as though it had no
 	// transfer encoding.
-	BlobID string `json:"blobId,omitempty"`
+	BlobID jmap.ID `json:"blobId,omitempty"`
 
 	// The size, in octets, of the raw data after content transfer decoding
 	// (as referenced by the blobId, i.e., the number of octets in the file

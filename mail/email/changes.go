@@ -1,12 +1,14 @@
 package email
 
+import "git.sr.ht/~rockorager/go-jmap"
+
 // This is a standard "/changes" method as described in [RFC8620], Section 5.2.
 // If generating intermediate states for a large set of changes, it is
 // recommended that newer changes be returned first, as these are generally of
 // more interest to users.
 type Changes struct {
 	// The id of the account to use.
-	AccountID string `json:"accountId"`
+	Account jmap.ID `json:"accountId"`
 
 	// The current state of the client. This is the string that was
 	// returned as the state argument in the Foo/get response. The server
@@ -34,7 +36,7 @@ func (m *Changes) NewResponse() interface{} { return &ChangesResponse{} }
 // more interest to users.
 type ChangesResponse struct {
 	// The id of the account used for the call.
-	AccountID string `json:"accountId"`
+	Account jmap.ID `json:"accountId"`
 
 	// This is the sinceState argument echoed back; it’s the state from
 	// which the server is returning changes.
@@ -51,13 +53,13 @@ type ChangesResponse struct {
 
 	// An array of ids for records that have been created since the old
 	// state.
-	Created []string `json:"created"`
+	Created []jmap.ID `json:"created"`
 
 	// An array of ids for records that have been updated since the old
 	// state.
-	Updated []string `json:"updated"`
+	Updated []jmap.ID `json:"updated"`
 
 	// An array of ids for records that have been destroyed since the old
 	// state.
-	Destroyed []string `json:"destroyed"`
+	Destroyed []jmap.ID `json:"destroyed"`
 }

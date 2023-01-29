@@ -25,7 +25,7 @@ func (fo *FilterOperator) implementsFilter() {}
 // and NOT named Inbox
 type FilterCondition struct {
 	// The Mailbox parentId property must match the given value exactly.
-	ParentID string `json:"parentId,omitempty"`
+	ParentID jmap.ID `json:"parentId,omitempty"`
 	// The Mailbox name property contains the given string.
 	Name string `json:"name,omitempty"`
 	// The Mailbox role property must match the given value exactly.

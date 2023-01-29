@@ -1,12 +1,14 @@
 package email
 
+import "git.sr.ht/~rockorager/go-jmap"
+
 // This is a standard "/copy" method as described in [RFC8620], Section 5.4,
 // except only the "mailboxIds", "keywords", and "receivedAt" properties may be
 // set during the copy.  This method cannot modify the message represented by
 // the Email.
 type Copy struct {
 	// The id of the account to copy records from.
-	FromAccountID string `json:"fromAccountId,omitempty"`
+	FromAccount jmap.ID `json:"fromAccountId,omitempty"`
 
 	// This is a state string as returned by the Foo/get method. If
 	// supplied, the string must match the current state of the account
@@ -17,7 +19,7 @@ type Copy struct {
 
 	// The id of the account to copy records to. This MUST be different to
 	// the fromAccountId.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// This is a state string as returned by the Foo/get method. If
 	// supplied, the string must match the current state of the account
@@ -31,7 +33,7 @@ type Copy struct {
 	// record to be copied. When creating the copy, any other properties
 	// included are used instead of the current value for that property on
 	// the original.
-	Create map[string]*Email `json:"create,omitempty"`
+	Create map[jmap.ID]*Email `json:"create,omitempty"`
 
 	// If true, an attempt will be made to destroy the original records
 	// that were successfully copied: after emitting the Foo/copy response,
@@ -61,10 +63,10 @@ func (m *Copy) NewResponse() interface{} {
 
 type CopyResponse struct {
 	// The id of the account records were copied from.
-	FromAccountID string `json:"fromAccountId,omitempty"`
+	FromAccount jmap.ID `json:"fromAccountId,omitempty"`
 
 	// The id of the account records were copied to.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// The state string that would have been returned by Foo/get on the
 	// account records that were copied to before making the requested
@@ -82,10 +84,9 @@ type CopyResponse struct {
 	// of the object in the account it was copied from).
 	//
 	// This argument is null if no Foo objects were successfully copied.
-	Created map[string]*Email `json:"created,omitempty"`
+	Created map[jmap.ID]*Email `json:"created,omitempty"`
 
 	// A map of the creation id to a SetError object for each record that
 	// failed to be copied, or null if none.
-	// TODO
-	// NotCreated map[string]*jmap.MethodErrorArgs `json:"notCreated,omitempty"`
+	NotCreated map[jmap.ID]*jmap.SetError `json:"notCreated,omitempty"`
 }

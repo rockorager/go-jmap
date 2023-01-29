@@ -6,7 +6,7 @@ import "git.sr.ht/~rockorager/go-jmap"
 // 5.6 with the following additional request argument: collapseThreads
 type QueryChanges struct {
 	// The id of the account to use.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// The filter argument that was used with Foo/query.
 	//
@@ -35,7 +35,7 @@ type QueryChanges struct {
 	// only on immutable properties, this allows the server to omit changes
 	// after this point in the results, which can significantly increase
 	// efficiency. If they are not immutable, this argument is ignored.
-	UpToID string `json:"upToId,omitempty"`
+	UpToID jmap.ID `json:"upToId,omitempty"`
 
 	// Does the client wish to know the total number of results now in the
 	// query? This may be slow and expensive for servers to calculate,
@@ -66,7 +66,7 @@ func (m *QueryChanges) NewResponse() interface{} {
 // 5.6
 type QueryChangesResponse struct {
 	// The id of the account used for the call.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// This is the sinceQueryState argument echoed back; that is, the state
 	// from which the server is returning changes.
@@ -92,7 +92,7 @@ type QueryChangesResponse struct {
 	// have changed. The position of these may have moved in the results,
 	// so must be reinserted by the client to ensure its query cache is
 	// correct.
-	Removed []string `json:"removed,omitempty"`
+	Removed []jmap.ID `json:"removed,omitempty"`
 
 	// The id and index in the query results (in the new state) for every
 	// Foo that has been added to the results since the old state AND every

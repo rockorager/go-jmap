@@ -10,7 +10,7 @@ import (
 
 func TestGet(t *testing.T) {
 	m := &Get{
-		AccountID: "account-id",
+		Account: "account-id",
 	}
 	req := &jmap.Request{}
 
@@ -24,7 +24,7 @@ func TestGet(t *testing.T) {
 
 	t.Run("manual", func(t *testing.T) {
 		m := &Get{
-			AccountID: "account-id",
+			Account: "account-id",
 		}
 		req = &jmap.Request{
 			Using: []string{MailCapability},

@@ -1,10 +1,12 @@
 package mailbox
 
+import "git.sr.ht/~rockorager/go-jmap"
+
 // This is a standard “/query” method as described in [@!RFC8620], Section 5.5,
 // but with the following additional request argument: sortAsTree, filterAsTree
 type Query struct {
 	// The id of the account to use.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// Determines the set of Foos returned in the results. If null, all
 	// objects in the account of this type are included in the results.
@@ -56,7 +58,7 @@ type Query struct {
 	//
 	// A client can use anchor instead of position to find the index of an
 	// id within a large set of results.
-	Anchor string `json:"anchor,omitempty"`
+	Anchor jmap.ID `json:"anchor,omitempty"`
 
 	// The index of the first result to return relative to the index of the
 	// anchor, if an anchor is given. This MAY be negative. For example, -1
@@ -113,7 +115,7 @@ func (m *Query) NewResponse() interface{} {
 
 type QueryResponse struct {
 	// The id of the account used for the call.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// A string encoding the current state of the query on the server. This
 	// string MUST change if the results of the query (i.e., the matching
@@ -152,7 +154,7 @@ type QueryResponse struct {
 	// index given by the position argument of this response and continuing
 	// until it hits the end of the results or reaches the limit number of
 	// ids. If position is >= total, this MUST be the empty list.
-	IDs []string `json:"ids,omitempty"`
+	IDs []jmap.ID `json:"ids,omitempty"`
 
 	// The total number of Foos in the results (given the filter). This
 	// argument MUST be omitted if the calculateTotal request argument is

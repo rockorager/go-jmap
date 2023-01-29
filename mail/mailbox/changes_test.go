@@ -10,7 +10,7 @@ import (
 
 func TestChanges(t *testing.T) {
 	m := &Changes{
-		AccountID: "account-id",
+		Account: "account-id",
 		SinceState: "1234",
 	}
 	req := &jmap.Request{}
@@ -25,7 +25,7 @@ func TestChanges(t *testing.T) {
 
 	t.Run("manual", func(t *testing.T) {
 		m := &Changes{
-			AccountID: "account-id",
+			Account: "account-id",
 			SinceState: "1234",
 		}
 		req = &jmap.Request{

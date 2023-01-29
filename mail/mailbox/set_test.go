@@ -11,8 +11,8 @@ import (
 func TestSet(t *testing.T) {
 	assert := assert.New(t)
 	set := &Set{
-		AccountID: "xyz",
-		Update: map[string]*jmap.Patch{
+		Account: "xyz",
+		Update: map[jmap.ID]*jmap.Patch{
 			"mailbox-id": {
 				Path:  "name",
 				Value: "New Name",
@@ -25,8 +25,8 @@ func TestSet(t *testing.T) {
 	assert.Equal(expected, string(data))
 
 	set = &Set{
-		AccountID: "xyz",
-		Update: map[string]*jmap.Patch{
+		Account: "xyz",
+		Update: map[jmap.ID]*jmap.Patch{
 			"mailbox-id": {
 				Path:  "parentId",
 				Value: nil,
