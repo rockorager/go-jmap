@@ -16,7 +16,7 @@ type Get struct {
 	// The ids of the Foo objects to return. If null, then all records of
 	// the data type are returned, if this is supported for that data type
 	// and the number of records does not exceed the maxObjectsInGet limit.
-	IDs []string `json:"ids,omitempty"`
+	IDs []jmap.ID `json:"ids,omitempty"`
 
 	// If supplied, only the properties listed in the array are returned
 	// for each Mailbox object. If null, all properties of the object are
