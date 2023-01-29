@@ -30,7 +30,18 @@ func (e *RequestError) Error() string {
 // invocation will be in it's place
 type MethodError struct {
 	// The type of error that occurred. Always present
-	Type string `json:"type"`
+	Type string `json:"type,omitempty"`
+
+	// Description is available on some method errors (notably,
+	// invalidArguments)
+	Description *string `json:"description,omitempty"`
+}
+
+func (m *MethodError) Error() string {
+	if m.Description != nil {
+		return fmt.Sprintf("%s: %s", m.Type, *m.Description)
+	}
+	return m.Type
 }
 
 func (m *MethodError) Name() string { return "error" }
@@ -38,3 +49,18 @@ func (m *MethodError) Name() string { return "error" }
 func (m *MethodError) Uses() string { return "" }
 
 func (m *MethodError) NewResponse() interface{} { return &MethodError{} }
+
+// A SetError is returned in set calls for individual record changes
+type SetError struct {
+	// The type of SetError
+	Type string `json:"type,omitempty"`
+
+	// A description of the error to help with debugging that includes an
+	// explanation of what the problem was. This is a non-localised string
+	// and is not intended to be shown directly to end users.
+	Description *string `json:"description,omitempty"`
+
+	// Properties is available on InvalidProperties SetErrors and lists the
+	// individual properties were
+	Properties *[]string `json:"properties,omitempty"`
+}

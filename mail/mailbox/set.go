@@ -108,7 +108,7 @@ type SetResponse struct {
 	// set to a default by the server.
 	//
 	// This argument is null if no Foo objects were successfully created.
-	Created map[string]interface{} `json:"created,omitempty"`
+	Created map[string]*Mailbox `json:"created,omitempty"`
 
 	// The keys in this map are the ids of all Foos that were successfully
 	// updated.
@@ -119,9 +119,18 @@ type SetResponse struct {
 	// changes to server-set or computed properties.
 	//
 	// This argument is null if no Foo objects were successfully updated.
-	Updated map[string]interface{} `json:"updated,omitempty"`
+	Updated map[string]*Mailbox `json:"updated,omitempty"`
 
 	// An array of ids for records that have been destroyed since the old
 	// state.
 	Destroyed []string `json:"destroyed,omitempty"`
+
+	// A map of ID to a SetError for each record that failed to be created
+	NotCreated map[string]*jmap.SetError `json:"notCreated,omitempty"`
+
+	// A map of ID to a SetError for each record that failed to be updated
+	NotUpdated map[string]*jmap.SetError `json:"notUpdated,omitempty"`
+
+	// A map of ID to a SetError for each record that failed to be destroyed
+	NotDestroyed map[string]*jmap.SetError `json:"notDestroyed,omitempty"`
 }

@@ -49,5 +49,5 @@ type BlobCopyResponse struct {
 
 	// A map of blobId to a SetError object for each blob that failed to be
 	// copied, or null if none.
-	NotCopied map[id]SetError `json:"notCopied,omitempty"`
+	NotCopied map[string]SetError `json:"notCopied,omitempty"`
 }
