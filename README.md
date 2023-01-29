@@ -26,9 +26,9 @@ original project.
   - [x] Invocation
   - [x] Request
   - [x] Response
-  - [ ] Request-level errors
-  - [ ] Method-level errors
-  - [ ] Set-level errors
+  - [x] Request-level errors
+  - [x] Method-level errors
+  - [x] Set-level errors
 
   - [x] Core/echo
 
