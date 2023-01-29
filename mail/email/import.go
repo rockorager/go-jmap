@@ -1,6 +1,6 @@
 package email
 
-import "git.sr.ht/~rockorager/go-jmap"
+import "time"
 
 // The "Email/import" method adds messages [RFC5322] to the set of Emails in an
 // account.  The server MUST support messages with Email Address
@@ -45,7 +45,7 @@ type EmailImport struct {
 	Keywords map[string]bool `json:"keywords,omitempty"`
 
 	// The "receivedAt" date to set on the Email.
-	ReceivedAt jmap.Date `json:"receivedAt,omitempty"`
+	ReceivedAt time.Time `json:"receivedAt,omitempty"`
 }
 
 type ImportResponse struct {

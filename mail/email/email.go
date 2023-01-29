@@ -1,6 +1,10 @@
 package email
 
-import "git.sr.ht/~rockorager/go-jmap"
+import (
+	"time"
+
+	"git.sr.ht/~rockorager/go-jmap"
+)
 
 const MailCapability = "urn:ietf:params:jmap:mail"
 
@@ -49,7 +53,7 @@ type Email struct {
 
 	// The date the Email was received by the message store. This is the
 	// internal date in IMAP [@?RFC3501].
-	ReceivedAt jmap.Date `json:"receivedAt,omitempty"`
+	ReceivedAt time.Time `json:"receivedAt,omitempty"`
 
 	// This is a list of all header fields [@!RFC5322], in the same order
 	// they appear in the message.
@@ -90,7 +94,7 @@ type Email struct {
 	Subject string `json:"subject,omitempty"`
 
 	// The value is identical to the value of header:Date:asDate.
-	SentAt jmap.Date `json:"sentAt,omitempty"`
+	SentAt time.Time `json:"sentAt,omitempty"`
 
 	// This is the full MIME structure of the message body, without
 	// recursing into message/rfc822 or message/global parts. Note that
