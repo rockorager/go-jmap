@@ -14,7 +14,12 @@ import (
 )
 
 func init() {
-	RegisterMethods(&Echo{})
+	RegisterMethods(
+		&BlobCopy{},
+		&Echo{},
+		&MethodError{},
+	)
+	RegisterMethods()
 }
 
 // Patch represents a patch which can be used in a set.Update call.

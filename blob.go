@@ -22,13 +22,19 @@ type BlobInfo struct {
 type BlobCopy struct {
 	// The ID of the account to copy blobs from
 	FromAccountID string `json:"fromAccountId,omitempty"`
-	
+
 	// The ID of the account to copy blobs to
 	AccountID string `json:"accountId,omitempty"`
 
 	// A list of IDs of blobs to copy
 	BlobIDs []string `json:"blobIds,omitempty"`
 }
+
+func (m *BlobCopy) Name() string { return "Blob/copy" }
+
+func (m *BlobCopy) Uses() string { return "" }
+
+func (m *BlobCopy) NewResponse() interface{} { return &BlobCopy{} }
 
 type BlobCopyResponse struct {
 	// The ID of the account blobs were copied from
