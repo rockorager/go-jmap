@@ -37,11 +37,11 @@ type FilterCondition struct {
 
 	// The "receivedAt" date-time of the Email must be before this date- time to
 	// match the condition.
-	Before time.Time `json:"before,omitempty"`
+	Before *time.Time `json:"before,omitempty"`
 
 	// The "receivedAt" date-time of the Email must be the same or after this
 	// date-time to match the condition.
-	After time.Time `json:"after,omitempty"`
+	After *time.Time `json:"after,omitempty"`
 
 	// The "size" property of the Email must be equal to or greater than this
 	// number to match the condition.
