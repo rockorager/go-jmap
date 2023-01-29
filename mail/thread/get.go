@@ -1,14 +1,19 @@
 package thread
 
+import (
+	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
+)
+
 // This is a standard “/get” method as described in [@!RFC8620], Section 5.1.
 type Get struct {
 	// The id of the account to use.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// The ids of the Foo objects to return. If null, then all records of
 	// the data type are returned, if this is supported for that data type
 	// and the number of records does not exceed the maxObjectsInGet limit.
-	IDs []string `json:"ids,omitempty"`
+	IDs []jmap.ID `json:"ids,omitempty"`
 
 	// If supplied, only the properties listed in the array are returned
 	// for each Foo object. If null, all properties of the object are
@@ -20,14 +25,12 @@ type Get struct {
 
 func (m *Get) Name() string { return "Mailbox/get" }
 
-func (m *Get) Uses() string { return MailCapability }
-
-func (m *Get) NewResponse() interface{} { return &GetResponse{} }
+func (m *Get) Requires() string { return mail.URI }
 
 // This is a standard “/get” method as described in [@!RFC8620], Section 5.1.
 type GetResponse struct {
 	// The id of the account used for the call.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// A (preferably short) string representing the state on the server for
 	// all the data of this type in the account (not just the objects
@@ -53,5 +56,7 @@ type GetResponse struct {
 	// This array contains the ids passed to the method for records that do
 	// not exist. The array is empty if all requested ids were found or if
 	// the ids argument passed in was either null or an empty array.
-	NotFound []string `json:"notFound,omitempty"`
+	NotFound []jmap.ID `json:"notFound,omitempty"`
 }
+
+func newGetResponse() interface{} { return &GetResponse{} }

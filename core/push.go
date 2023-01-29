@@ -1,4 +1,4 @@
-package jmap
+package core
 
 // A StateChange object is sent to the client via Push mechanisms
 type StateChange struct {
@@ -9,6 +9,6 @@ type StateChange struct {
 	Changed map[string]TypeState
 }
 
-// TypeState is a map of Foo object names ("Mailbox", "Email", etc) to state 
+// TypeState is a map of Foo object names ("Mailbox", "Email", etc) to state
 // property which would be returned by a call to Foo/get
 type TypeState map[string]string

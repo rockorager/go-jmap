@@ -6,19 +6,15 @@ import (
 	"git.sr.ht/~rockorager/go-jmap"
 )
 
-const MailCapability = "urn:ietf:params:jmap:mail"
-
 func init() {
-	jmap.RegisterMethods(
-		&Get{},
-		&Changes{},
-		&Query{},
-		&QueryChanges{},
-		&Set{},
-		&Copy{},
-		&Import{},
-		&Parse{},
-	)
+	jmap.RegisterMethod("Email/get", newGetResponse)
+	jmap.RegisterMethod("Email/changes", newChangesResponse)
+	jmap.RegisterMethod("Email/query", newQueryResponse)
+	jmap.RegisterMethod("Email/queryChanges", newQueryChangesResponse)
+	jmap.RegisterMethod("Email/set", newSetResponse)
+	jmap.RegisterMethod("Email/copy", newCopyResponse)
+	jmap.RegisterMethod("Email/import", newImportResponse)
+	jmap.RegisterMethod("Email/parse", newParseResponse)
 }
 
 type Email struct {

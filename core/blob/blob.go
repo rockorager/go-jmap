@@ -1,0 +1,5 @@
+package blob
+
+func init() {
+
+}

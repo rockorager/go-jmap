@@ -23,6 +23,9 @@ var sessionBlob = `{
         "i;unicode-casemap"
       ]
     },
+    "test:jmap:capability": {
+      "testValue": 500
+    },
     "urn:ietf:params:jmap:mail": {},
     "urn:ietf:params:jmap:contacts": {},
     "https://example.com/apis/foobar": {
@@ -68,12 +71,14 @@ var sessionBlob = `{
 }`
 
 func TestSessionUnmarshal(t *testing.T) {
+	RegisterCapability(&testCapability{})
 	assert := assert.New(t)
-	s := Session{}
-	err := json.Unmarshal([]byte(sessionBlob), &s)
+	s := &Session{}
+	err := json.Unmarshal([]byte(sessionBlob), s)
 	assert.NoError(err)
 
-	assert.Equal(uint64(50000000), s.CoreCapability.MaxSizeUpload)
+	testCap := s.Capabilities["test:jmap:capability"].(*testCapability)
+	assert.Equal(500, testCap.TestValue)
 	assert.Equal("john@example.com", s.Accounts["A13824"].Name)
 }
 
@@ -94,4 +99,16 @@ func TestSessionMarshal(t *testing.T) {
 	assert.NoError(err)
 
 	assert.Equal(original, remarshaled)
+}
+
+type testCapability struct {
+	TestValue int `json:"testValue"`
+}
+
+func (tc *testCapability) URI() string {
+	return "test:jmap:capability"
+}
+
+func (tc *testCapability) New() Capability {
+	return &testCapability{}
 }

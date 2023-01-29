@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
 )
 
 // The "Email/import" method adds messages [RFC5322] to the set of Emails in an
@@ -29,13 +30,7 @@ func (m *Import) Name() string {
 	return "Email/import"
 }
 
-func (m *Import) Uses() string {
-	return MailCapability
-}
-
-func (m *Import) NewResponse() interface{} {
-	return &ImportResponse{}
-}
+func (m *Import) Requires() string { return mail.URI }
 
 type EmailImport struct {
 	// The id of the blob containing the raw message [RFC5322].
@@ -78,3 +73,5 @@ type ImportResponse struct {
 	// errors are defined above.
 	NotCreated map[jmap.ID]*jmap.SetError `json:"notCreated,omitempty"`
 }
+
+func newImportResponse() interface{} { return &ImportResponse{} }

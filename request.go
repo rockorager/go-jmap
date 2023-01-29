@@ -28,12 +28,12 @@ func (r *Request) Invoke(m Method) string {
 	r.Calls = append(r.Calls, i)
 	using := false
 	for _, uses := range r.Using {
-		if uses == m.Uses() {
+		if uses == m.Requires() {
 			using = true
 		}
 	}
 	if !using {
-		r.Using = append(r.Using, m.Uses())
+		r.Using = append(r.Using, m.Requires())
 	}
 	return i.CallID
 }

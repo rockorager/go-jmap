@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -27,7 +28,7 @@ func TestGet(t *testing.T) {
 			Account: "account-id",
 		}
 		req = &jmap.Request{
-			Using: []string{MailCapability},
+			Using: []string{mail.URI},
 			Calls: []*jmap.Invocation{
 				{
 					Name:   "Mailbox/get",

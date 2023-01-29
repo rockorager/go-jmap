@@ -152,7 +152,7 @@ func (c *Client) Upload(accountID ID, blob io.Reader) (*BlobInfo, error) {
 		}
 	}
 
-	url := strings.Replace(c.Session.UploadURL, "{accountId}", string(accountID), -1)
+	url := strings.ReplaceAll(c.Session.UploadURL, "{accountId}", string(accountID))
 	req, err := http.NewRequest("POST", url, blob)
 	if err != nil {
 		return nil, err
@@ -212,7 +212,7 @@ func (c *Client) Download(accountID ID, blobID ID) (io.ReadCloser, error) {
 	if err != nil {
 		return nil, err
 	}
-	if resp.StatusCode/100 != 2 {
+	if resp.StatusCode != 200 {
 		defer resp.Body.Close()
 		return nil, decodeHttpError(resp)
 	}

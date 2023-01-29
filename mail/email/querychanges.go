@@ -1,6 +1,9 @@
 package email
 
-import "git.sr.ht/~rockorager/go-jmap"
+import (
+	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
+)
 
 // This is a standard "/queryChanges" method as described in [RFC8620], Section
 // 5.6 with the following additional request argument: collapseThreads
@@ -50,17 +53,9 @@ type QueryChanges struct {
 	CollapseThreads bool `json:"collapseThreads,omitempty"`
 }
 
-func (m *QueryChanges) Name() string {
-	return "Email/queryChanges"
-}
+func (m *QueryChanges) Name() string { return "Email/queryChanges" }
 
-func (m *QueryChanges) Uses() string {
-	return MailCapability
-}
-
-func (m *QueryChanges) NewResponse() interface{} {
-	return &QueryChangesResponse{}
-}
+func (m *QueryChanges) Uses() string { return mail.URI }
 
 // This is a standard "/queryChanges" method as described in [RFC8620], Section
 // 5.6
@@ -107,3 +102,5 @@ type QueryChangesResponse struct {
 	// first.
 	Added []jmap.AddedItem `json:"added,omitempty"`
 }
+
+func newQueryChangesResponse() interface{} { return &QueryChangesResponse{} }

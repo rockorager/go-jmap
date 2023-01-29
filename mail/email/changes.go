@@ -1,6 +1,9 @@
 package email
 
-import "git.sr.ht/~rockorager/go-jmap"
+import (
+	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
+)
 
 // This is a standard "/changes" method as described in [RFC8620], Section 5.2.
 // If generating intermediate states for a large set of changes, it is
@@ -26,9 +29,7 @@ type Changes struct {
 
 func (m *Changes) Name() string { return "Mailbox/changes" }
 
-func (m *Changes) Uses() string { return MailCapability }
-
-func (m *Changes) NewResponse() interface{} { return &ChangesResponse{} }
+func (m *Changes) Requires() string { return mail.URI }
 
 // This is a standard "/changes" method as described in [RFC8620], Section 5.2.
 // If generating intermediate states for a large set of changes, it is
@@ -63,3 +64,5 @@ type ChangesResponse struct {
 	// state.
 	Destroyed []jmap.ID `json:"destroyed"`
 }
+
+func newChangesResponse() interface{} { return &ChangesResponse{} }

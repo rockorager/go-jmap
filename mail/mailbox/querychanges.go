@@ -1,6 +1,9 @@
 package mailbox
 
-import "git.sr.ht/~rockorager/go-jmap"
+import (
+	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
+)
 
 type QueryChanges struct {
 	// The id of the account to use.
@@ -42,17 +45,9 @@ type QueryChanges struct {
 	CalculateTotal bool `json:"calculateTotal,omitempty"`
 }
 
-func (m *QueryChanges) Name() string {
-	return "Mailbox/queryChanges"
-}
+func (m *QueryChanges) Name() string { return "Mailbox/queryChanges" }
 
-func (m *QueryChanges) Uses() string {
-	return MailCapability
-}
-
-func (m *QueryChanges) NewResponse() interface{} {
-	return &QueryChangesResponse{}
-}
+func (m *QueryChanges) Uses() string { return mail.URI }
 
 type QueryChangesResponse struct {
 	// The id of the account used for the call.
@@ -97,3 +92,5 @@ type QueryChangesResponse struct {
 	// first.
 	Added []*jmap.AddedItem `json:"added,omitempty"`
 }
+
+func newQueryChangesResponse() interface{} { return &QueryChangesResponse{} }

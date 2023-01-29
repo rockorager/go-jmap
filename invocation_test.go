@@ -7,10 +7,19 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type test struct {
+	Hello string
+}
+
+func newTest() interface{} {
+	return &test{}
+}
+
 func TestInvocationMarshal(t *testing.T) {
+	RegisterMethod("Test/method", newTest)
 	assert := assert.New(t)
 	inv := &Invocation{
-		Name: "Core/echo",
+		Name: "Test/method",
 		Args: &struct {
 			Hello string
 		}{
@@ -25,20 +34,22 @@ func TestInvocationMarshal(t *testing.T) {
 		t.Logf("actual: %v", err)
 		t.FailNow()
 	}
-	expected := `["Core/echo",{"Hello":"world"},"0"]`
+	expected := `["Test/method",{"Hello":"world"},"0"]`
 	assert.Equal(expected, string(data))
 }
 
 func TestInvocationUnmarshal(t *testing.T) {
+	RegisterMethod("Test/method", newTest)
 	assert := assert.New(t)
-	raw := []byte(`["Core/echo",{"Hello":"world"},"0"]`)
+	raw := []byte(`["Test/method",{"Hello":"world"},"0"]`)
 	inv := &Invocation{}
 	err := json.Unmarshal(raw, inv)
 	assert.NoError(err)
-	assert.Equal("Core/echo", inv.Name)
+	assert.Equal("Test/method", inv.Name)
 	assert.Equal("0", inv.CallID)
 
-	echo, ok := inv.Args.(*Echo)
-	assert.Truef(ok, "invocation arguments are not type *Echo")
-	assert.Equal("world", echo.Hello)
+	test, ok := inv.Args.(*test)
+	t.Logf("TIMBUG %T", inv.Args)
+	assert.Truef(ok, "invocation arguments are not type test")
+	assert.Equal("world", test.Hello)
 }

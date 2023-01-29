@@ -14,15 +14,10 @@ import (
 	"regexp"
 )
 
-func init() {
-	RegisterMethods(
-		&BlobCopy{},
-		&Echo{},
-		&MethodError{},
-	)
-	RegisterMethods()
-}
 
+// ID is a unique identifier assigned by the server. The character set must
+// contain only ASCII alphanumerics, hyphen, or underscore and the ID must be
+// between 1 and 255 octets long.
 type ID string
 
 var idRegexp = regexp.MustCompile(`^[A-Za-z0-9\-_]+$`)
@@ -131,3 +126,43 @@ type ResultReference struct {
 	// description below).
 	Path string `json:"path"`
 }
+
+type CollationAlgo string
+
+const (
+	// The ASCIINumeric collation is a simple collation intended for use
+	// with arbitrary sized unsigned decimal integer numbers stored as octet
+	// strings. US-ASCII digits (0x30 to 0x39) represent digits of the numbers.
+	// Before converting from string to integer, the input string is truncated
+	// at the first non-digit character. All input is valid; strings which do
+	// not start with a digit represent positive infinity.
+	//
+	// Defined in RFC 4790.
+	ASCIINumeric CollationAlgo = "i;ascii-numeric"
+
+	// The ASCIICasemap collation is a simple collation which operates on
+	// octet strings and treats US-ASCII letters case-insensitively. It provides
+	// equality, substring and ordering operations. All input is valid. Note that
+	// letters outside ASCII are not treated case- insensitively.
+	//
+	// Defined in RFC 4790.
+	ASCIICasemap = "i;ascii-casemap"
+
+	// The "i;unicode-casemap" collation is a simple collation which is
+	// case-insensitive in its treatment of characters. It provides equality,
+	// substring, and ordering operations. The validity test operation returns "valid"
+	// for any input.
+	//
+	// This collation allows strings in arbitrary (and mixed) character sets,
+	// as long as the character set for each string is identified and it is
+	// possible to convert the string to Unicode. Strings which have an
+	// unidentified character set and/or cannot be converted to Unicode are not
+	// rejected, but are treated as binary.
+	//
+	// Defined in RFC 5051.
+	UnicodeCasemap = "i;unicode-casemap"
+
+	// Octet collation is left out intentionally: "Protocols that want to make
+	// this collation available have to do so by explicitly allowing it. If not
+	// explicitly allowed, it MUST NOT be used."
+)

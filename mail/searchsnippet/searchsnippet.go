@@ -2,12 +2,8 @@ package searchsnippet
 
 import "git.sr.ht/~rockorager/go-jmap"
 
-const MailCapability = "urn:ietf:params:jmap:mail"
-
 func init() {
-	jmap.RegisterMethods(
-		&Get{},
-	)
+	jmap.RegisterMethod("SearchSnippet/get", newGetResponse)
 }
 
 // When doing a search on a "String" property, the client may wish to
@@ -16,7 +12,7 @@ func init() {
 // subject of the Email.  Search snippets represent this data.
 type SearchSnippet struct {
 	// The Email id the snippet applies to.
-	EmailID string `json:"emailId,omitempty"`
+	Email jmap.ID `json:"emailId,omitempty"`
 
 	// If text from the filter matches the subject, this is the subject
 	// of the Email with the following transformations:

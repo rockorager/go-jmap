@@ -1,8 +1,13 @@
 package searchsnippet
 
+import (
+	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
+)
+
 type Get struct {
 	// The id of the account to use.
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// Determines the set of Foos returned in the results. If null, all
 	// objects in the account of this type are included in the results.
@@ -14,21 +19,13 @@ type Get struct {
 	EmailIDs []string `json:"emailIds,omitempty"`
 }
 
-func (m *Get) Name() string {
-	return "Mailbox/get"
-}
+func (m *Get) Name() string { return "Mailbox/get" }
 
-func (m *Get) Uses() string {
-	return MailCapability
-}
-
-func (m *Get) NewResponse() interface{} {
-	return &GetResponse{}
-}
+func (m *Get) Requires() string { return mail.URI }
 
 type GetResponse struct {
 	// The id of the account used for the call
-	AccountID string `json:"accountId,omitempty"`
+	Account jmap.ID `json:"accountId,omitempty"`
 
 	// An array of SearchSnippet objects for the requested Email ids.
 	// This may not be in the same order as the ids that were in the
@@ -37,5 +34,7 @@ type GetResponse struct {
 
 	// An array of Email ids requested that could not be found, or null
 	// if all ids were found.
-	NotFound []string `json:"notFound,omitempty"`
+	NotFound []jmap.ID `json:"notFound,omitempty"`
 }
+
+func newGetResponse() interface{} { return &GetResponse{} }

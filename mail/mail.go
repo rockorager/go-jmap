@@ -1,14 +1,18 @@
 package mail
 
 import (
-	"errors"
+	"git.sr.ht/~rockorager/go-jmap"
 )
 
 // urn:ietf:params:jmap:mail represents support for the Mailbox, Thread, Email,
 // and SearchSnippet data types and associated API methods
-const MailCapabilityName = "urn:ietf:params:jmap:mail"
+const URI string = "urn:ietf:params:jmap:mail"
 
-type Capability struct {
+func init() {
+	jmap.RegisterCapability(&Mail{})
+}
+
+type Mail struct {
 	// The maximum number of Mailboxes (see Section 2) that can be can
 	// assigned to a single Email object (see Section 4). This MUST be an
 	// integer >= 1, or null for no limit (or rather, the limit is always
@@ -62,4 +66,6 @@ type Capability struct {
 	MayCreateTopLevelMailbox bool `json:"mayCreateTopLevelMailbox"`
 }
 
-var ErrNoMailCapability = errors.New("jmap: urn:ietf:params:jmap:mail capability object is missing")
+func (m *Mail) URI() string { return URI }
+
+func (m *Mail) New() jmap.Capability { return &Mail{} }

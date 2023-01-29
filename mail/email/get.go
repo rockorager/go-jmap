@@ -1,6 +1,9 @@
 package email
 
-import "git.sr.ht/~rockorager/go-jmap"
+import (
+	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
+)
 
 // This is a standard get request
 //
@@ -61,17 +64,9 @@ type Get struct {
 	MaxBodyValueBytes uint64 `json:"maxBodyValueBytes,omitempty"`
 }
 
-func (m *Get) Name() string {
-	return "Mailbox/get"
-}
+func (m *Get) Name() string { return "Mailbox/get" }
 
-func (m *Get) Uses() string {
-	return MailCapability
-}
-
-func (m *Get) NewResponse() interface{} {
-	return &GetResponse{}
-}
+func (m *Get) Requires() string { return mail.URI }
 
 // This is a standard “/get” method as described in [@!RFC8620], Section 5.1.
 type GetResponse struct {
@@ -104,3 +99,5 @@ type GetResponse struct {
 	// the ids argument passed in was either null or an empty array.
 	NotFound []jmap.ID `json:"notFound,omitempty"`
 }
+
+func newGetResponse() interface{} { return &GetResponse{} }

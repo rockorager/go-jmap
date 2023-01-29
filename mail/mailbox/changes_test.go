@@ -5,12 +5,13 @@ import (
 	"testing"
 
 	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestChanges(t *testing.T) {
 	m := &Changes{
-		Account: "account-id",
+		Account:    "account-id",
 		SinceState: "1234",
 	}
 	req := &jmap.Request{}
@@ -25,11 +26,11 @@ func TestChanges(t *testing.T) {
 
 	t.Run("manual", func(t *testing.T) {
 		m := &Changes{
-			Account: "account-id",
+			Account:    "account-id",
 			SinceState: "1234",
 		}
 		req = &jmap.Request{
-			Using: []string{MailCapability},
+			Using: []string{mail.URI},
 			Calls: []*jmap.Invocation{
 				{
 					Name:   "Mailbox/changes",

@@ -1,6 +1,9 @@
 package email
 
-import "git.sr.ht/~rockorager/go-jmap"
+import (
+	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
+)
 
 // This is a standard "/copy" method as described in [RFC8620], Section 5.4,
 // except only the "mailboxIds", "keywords", and "receivedAt" properties may be
@@ -49,17 +52,9 @@ type Copy struct {
 	DestroyFromIfInState string `json:"destroyFromIfInState,omitempty"`
 }
 
-func (m *Copy) Name() string {
-	return "Email/copy"
-}
+func (m *Copy) Name() string { return "Email/copy" }
 
-func (m *Copy) Uses() string {
-	return MailCapability
-}
-
-func (m *Copy) NewResponse() interface{} {
-	return &CopyResponse{}
-}
+func (m *Copy) Uses() string { return mail.URI }
 
 type CopyResponse struct {
 	// The id of the account records were copied from.
@@ -90,3 +85,5 @@ type CopyResponse struct {
 	// failed to be copied, or null if none.
 	NotCreated map[jmap.ID]*jmap.SetError `json:"notCreated,omitempty"`
 }
+
+func newCopyResponse() interface{} { return &CopyResponse{} }

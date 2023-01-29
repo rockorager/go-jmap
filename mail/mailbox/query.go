@@ -1,6 +1,9 @@
 package mailbox
 
-import "git.sr.ht/~rockorager/go-jmap"
+import (
+	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
+)
 
 // This is a standard “/query” method as described in [@!RFC8620], Section 5.5,
 // but with the following additional request argument: sortAsTree, filterAsTree
@@ -101,17 +104,9 @@ type Query struct {
 	FilterAsTree bool `json:"filterAsTree,omitempty"`
 }
 
-func (m *Query) Name() string {
-	return "Mailbox/query"
-}
+func (m *Query) Name() string { return "Mailbox/query" }
 
-func (m *Query) Uses() string {
-	return MailCapability
-}
-
-func (m *Query) NewResponse() interface{} {
-	return &QueryResponse{}
-}
+func (m *Query) Uses() string { return mail.URI }
 
 type QueryResponse struct {
 	// The id of the account used for the call.
@@ -166,3 +161,5 @@ type QueryResponse struct {
 	// different limit than that given in the request.
 	Limit uint64 `json:"limit,omitempty"`
 }
+
+func newQueryResponse() interface{} { return &QueryResponse{} }

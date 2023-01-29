@@ -2,16 +2,12 @@ package mailbox
 
 import "git.sr.ht/~rockorager/go-jmap"
 
-const MailCapability = "urn:ietf:params:jmap:mail"
-
 func init() {
-	jmap.RegisterMethods(
-		&Get{},
-		&Changes{},
-		&Query{},
-		&QueryChanges{},
-		&Set{},
-	)
+	jmap.RegisterMethod("Mailbox/get", newGetResponse)
+	jmap.RegisterMethod("Mailbox/changes", newChangesResponse)
+	jmap.RegisterMethod("Mailbox/query", newQueryResponse)
+	jmap.RegisterMethod("Mailbox/queryChanges", newQueryChangesResponse)
+	jmap.RegisterMethod("Mailbox/set", newSetResponse)
 }
 
 // A Mailbox represents a named set of Emails. This is the primary mechanism

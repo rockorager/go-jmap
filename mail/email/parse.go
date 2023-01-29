@@ -1,6 +1,9 @@
 package email
 
-import "git.sr.ht/~rockorager/go-jmap"
+import (
+	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
+)
 
 // This method allows you to parse blobs as messages [RFC5322] to get
 // Email objects.  The server MUST support messages with EAI headers
@@ -70,17 +73,9 @@ type Parse struct {
 	MaxBodyValueBytes uint64 `json:"maxBodyValueBytes,omitempty"`
 }
 
-func (m *Parse) Name() string {
-	return "Email/parse"
-}
+func (m *Parse) Name() string { return "Email/parse" }
 
-func (m *Parse) Uses() string {
-	return MailCapability
-}
-
-func (m *Parse) NewResponse() interface{} {
-	return &ParseResponse{}
-}
+func (m *Parse) Requires() string { return mail.URI }
 
 type ParseResponse struct {
 	// The id of the account used for the call
@@ -97,3 +92,5 @@ type ParseResponse struct {
 	// A list of blob ids given that could not be found, or null if none.
 	NotFound []jmap.ID `json:"notFound,omitempty"`
 }
+
+func newParseResponse() interface{} { return &ParseResponse{} }

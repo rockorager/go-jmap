@@ -8,8 +8,9 @@ import (
 )
 
 func TestResponseUnmarshal(t *testing.T) {
+	RegisterMethod("Test/method", newTest)
 	assert := assert.New(t)
-	data := []byte(`{"sessionState": "state","methodResponses":[["Core/echo",{"Hello":"world"},"0"]]}`)
+	data := []byte(`{"sessionState": "state","methodResponses":[["Test/method",{"Hello":"world"},"0"]]}`)
 
 	resp := &Response{}
 	err := json.Unmarshal(data, resp)
@@ -18,10 +19,10 @@ func TestResponseUnmarshal(t *testing.T) {
 	assert.Equal(1, len(resp.Responses))
 
 	inv := resp.Responses[0]
-	assert.Equal("Core/echo", inv.Name)
+	assert.Equal("Test/method", inv.Name)
 	assert.Equal("0", inv.CallID)
 
-	echo, ok := inv.Args.(*Echo)
+	echo, ok := inv.Args.(*test)
 	assert.Truef(ok, "invocation arguments are not type *Echo")
 	assert.Equal("world", echo.Hello)
 }
@@ -32,7 +33,7 @@ func TestResponseMarshal(t *testing.T) {
 		SessionState: "state",
 		Responses: []*Invocation{
 			{
-				Name: "Core/echo",
+				Name: "Test/method",
 				Args: &struct {
 					Hello string
 				}{
@@ -44,6 +45,6 @@ func TestResponseMarshal(t *testing.T) {
 	}
 	data, err := json.Marshal(resp)
 	assert.NoError(err)
-	expected := `{"methodResponses":[["Core/echo",{"Hello":"world"},"0"]],"sessionState":"state"}`
+	expected := `{"methodResponses":[["Test/method",{"Hello":"world"},"0"]],"sessionState":"state"}`
 	assert.Equal(expected, string(data))
 }

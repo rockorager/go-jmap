@@ -1,6 +1,9 @@
 package email
 
-import "git.sr.ht/~rockorager/go-jmap"
+import (
+	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
+)
 
 // This is a standard "/set" method as described in [RFC8620], Section 5.3. The
 // "Email/set" method encompasses:
@@ -140,17 +143,9 @@ type Set struct {
 	Destroy []jmap.ID `json:"destroy,omitempty"`
 }
 
-func (m *Set) Name() string {
-	return "Email/set"
-}
+func (m *Set) Name() string { return "Email/set" }
 
-func (m *Set) Uses() string {
-	return MailCapability
-}
-
-func (m *Set) NewResponse() interface{} {
-	return &SetResponse{}
-}
+func (m *Set) Requires() string { return mail.URI }
 
 type SetResponse struct {
 	// The id of the account used for the call.
@@ -197,3 +192,5 @@ type SetResponse struct {
 	// A map of ID to a SetError for each record that failed to be destroyed
 	NotDestroyed map[jmap.ID]*jmap.SetError `json:"notDestroyed,omitempty"`
 }
+
+func newSetResponse() interface{} { return &SetResponse{} }

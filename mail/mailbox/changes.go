@@ -1,6 +1,9 @@
 package mailbox
 
-import "git.sr.ht/~rockorager/go-jmap"
+import (
+	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
+)
 
 // This is a standard “/changes” method as described in [@!RFC8620], Section
 // 5.2.
@@ -28,17 +31,9 @@ type Changes struct {
 	MaxChanges uint64 `json:"maxChanges,omitempty"`
 }
 
-func (m *Changes) Name() string {
-	return "Mailbox/changes"
-}
+func (m *Changes) Name() string { return "Mailbox/changes" }
 
-func (m *Changes) Uses() string {
-	return MailCapability
-}
-
-func (m *Changes) NewResponse() interface{} {
-	return &ChangesResponse{}
-}
+func (m *Changes) Requires() string { return mail.URI }
 
 // This is a standard “/changes” method as described in [@!RFC8620], Section
 // 5.2 but with one extra argument to the response: updatedProperties
@@ -78,3 +73,5 @@ type ChangesResponse struct {
 	// be null.
 	UpdatedProperties []string `json:"updatedProperties,omitempty"`
 }
+
+func newChangesResponse() interface{} { return &ChangesResponse{} }
