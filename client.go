@@ -141,7 +141,7 @@ func (c *Client) Do(req *Request) (*Response, error) {
 // - Server may return the same blob ID for multiple uploads of the same blob.
 // - Blob ID may become invalid after some time if it is unused.
 // - Blob ID is usable only by the uploader until it is used, even for shared accounts.
-func (c *Client) Upload(accountID ID, blob io.Reader) (*BlobInfo, error) {
+func (c *Client) Upload(accountID ID, blob io.Reader) (*UploadResponse, error) {
 	if c.SessionEndpoint == "" {
 		return nil, fmt.Errorf("jmap/client: SessionEndpoint is empty")
 	}
@@ -174,7 +174,7 @@ func (c *Client) Upload(accountID ID, blob io.Reader) (*BlobInfo, error) {
 		return nil, err
 	}
 
-	info := &BlobInfo{}
+	info := &UploadResponse{}
 	err = json.Unmarshal(data, info)
 	if err != nil {
 		return nil, err
@@ -232,4 +232,21 @@ func decodeHttpError(resp *http.Response) error {
 	}
 
 	return requestErr
+}
+
+// UploadResponse is the object returned in response to blob upload.
+type UploadResponse struct {
+	// The id of the account used for the call.
+	Account ID `json:"accountId"`
+
+	// The id representing the binary data uploaded. The data for this id is
+	// immutable. The id only refers to the binary data, not any metadata.
+	ID ID `json:"blobId"`
+
+	// The media type of the file (as specified in RFC 6838, section 4.2) as
+	// set in the Content-Type header of the upload HTTP request.
+	Type string `json:"type"`
+
+	// The size of the file in octets.
+	Size uint64 `json:"size"`
 }
