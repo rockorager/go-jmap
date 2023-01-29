@@ -16,9 +16,9 @@ type Request struct {
 }
 
 // Invoke a method. Each call to Invoke will add the passed Method to the
-// Request. The Uses method will be called and added to the request. The CallID 
-// of the Method is returned. CallIDs are assigned as the hex representation of
-// the index of the call, eg "0"
+// Request. The Requires method will be called and added to the request. The 
+// CallID of the Method is returned. CallIDs are assigned as the hex 
+// representation of the index of the call, eg "0"
 func (r *Request) Invoke(m Method) string {
 	i := &Invocation{
 		Name:   m.Name(),

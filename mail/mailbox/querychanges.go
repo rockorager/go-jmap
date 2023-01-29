@@ -47,7 +47,7 @@ type QueryChanges struct {
 
 func (m *QueryChanges) Name() string { return "Mailbox/queryChanges" }
 
-func (m *QueryChanges) Uses() string { return mail.URI }
+func (m *QueryChanges) Requires() string { return mail.URI }
 
 type QueryChangesResponse struct {
 	// The id of the account used for the call.

@@ -55,7 +55,7 @@ type QueryChanges struct {
 
 func (m *QueryChanges) Name() string { return "Email/queryChanges" }
 
-func (m *QueryChanges) Uses() string { return mail.URI }
+func (m *QueryChanges) Requires() string { return mail.URI }
 
 // This is a standard "/queryChanges" method as described in [RFC8620], Section
 // 5.6

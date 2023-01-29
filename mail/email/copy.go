@@ -54,7 +54,7 @@ type Copy struct {
 
 func (m *Copy) Name() string { return "Email/copy" }
 
-func (m *Copy) Uses() string { return mail.URI }
+func (m *Copy) Requires() string { return mail.URI }
 
 type CopyResponse struct {
 	// The id of the account records were copied from.
