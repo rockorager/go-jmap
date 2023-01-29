@@ -10,7 +10,7 @@ type Filter interface {
 // objects in the account of this type are included in the results.
 type FilterOperator struct {
 	// This MUST be one of the following strings: “AND” / “OR” / “NOT”
-	Operator jmap.FilterOperator `json:"operator,omitempty"`
+	Operator jmap.Operator `json:"operator,omitempty"`
 
 	// The conditions to evaluate against each record.
 	Conditions []Filter `json:"conditions,omitempty"`

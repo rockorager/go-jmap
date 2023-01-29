@@ -1,6 +1,10 @@
 package email
 
-import "git.sr.ht/~rockorager/go-jmap"
+import (
+	"time"
+
+	"git.sr.ht/~rockorager/go-jmap"
+)
 
 type Filter interface {
 	implementsFilter()
@@ -10,7 +14,7 @@ type Filter interface {
 // in the account of this type are included in the results.
 type FilterOperator struct {
 	// This MUST be one of the following strings: “AND” / “OR” / “NOT”
-	Operator jmap.FilterOperator `json:"operator,omitempty"`
+	Operator jmap.Operator `json:"operator,omitempty"`
 
 	// The conditions to evaluate against each record.
 	Conditions []Filter `json:"conditions,omitempty"`
@@ -33,11 +37,11 @@ type FilterCondition struct {
 
 	// The "receivedAt" date-time of the Email must be before this date- time to
 	// match the condition.
-	Before jmap.Date `json:"before,omitempty"`
+	Before time.Time `json:"before,omitempty"`
 
 	// The "receivedAt" date-time of the Email must be the same or after this
 	// date-time to match the condition.
-	After jmap.Date `json:"after,omitempty"`
+	After time.Time `json:"after,omitempty"`
 
 	// The "size" property of the Email must be equal to or greater than this
 	// number to match the condition.

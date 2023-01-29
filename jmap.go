@@ -10,7 +10,6 @@ package jmap
 
 import (
 	"encoding/json"
-	"time"
 )
 
 func init() {
@@ -56,17 +55,19 @@ func (p *Patch) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-type FilterOperator string
+// Operator is used when constructing FilterOperator. It MUST be "AND", "OR", or
+// "NOT"
+type Operator string
 
 const (
 	// All of the conditions must match for the filter to match.
-	FilterOperatorAND FilterOperator = "AND"
+	OperatorAND Operator = "AND"
 
 	// At least one of the conditions must match for the filter to match.
-	FilterOperatorOR FilterOperator = "OR"
+	OperatorOR Operator = "OR"
 
 	// None of the conditions must match for the filter to match.
-	FilterOperatorNOT FilterOperator = "NOT"
+	OperatorNOT Operator = "NOT"
 )
 
 // The id and index in the query results (in the new state) for every Foo that
