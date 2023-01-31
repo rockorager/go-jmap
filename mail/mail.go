@@ -94,3 +94,21 @@ type Mail struct {
 func (m *Mail) URI() string { return URI }
 
 func (m *Mail) New() jmap.Capability { return &Mail{} }
+
+// An Email address
+type Address struct {
+	// The display-name of the mailbox [@!RFC5322]. If this is a
+	// quoted-string:
+	//
+	//     The surrounding DQUOTE characters are removed. Any quoted-pair
+	//     is decoded. White space is unfolded, and then any leading and
+	//     trailing white space is removed.
+	//
+	// If there is no display-name but there is a comment immediately
+	// following the addr-spec, the value of this SHOULD be used instead.
+	// Otherwise, this property is null.
+	Name string `json:"name,omitempty"`
+
+	// The addr-spec of the mailbox [@!RFC5322].
+	Email string `json:"email,omitempty"`
+}

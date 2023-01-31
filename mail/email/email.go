@@ -1,6 +1,7 @@
 package email
 
 import (
+	"net/mail"
 	"time"
 
 	"git.sr.ht/~rockorager/go-jmap"
@@ -69,22 +70,22 @@ type Email struct {
 	References []string `json:"references,omitempty"`
 
 	// The value is identical to the value of header:Sender:asAddresses.
-	Sender []*Address `json:"sender,omitempty"`
+	Sender []*mail.Address `json:"sender,omitempty"`
 
 	// The value is identical to the value of header:From:asAddresses.
-	From []*Address `json:"from,omitempty"`
+	From []*mail.Address `json:"from,omitempty"`
 
 	// The value is identical to the value of header:To:asAddresses.
-	To []*Address `json:"to,omitempty"`
+	To []*mail.Address `json:"to,omitempty"`
 
 	// The value is identical to the value of header:Cc:asAddresses.
-	CC []*Address `json:"cc,omitempty"`
+	CC []*mail.Address `json:"cc,omitempty"`
 
 	// The value is identical to the value of header:Bcc:asAddresses.
-	BCC []*Address `json:"bcc,omitempty"`
+	BCC []*mail.Address `json:"bcc,omitempty"`
 
 	// The value is identical to the value of header:Reply-To:asAddresses.
-	ReplyTo []*Address `json:"replyTo,omitempty"`
+	ReplyTo []*mail.Address `json:"replyTo,omitempty"`
 
 	// The value is identical to the value of header:Subject:asText.
 	Subject string `json:"subject,omitempty"`
@@ -160,23 +161,6 @@ type Email struct {
 	Preview string `json:"preview,omitempty"`
 }
 
-type Address struct {
-	// The display-name of the mailbox [@!RFC5322]. If this is a
-	// quoted-string:
-	//
-	//     The surrounding DQUOTE characters are removed. Any quoted-pair
-	//     is decoded. White space is unfolded, and then any leading and
-	//     trailing white space is removed.
-	//
-	// If there is no display-name but there is a comment immediately
-	// following the addr-spec, the value of this SHOULD be used instead.
-	// Otherwise, this property is null.
-	Name string `json:"name,omitempty"`
-
-	// The addr-spec of the mailbox [@!RFC5322].
-	Email string `json:"email,omitempty"`
-}
-
 type AddressGroup struct {
 	// The display-name of the group [@!RFC5322], or null if the addresses
 	// are not part of a group. If this is a quoted-string, it is processed
@@ -185,7 +169,7 @@ type AddressGroup struct {
 
 	// The mailbox values that belong to this group, represented as
 	// EmailAddress objects.
-	Addresses []*Address `json:"addresses,omitempty"`
+	Addresses []*mail.Address `json:"addresses,omitempty"`
 }
 
 type Header struct {
