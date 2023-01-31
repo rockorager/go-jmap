@@ -16,11 +16,12 @@ import (
 // A JMAP Client
 type Client struct {
 	// The HttpClient.Client to use for requests. The HttpClient.Client should handle
-	// authentication.
+	// authentication. Calling WithBasicAuth or WithAccessToken on the
+	// Client will set the HttpClient to one which uses authentication
 	HttpClient *http.Client
 
 	// The JMAP Session Resource Endpoint. If the client detects the Session
-	// object needs refetching, it will automatically do so
+	// object needs refetching, it will automatically do so.
 	SessionEndpoint string
 
 	// the JMAP Session object
@@ -59,44 +60,44 @@ func (c *Client) WithAccessToken(token string) *Client {
 // object hasn't already been initialized. Call Authenticate before any requests
 // if you need to access information from the Session object prior to the first
 // request
-func (c *Client) Authenticate() (*Session, error) {
+func (c *Client) Authenticate() error {
 	if c.SessionEndpoint == "" {
-		return nil, fmt.Errorf("no session url is set")
+		return fmt.Errorf("no session url is set")
 	}
 
 	req, err := http.NewRequest("GET", c.SessionEndpoint, nil)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	resp, err := c.HttpClient.Do(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("couldn't authenticate")
+		return fmt.Errorf("couldn't authenticate")
 	}
 
 	data, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	s := &Session{}
 	err = json.Unmarshal(data, s)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	c.Session = s
-	return s, nil
+	return nil
 }
 
 // Do performs a JMAP request and returns the response
 func (c *Client) Do(req *Request) (*Response, error) {
 	if c.Session == nil {
-		_, err := c.Authenticate()
+		err := c.Authenticate()
 		if err != nil {
 			return nil, err
 		}
