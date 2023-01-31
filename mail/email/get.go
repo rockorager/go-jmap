@@ -62,6 +62,12 @@ type Get struct {
 	// HTML (indeed, the original source may well be neither of these
 	// things).
 	MaxBodyValueBytes uint64 `json:"maxBodyValueBytes,omitempty"`
+
+	// Use IDs from a previous call
+	ReferenceIDs *jmap.ResultReference `json:"#ids,omitempty"`
+
+	// Use IDs from a previous call
+	ReferenceProperties *jmap.ResultReference `json:"#properties,omitempty"`
 }
 
 func (m *Get) Name() string { return "Email/get" }
