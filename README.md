@@ -1,12 +1,12 @@
 # go-jmap
 
-A JMAP client library. go-jmap is a library for interacting with JMAP servers.
-It includes a client for making requests, and data structures for the Core and
-Mail specifications.
+A JMAP client library. Includes support for all core functionality (including
+PushSubscription and EventSource event streams), as well as nearly all of the
+mail functionality.
 
 Note: this library started as a fork of [github.com/foxcpp/go-jmap](https://github.com/foxcpp/go-jmap)
-It has since undergone massive restructuring, and it only loosely based on the
-original project.
+It has since undergone massive refactoring and probably doesn't look very
+similar anymore, but many thanks to foxcpp for the initial work.
 
 ## Usage
 
@@ -110,6 +110,5 @@ Complete
 ### Mail ([RFC 8621](https://tools.ietf.org/html/rfc8621))
 
 Remaining:
-- Identities
 - EmailSubmission
 - VacationResponse
