@@ -6,10 +6,20 @@ import (
 	"git.sr.ht/~rockorager/go-jmap"
 )
 
+const URI string = "urn:ietf:params:jmap:vacationresponse"
+
 func init() {
+	jmap.RegisterCapability(&Capability{})
 	jmap.RegisterMethod("VacationResponse/get", newGetResponse)
 	jmap.RegisterMethod("VacationResponse/set", newSetResponse)
 }
+
+// The VacationResponse capability is an empty object
+type Capability struct{}
+
+func (m *Capability) URI() string { return URI }
+
+func (m *Capability) New() jmap.Capability { return &Capability{} }
 
 type VacationResponse struct {
 	// The ID of the object. There is only ever one VacationResponse object,
