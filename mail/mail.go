@@ -8,6 +8,31 @@ import (
 // and SearchSnippet data types and associated API methods
 const URI string = "urn:ietf:params:jmap:mail"
 
+const (
+	// The Email event type
+	EmailEvent jmap.EventType = "Email"
+
+	// The EmailDelivery event type. This is a subset of an EmailEvent
+	// subscription and only sends notifications when a new email has been
+	// delivered, as opposed to any change for objects of type Email
+	EmailDeliveryEvent jmap.EventType = "EmailDelivery"
+
+	// The EmailSubmission event type
+	EmailSubmissionEvent jmap.EventType = "EmailSubmission"
+
+	// The Identity event type
+	IdentityEvent jmap.EventType = "Identity"
+
+	// The Mailbox event type
+	MailboxEvent jmap.EventType = "Mailbox"
+
+	// The Thread event type
+	ThreadEvent jmap.EventType = "Thread"
+
+	// The VacationResponse event type
+	VacationResponseEvent jmap.EventType = "VacationResponse"
+)
+
 func init() {
 	jmap.RegisterCapability(&Mail{})
 }

@@ -14,7 +14,7 @@ type Set struct {
 	//
 	// The client MUST omit any properties that may only be set by the
 	// server (for example, the id property on most object types).
-	Create map[jmap.ID]*Subscription `json:"create,omitempty"`
+	Create map[jmap.ID]*PushSubscription `json:"create,omitempty"`
 
 	// A map of an id to a Patch object to apply to the current Foo object
 	// with that id, or null if no objects are to be updated.
@@ -73,7 +73,7 @@ type SetResponse struct {
 	// set to a default by the server.
 	//
 	// This argument is null if no Foo objects were successfully created.
-	Created map[jmap.ID]*Subscription `json:"created,omitempty"`
+	Created map[jmap.ID]*PushSubscription `json:"created,omitempty"`
 
 	// The keys in this map are the ids of all Foos that were successfully
 	// updated.
@@ -84,7 +84,7 @@ type SetResponse struct {
 	// changes to server-set or computed properties.
 	//
 	// This argument is null if no Foo objects were successfully updated.
-	Updated map[jmap.ID]*Subscription `json:"updated,omitempty"`
+	Updated map[jmap.ID]*PushSubscription `json:"updated,omitempty"`
 
 	// An array of ids for records that have been destroyed since the old
 	// state.

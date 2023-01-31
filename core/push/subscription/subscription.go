@@ -12,7 +12,7 @@ func init() {
 }
 
 // A PushSubscription object
-type Subscription struct {
+type PushSubscription struct {
 	// The ID of the push subscription
 	//
 	// immutable;server-set

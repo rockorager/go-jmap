@@ -35,7 +35,7 @@ type GetResponse struct {
 	// the list or the notFound argument of the response.
 	//
 	// Each specification must define it's own List property
-	List []*Subscription `json:"list,omitempty"`
+	List []*PushSubscription `json:"list,omitempty"`
 
 	// This array contains the ids passed to the method for records that do
 	// not exist. The array is empty if all requested ids were found or if
