@@ -13,10 +13,6 @@ type Method interface {
 // Registered method results
 var methods = map[string]func() interface{}{}
 
-// func init() {
-// 	Register("error", MethodError{})
-// }
-
 // Register a method. The Name parameter will be used when unmarshalling
 // responses to call the responseConstructor, which should generate a pointer to
 // an empty Response object of that method. This object will be returned in the
