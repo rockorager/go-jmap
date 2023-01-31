@@ -162,4 +162,4 @@ type QueryResponse struct {
 	Limit uint64 `json:"limit,omitempty"`
 }
 
-func newQueryResponse() interface{} { return &QueryResponse{} }
+func newQueryResponse() jmap.MethodResponse { return &QueryResponse{} }

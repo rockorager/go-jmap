@@ -11,7 +11,7 @@ type test struct {
 	Hello string
 }
 
-func newTest() interface{} {
+func newTest() MethodResponse {
 	return &test{}
 }
 

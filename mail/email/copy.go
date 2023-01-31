@@ -86,4 +86,4 @@ type CopyResponse struct {
 	NotCreated map[jmap.ID]*jmap.SetError `json:"notCreated,omitempty"`
 }
 
-func newCopyResponse() interface{} { return &CopyResponse{} }
+func newCopyResponse() jmap.MethodResponse { return &CopyResponse{} }

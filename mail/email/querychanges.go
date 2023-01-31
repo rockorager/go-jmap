@@ -103,4 +103,4 @@ type QueryChangesResponse struct {
 	Added []jmap.AddedItem `json:"added,omitempty"`
 }
 
-func newQueryChangesResponse() interface{} { return &QueryChangesResponse{} }
+func newQueryChangesResponse() jmap.MethodResponse { return &QueryChangesResponse{} }

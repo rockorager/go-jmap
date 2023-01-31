@@ -59,4 +59,4 @@ type ChangesResponse struct {
 	Destroyed []jmap.ID `json:"destroyed,omitempty"`
 }
 
-func newChangesResponse() interface{} { return &ChangesResponse{} }
+func newChangesResponse() jmap.MethodResponse { return &ChangesResponse{} }

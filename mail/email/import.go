@@ -72,4 +72,4 @@ type ImportResponse struct {
 	NotCreated map[jmap.ID]*jmap.SetError `json:"notCreated,omitempty"`
 }
 
-func newImportResponse() interface{} { return &ImportResponse{} }
+func newImportResponse() jmap.MethodResponse { return &ImportResponse{} }

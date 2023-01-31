@@ -93,4 +93,4 @@ type ParseResponse struct {
 	NotFound []jmap.ID `json:"notFound,omitempty"`
 }
 
-func newParseResponse() interface{} { return &ParseResponse{} }
+func newParseResponse() jmap.MethodResponse { return &ParseResponse{} }

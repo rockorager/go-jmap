@@ -70,4 +70,4 @@ type GetResponse struct {
 	NotFound []string `json:"notFound,omitempty"`
 }
 
-func newGetResponse() interface{} { return &GetResponse{} }
+func newGetResponse() jmap.MethodResponse { return &GetResponse{} }

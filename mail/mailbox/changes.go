@@ -74,4 +74,4 @@ type ChangesResponse struct {
 	UpdatedProperties []string `json:"updatedProperties,omitempty"`
 }
 
-func newChangesResponse() interface{} { return &ChangesResponse{} }
+func newChangesResponse() jmap.MethodResponse { return &ChangesResponse{} }

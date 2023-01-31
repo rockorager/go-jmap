@@ -44,7 +44,7 @@ func (m *MethodError) Error() string {
 	return m.Type
 }
 
-func newMethodError() interface{} { return &MethodError{} }
+func newMethodError() MethodResponse { return &MethodError{} }
 
 // A SetError is returned in set calls for individual record changes
 type SetError struct {

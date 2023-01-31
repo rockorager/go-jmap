@@ -100,4 +100,4 @@ type SetResponse struct {
 	NotDestroyed map[jmap.ID]*jmap.SetError `json:"notDestroyed,omitempty"`
 }
 
-func newSetResponse() interface{} { return &SetResponse{} }
+func newSetResponse() jmap.MethodResponse { return &SetResponse{} }
