@@ -147,7 +147,7 @@ func (c *Client) Upload(accountID ID, blob io.Reader) (*UploadResponse, error) {
 		return nil, fmt.Errorf("jmap/client: SessionEndpoint is empty")
 	}
 	if c.Session == nil {
-		_, err := c.Authenticate()
+		err := c.Authenticate()
 		if err != nil {
 			return nil, err
 		}
@@ -190,7 +190,7 @@ func (c *Client) Download(accountID ID, blobID ID) (io.ReadCloser, error) {
 		return nil, fmt.Errorf("jmap/client: SessionEndpoint is empty")
 	}
 	if c.Session == nil {
-		_, err := c.Authenticate()
+		err := c.Authenticate()
 		if err != nil {
 			return nil, err
 		}
