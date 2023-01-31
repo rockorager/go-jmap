@@ -103,87 +103,13 @@ func main() {
 
 ## Status
 
-- [x] Client interface
+### Core ([RFC 8620](https://tools.ietf.org/html/rfc8620))
 
-  - [x] Access Token authentication (client.WithTokenAuth)
-  - [x] Basic authentication (client.WithBasicAuth)
-  - [x] Chain method calls (Request.Invoke(method...))
-  - [x] BYO http.Client
+Complete
 
-- [ ] Core ([RFC 8620](https://tools.ietf.org/html/rfc8620))
+### Mail ([RFC 8621](https://tools.ietf.org/html/rfc8621))
 
-  - [ ] Autodiscovery
-  - [x] Session
-  - [x] Account
-  - [x] Core Capabilities
-  - [x] Invocation
-  - [x] Request
-  - [x] Response
-  - [x] Request-level errors
-  - [x] Method-level errors
-  - [x] Set-level errors
-
-  - [x] Core/echo
-
-  - [x] Blob/Downloading
-  - [x] Blob/Uploading
-  - [x] Blob/Copy method
-
-  - [x] Push
-    - [x] StateChange structure
-    - [x] PushSubscription structure
-    - [x] PushSubscription/get
-    - [x] PushSubscription/set
-    - [x] Event Source
-
-- [ ] Mail ([RFC 8621](https://tools.ietf.org/html/rfc8621))
-
-  - [x] Capability
-
-  - [x] Mailbox
-
-    - [x] Get
-    - [x] Changes
-    - [x] Query
-    - [x] QueryChanges
-    - [x] Set
-
-  - [x] Threads
-
-    - [x] Get
-    - [x] Changes
-
-  - [x] Emails
-
-    - [x] Get
-    - [x] Changes
-    - [x] Query
-    - [x] QueryChanges
-    - [x] Set
-    - [x] Copy
-    - [x] Import
-    - [x] Parse
-
-  - [x] SearchSnippets
-
-    - [x] Get
-
-  - [ ] Identities
-
-    - [ ] Get
-    - [ ] Changes
-    - [ ] Set
-
-  - [ ] EmailSubmission
-
-    - [ ] Get
-    - [ ] Changes
-    - [ ] Query
-    - [ ] QueryChanges
-    - [ ] Set
-
-  - [ ] VacationResponse
-
-    - [ ] Get
-
-  - [ ] Client Macros
+Remaining:
+- Identities
+- EmailSubmission
+- VacationResponse
