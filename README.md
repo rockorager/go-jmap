@@ -60,7 +60,7 @@ func main() {
 		SinceState: "some-known-state",
 	})
 
-	// Invoke a result reference call 
+	// Invoke a result reference call
 	req.Invoke(&email.Get{
 		Account: id,
 		ReferenceIDs: &jmap.ResultReference{
@@ -110,5 +110,5 @@ Complete
 ### Mail ([RFC 8621](https://tools.ietf.org/html/rfc8621))
 
 Remaining:
+
 - EmailSubmission
-- VacationResponse
