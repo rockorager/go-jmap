@@ -113,3 +113,11 @@ Complete
 ### MDN ([RFC 9007](https://tools.ietf.org/html/rfc9007))
 
 Complete
+
+### WebSocket ([RFC 8887](https://tools.ietf.org/html/rfc8887))
+
+Not started
+
+### S/MIME ([RFC 9219](https://tools.ietf.org/html/rfc9219))
+
+Not started
