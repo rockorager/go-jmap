@@ -39,7 +39,6 @@ func mergeURIs(target []URI, opts []URI) []URI {
 	for _, k := range opts {
 		m[k] = true
 	}
-
 	uris := []URI{}
 	for k := range m {
 		uris = append(uris, k)
