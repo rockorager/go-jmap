@@ -10,6 +10,11 @@ const URI jmap.URI = "urn:ietf:params:jmap:submission"
 
 func init() {
 	jmap.RegisterCapability(&Capability{})
+	jmap.RegisterMethod("EmailSubmission/get", newGetResponse)
+	jmap.RegisterMethod("EmailSubmission/changes", newChangesResponse)
+	jmap.RegisterMethod("EmailSubmission/query", newQueryResponse)
+	jmap.RegisterMethod("EmailSubmission/queryChanges", newQueryChangesResponse)
+	jmap.RegisterMethod("EmailSubmission/set", newSetResponse)
 }
 
 // The EmailSubmission Capability

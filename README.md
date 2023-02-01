@@ -109,6 +109,4 @@ Complete
 
 ### Mail ([RFC 8621](https://tools.ietf.org/html/rfc8621))
 
-Remaining:
-
-- EmailSubmission
+Complete
