@@ -1,8 +1,7 @@
 # go-jmap
 
 A JMAP client library. Includes support for all core functionality (including
-PushSubscription and EventSource event streams), as well as nearly all of the
-mail functionality.
+PushSubscription and EventSource event streams), mail, and MDN specifications
 
 Note: this library started as a fork of [github.com/foxcpp/go-jmap](https://github.com/foxcpp/go-jmap)
 It has since undergone massive refactoring and probably doesn't look very
@@ -108,5 +107,9 @@ func main() {
 Complete
 
 ### Mail ([RFC 8621](https://tools.ietf.org/html/rfc8621))
+
+Complete
+
+### MDN ([RFC 9007](https://tools.ietf.org/html/rfc9007))
 
 Complete
