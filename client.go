@@ -227,12 +227,12 @@ func decodeHttpError(resp *http.Response) error {
 		return fmt.Errorf("HTTP %d %s", resp.StatusCode, resp.Status)
 	}
 
-	var requestErr error
-	if err := json.NewDecoder(resp.Body).Decode(&requestErr); err != nil {
+	reqErr := &RequestError{}
+	if err := json.NewDecoder(resp.Body).Decode(reqErr); err != nil {
 		return fmt.Errorf("HTTP %d %s (failed to decode JSON body: %v)", resp.StatusCode, resp.Status, err)
 	}
 
-	return requestErr
+	return reqErr
 }
 
 // UploadResponse is the object returned in response to blob upload.
