@@ -75,7 +75,7 @@ type Parse struct {
 
 func (m *Parse) Name() string { return "Email/parse" }
 
-func (m *Parse) Requires() string { return mail.URI }
+func (m *Parse) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
 
 type ParseResponse struct {
 	// The id of the account used for the call

@@ -18,6 +18,9 @@ func init() {
 	RegisterMethod("error", newMethodError)
 }
 
+// URI is an identifier of a capability, eg "urn:ietf:params:jmap:core"
+type URI string
+
 // ID is a unique identifier assigned by the server. The character set must
 // contain only ASCII alphanumerics, hyphen, or underscore and the ID must be
 // between 1 and 255 octets long.

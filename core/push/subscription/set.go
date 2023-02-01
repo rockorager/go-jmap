@@ -63,7 +63,7 @@ type Set struct {
 
 func (m *Set) Name() string { return "PushSubscription/set" }
 
-func (m *Set) Requires() string { return core.URI }
+func (m *Set) Requires() []jmap.URI { return []jmap.URI{core.URI} }
 
 type SetResponse struct {
 	// A map of the creation id to an object containing any properties of

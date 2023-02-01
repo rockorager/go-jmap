@@ -6,7 +6,7 @@ import (
 
 // urn:ietf:params:jmap:mail represents support for the Mailbox, Thread, Email,
 // and SearchSnippet data types and associated API methods
-const URI string = "urn:ietf:params:jmap:mail"
+const URI jmap.URI = "urn:ietf:params:jmap:mail"
 
 const (
 	// The Email event type
@@ -91,7 +91,7 @@ type Mail struct {
 	MayCreateTopLevelMailbox bool `json:"mayCreateTopLevelMailbox"`
 }
 
-func (m *Mail) URI() string { return URI }
+func (m *Mail) URI() jmap.URI { return URI }
 
 func (m *Mail) New() jmap.Capability { return &Mail{} }
 

@@ -6,7 +6,7 @@ import (
 	"git.sr.ht/~rockorager/go-jmap"
 )
 
-const URI string = "urn:ietf:params:jmap:vacationresponse"
+const URI jmap.URI = "urn:ietf:params:jmap:vacationresponse"
 
 func init() {
 	jmap.RegisterCapability(&Capability{})
@@ -17,7 +17,7 @@ func init() {
 // The VacationResponse capability is an empty object
 type Capability struct{}
 
-func (m *Capability) URI() string { return URI }
+func (m *Capability) URI() jmap.URI { return URI }
 
 func (m *Capability) New() jmap.Capability { return &Capability{} }
 

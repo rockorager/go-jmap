@@ -27,10 +27,10 @@ type Account struct {
 	// information about the account’s permissions and restrictions with
 	// respect to this capability, as defined in the capability’s
 	// specification.
-	Capabilities map[string]Capability `json:"-"`
+	Capabilities map[URI]Capability `json:"-"`
 
 	// The raw JSON of accountCapabilities
-	RawCapabilities map[string]json.RawMessage `json:"accountCapabilities"`
+	RawCapabilities map[URI]json.RawMessage `json:"accountCapabilities"`
 }
 
 type account Account
@@ -41,7 +41,7 @@ func (a *Account) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	a.Capabilities = make(map[string]Capability)
+	a.Capabilities = make(map[URI]Capability)
 	for key, cap := range capabilities {
 		rawCap, ok := raw.RawCapabilities[key]
 		if !ok {

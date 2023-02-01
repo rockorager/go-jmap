@@ -3,7 +3,7 @@ package jmap
 // A Capability broadcasts that the server supports underlying methods
 type Capability interface {
 	// The URI of the capability, eg "urn:ietf:params:jmap:core"
-	URI() string
+	URI() URI
 
 	// Generates a pointer to a new Capability object
 	New() Capability
@@ -14,4 +14,4 @@ func RegisterCapability(c Capability) {
 	capabilities[c.URI()] = c
 }
 
-var capabilities = make(map[string]Capability)
+var capabilities = make(map[URI]Capability)

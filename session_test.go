@@ -105,7 +105,7 @@ type testCapability struct {
 	TestValue int `json:"testValue"`
 }
 
-func (tc *testCapability) URI() string {
+func (tc *testCapability) URI() URI {
 	return "test:jmap:capability"
 }
 

@@ -21,7 +21,7 @@ type Get struct {
 
 func (m *Get) Name() string { return "Mailbox/get" }
 
-func (m *Get) Requires() string { return mail.URI }
+func (m *Get) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
 
 type GetResponse struct {
 	// The id of the account used for the call
@@ -37,4 +37,4 @@ type GetResponse struct {
 	NotFound []jmap.ID `json:"notFound,omitempty"`
 }
 
-func newGetResponse() interface{} { return &GetResponse{} }
+func newGetResponse() jmap.MethodResponse { return &GetResponse{} }

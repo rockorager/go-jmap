@@ -7,7 +7,7 @@ type Method interface {
 	Name() string
 
 	// The JMAP capabilities required for the method, ie "urn:ietf:params:jmap:core"
-	Requires() string
+	Requires() []URI
 }
 
 // A response to a method call

@@ -106,7 +106,7 @@ type Query struct {
 
 func (m *Query) Name() string { return "Mailbox/query" }
 
-func (m *Query) Requires() string { return mail.URI }
+func (m *Query) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
 
 type QueryResponse struct {
 	// The id of the account used for the call.

@@ -28,7 +28,7 @@ type Import struct {
 
 func (m *Import) Name() string { return "Email/import" }
 
-func (m *Import) Requires() string { return mail.URI }
+func (m *Import) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
 
 type EmailImport struct {
 	// The id of the blob containing the raw message [RFC5322].

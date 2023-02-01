@@ -23,7 +23,7 @@ type Get struct {
 
 func (m *Get) Name() string { return "PushSubscription/get" }
 
-func (m *Get) Requires() string { return core.URI }
+func (m *Get) Requires() []jmap.URI { return []jmap.URI{core.URI} }
 
 // This is a standard “/get” method as described in [@!RFC8620], Section 5.1.
 type GetResponse struct {

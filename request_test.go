@@ -19,11 +19,21 @@ func TestRequestMarshal(t *testing.T) {
 		CallID: "0",
 	}
 	req := &Request{
-		Using:       []string{"urn:ietf:params:jmap:core"},
+		Using: []URI{"urn:ietf:params:jmap:core"},
 		Calls: []*Invocation{inv},
 	}
 	data, err := json.Marshal(req)
 	assert.NoError(err)
 	expected := `{"using":["urn:ietf:params:jmap:core"],"methodCalls":[["Core/echo",{"Hello":"world"},"0"]]}`
 	assert.Equal(expected, string(data))
+}
+
+func TestMergeURIs(t *testing.T) {
+	assert := assert.New(t)
+	target := []URI{"one", "two", "three"}
+	opts := []URI{"one", "four"}
+
+	res := mergeURIs(target, opts)
+	assert.Equal(4, len(res))
+	assert.Equal([]URI{"one", "two", "three", "four"}, res)
 }

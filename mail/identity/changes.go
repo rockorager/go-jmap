@@ -26,7 +26,7 @@ type Changes struct {
 
 func (m *Changes) Name() string { return "Identity/changes" }
 
-func (m *Changes) Requires() string { return mail.URI }
+func (m *Changes) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
 
 // An Identity/changes response
 type ChangesResponse struct {

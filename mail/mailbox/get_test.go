@@ -28,7 +28,7 @@ func TestGet(t *testing.T) {
 			Account: "account-id",
 		}
 		req = &jmap.Request{
-			Using: []string{mail.URI},
+			Using: []jmap.URI{mail.URI},
 			Calls: []*jmap.Invocation{
 				{
 					Name:   "Mailbox/get",

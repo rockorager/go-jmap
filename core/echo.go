@@ -11,9 +11,7 @@ func (e Echo) Name() string {
 	return "Core/echo"
 }
 
-func (e Echo) Requires() string {
-	return URI
-}
+func (e Echo) Requires() []jmap.URI { return []jmap.URI{URI} }
 
 func newEcho() jmap.MethodResponse {
 	return &Echo{}

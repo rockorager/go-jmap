@@ -25,7 +25,7 @@ type Get struct {
 
 func (m *Get) Name() string { return "Mailbox/get" }
 
-func (m *Get) Requires() string { return mail.URI }
+func (m *Get) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
 
 // This is a standard “/get” method as described in [@!RFC8620], Section 5.1.
 type GetResponse struct {

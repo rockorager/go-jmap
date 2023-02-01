@@ -29,7 +29,7 @@ type Changes struct {
 
 func (m *Changes) Name() string { return "Email/changes" }
 
-func (m *Changes) Requires() string { return mail.URI }
+func (m *Changes) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
 
 // This is a standard "/changes" method as described in [RFC8620], Section 5.2.
 // If generating intermediate states for a large set of changes, it is

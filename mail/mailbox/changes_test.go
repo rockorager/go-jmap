@@ -30,7 +30,7 @@ func TestChanges(t *testing.T) {
 			SinceState: "1234",
 		}
 		req = &jmap.Request{
-			Using: []string{mail.URI},
+			Using: []jmap.URI{mail.URI},
 			Calls: []*jmap.Invocation{
 				{
 					Name:   "Mailbox/changes",

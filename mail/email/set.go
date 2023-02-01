@@ -145,7 +145,7 @@ type Set struct {
 
 func (m *Set) Name() string { return "Email/set" }
 
-func (m *Set) Requires() string { return mail.URI }
+func (m *Set) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
 
 type SetResponse struct {
 	// The id of the account used for the call.

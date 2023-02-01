@@ -9,9 +9,9 @@ type Session struct {
 	// for a capability supported by the server. The value for each of these
 	// keys is an object with further information about the server’s
 	// capabilities in relation to that capability.
-	Capabilities map[string]Capability `json:"-"`
+	Capabilities map[URI]Capability `json:"-"`
 
-	RawCapabilities map[string]json.RawMessage `json:"capabilities"`
+	RawCapabilities map[URI]json.RawMessage `json:"capabilities"`
 
 	// A map of account id to Account object for each account the user has
 	// access to.
@@ -20,7 +20,7 @@ type Session struct {
 	// A map of capability URIs (as found in Capabilities) to the
 	// account id to be considered the user’s main or default account for data
 	// pertaining to that capability.
-	PrimaryAccounts map[string]ID `json:"primaryAccounts"`
+	PrimaryAccounts map[URI]ID `json:"primaryAccounts"`
 
 	// The username associated with the given credentials, or the empty string
 	// if none.
@@ -60,7 +60,7 @@ func (s *Session) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	s.Capabilities = make(map[string]Capability)
+	s.Capabilities = make(map[URI]Capability)
 	for key, cap := range capabilities {
 		rawCap, ok := raw.RawCapabilities[key]
 		if !ok {

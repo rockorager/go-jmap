@@ -20,7 +20,7 @@ type Copy struct {
 
 func (m *Copy) Name() string { return "Blob/copy" }
 
-func (m *Copy) requires() string { return core.URI }
+func (m *Copy) Requires() []jmap.URI { return []jmap.URI{core.URI} }
 
 type CopyResponse struct {
 	// The ID of the account blobs were copied from
@@ -38,4 +38,4 @@ type CopyResponse struct {
 	NotCopied map[jmap.ID]*jmap.SetError `json:"notCopied,omitempty"`
 }
 
-func newCopyResponse() interface{} { return &CopyResponse{} }
+func newCopyResponse() jmap.MethodResponse { return &CopyResponse{} }
