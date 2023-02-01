@@ -1,13 +1,14 @@
 package email
 
 import (
-	"net/mail"
 	"time"
 
 	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
 )
 
 func init() {
+	jmap.RegisterCapability(&smimeVerify{})
 	jmap.RegisterMethod("Email/get", newGetResponse)
 	jmap.RegisterMethod("Email/changes", newChangesResponse)
 	jmap.RegisterMethod("Email/query", newQueryResponse)
@@ -159,6 +160,42 @@ type Email struct {
 	// NOT cause the Email object to be considered as changed by the
 	// server.
 	Preview string `json:"preview,omitempty"`
+
+	// If empty, there is no S/MIME signature. Otherwise will be one of the
+	// following strings
+	// - "unknown" - Can be returned for OpenPGP signed messages
+	// - "signed" - S/MIME signed but not yet verified
+	// - "signed/verified" - Signed and verified per RFC8551 and RFC8550
+	// - "signed/failed"
+	// - "encrypted+signed/verified"
+	// - "encrypted+signed/failed"
+	//
+	// server-set
+	SMIMEStatus string `json:"smimeStatus,omitempty"`
+
+	// If empty, there is no S/MIME signature. Otherwise will be one of the
+	// following strings, and represents the status at time of delivery
+	// - "unknown" - Can be returned for OpenPGP signed messages
+	// - "signed" - S/MIME signed but not yet verified
+	// - "signed/verified" - Signed and verified per RFC8551 and RFC8550
+	// - "signed/failed"
+	// - "encrypted+signed/verified"
+	// - "encrypted+signed/failed"
+	//
+	// server-set
+	SMIMEStatusAtDelivery string `json:"smimeStatusAtDelivery,omitempty"`
+
+	// If empty, no errors or no signature. Otherwise, this will contain any
+	// errors during verification of SMIME properties
+	//
+	// server-set
+	SMIMEErrors []string `json:"smimeErrors,omitempty"`
+
+	// If empty, no signature or not verified. Otherwise, this is the time
+	// the signature was most recently verified
+	//
+	// server-set
+	SMIMEVerifiedAt *time.Time `json:"smimeVerifiedAt,omitempty"`
 }
 
 type AddressGroup struct {

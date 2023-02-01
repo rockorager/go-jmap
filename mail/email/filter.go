@@ -108,6 +108,22 @@ type FilterCondition struct {
 	// the text to look for in the header field value.  If not supplied, the
 	// message matches simply if it has a header field of the given name.
 	Header []string `json:"header,omitempty"`
+
+	// When true, only messages where smimeStatus is not null match
+	//
+	// Requires server to support urn:ietf:jmap:smimeverify
+	HasSMIME bool `json:"hasSmime,omitempty"`
+
+	// When true, only messages with successfully verified SMIME match
+	//
+	// Requires server to support urn:ietf:jmap:smimeverify
+	HasVerifiedSMIME bool `json:"hasVerifiedSmime,omitempty"`
+
+	// When true, only messages with successfully verified SMIME at the time
+	// of delivery match
+	//
+	// Requires server to support urn:ietf:jmap:smimeverify
+	HasVerifiedSMIMEAtDelivery bool `json:"hasVerifiedSmimeAtDelivery,omitempty"`
 }
 
 func (fc *FilterCondition) implementsFilter() {}

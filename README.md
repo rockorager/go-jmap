@@ -1,7 +1,8 @@
 # go-jmap
 
 A JMAP client library. Includes support for all core functionality (including
-PushSubscription and EventSource event streams), mail, and MDN specifications
+PushSubscription and EventSource event streams), mail, smime-verify, and MDN 
+specifications
 
 Note: this library started as a fork of [github.com/foxcpp/go-jmap](https://github.com/foxcpp/go-jmap)
 It has since undergone massive refactoring and probably doesn't look very
@@ -120,4 +121,4 @@ Not started
 
 ### S/MIME ([RFC 9219](https://tools.ietf.org/html/rfc9219))
 
-Not started
+Complete
