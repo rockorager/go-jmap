@@ -1,3 +1,5 @@
+// Package mail is an implementation of JSON Metal Application Protocol (JMAP) 
+// for MAIL (RFC 8621)
 package mail
 
 import (
