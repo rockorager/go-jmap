@@ -23,7 +23,7 @@ type Get struct {
 	Properties []string `json:"properties,omitempty"`
 }
 
-func (m *Get) Name() string { return "Mailbox/get" }
+func (m *Get) Name() string { return "Thread/get" }
 
 func (m *Get) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
 

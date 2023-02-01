@@ -24,7 +24,7 @@ type Changes struct {
 	MaxChanges uint64 `json:"maxChanges,omitempty"`
 }
 
-func (m *Changes) Name() string { return "Mailbox/changes" }
+func (m *Changes) Name() string { return "Thread/changes" }
 
 func (m *Changes) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
 
