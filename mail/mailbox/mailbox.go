@@ -19,6 +19,8 @@ func init() {
 // The Email id does not change if the Email changes Mailboxes.
 type Mailbox struct {
 	// The id of the Mailbox.
+	//
+	// immutable;server-set
 	ID jmap.ID `json:"id,omitempty"`
 
 	// User-visible name for the Mailbox, e.g., “Inbox”. This MUST be a
@@ -69,14 +71,22 @@ type Mailbox struct {
 	SortOrder uint64 `json:"sortOrder,omitempty"`
 
 	// The number of Emails in this Mailbox.
+	//
+	// server-set
 	TotalEmails uint64 `json:"totalEmails,omitempty"`
 
 	// The number of Emails in this Mailbox that have neither the $seen
 	// keyword nor the $draft keyword.
+	// The number of Emails in this Mailbox.
+	//
+	// server-set
 	UnreadEmails uint64 `json:"unreadEmails,omitempty"`
 
 	// The number of Threads where at least one Email in the Thread is in
 	// this Mailbox.
+	// The number of Emails in this Mailbox.
+	//
+	// server-set
 	TotalThreads uint64 `json:"totalThreads,omitempty"`
 
 	// An indication of the number of “unread” Threads in the Mailbox.
@@ -112,11 +122,17 @@ type Mailbox struct {
 	// is a single Thread with 2 Emails: an unread Email in the trash and a
 	// read Email in the inbox. The unreadThreads count would be 1 for the
 	// trash and 0 for the inbox.
+	// The number of Emails in this Mailbox.
+	//
+	// server-set
 	UnreadThreads uint64 `json:"unreadThreads,omitempty"`
 
 	// The set of rights (Access Control Lists (ACLs)) the user has in
 	// relation to this Mailbox. These are backwards compatible with IMAP
 	// ACLs, as defined in [@!RFC4314].
+	// The number of Emails in this Mailbox.
+	//
+	// server-set
 	Rights *Rights `json:"myRights,omitempty"`
 
 	// Has the user indicated they wish to see this Mailbox in their
