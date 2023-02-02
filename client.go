@@ -102,6 +102,13 @@ func (c *Client) Do(req *Request) (*Response, error) {
 			return nil, err
 		}
 	}
+	// Check the required capabilities before making the request
+	for _, uri := range req.Using {
+		_, ok := c.Session.Capabilities[uri]
+		if !ok {
+			return nil, fmt.Errorf("server doesn't support required capability '%s'", uri)
+		}
+	}
 	body, err := json.Marshal(req)
 	if err != nil {
 		return nil, err
