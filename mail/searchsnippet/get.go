@@ -16,7 +16,7 @@ type Get struct {
 	Filter interface{} `json:"filter,omitempty"`
 
 	// The ids of the Emails to fetch snippets for.
-	EmailIDs []string `json:"emailIds,omitempty"`
+	EmailIDs []jmap.ID `json:"emailIds,omitempty"`
 }
 
 func (m *Get) Name() string { return "Mailbox/get" }
