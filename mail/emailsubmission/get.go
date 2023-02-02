@@ -20,6 +20,12 @@ type Get struct {
 	// not explicitly requested. If an invalid property is requested, the
 	// call MUST be rejected with an invalidArguments error.
 	Properties []string `json:"properties,omitempty"`
+
+	// Use IDs from a previous call
+	ReferenceIDs *jmap.ResultReference `json:"#ids,omitempty"`
+
+	// Use Properties from a previous call
+	ReferenceProperties *jmap.ResultReference `json:"#properties,omitempty"`
 }
 
 func (m *Get) Name() string { return "EmailSubmission/get" }

@@ -28,7 +28,7 @@ type Get struct {
 	// Use IDs from a previous call
 	ReferenceIDs *jmap.ResultReference `json:"#ids,omitempty"`
 
-	// Use IDs from a previous call
+	// Use Properties from a previous call
 	ReferenceProperties *jmap.ResultReference `json:"#properties,omitempty"`
 }
 

@@ -17,6 +17,9 @@ type Get struct {
 
 	// The ids of the Emails to fetch snippets for.
 	EmailIDs []jmap.ID `json:"emailIds,omitempty"`
+
+	// Use IDs from a previous call
+	ReferenceIDs *jmap.ResultReference `json:"#emailIds,omitempty"`
 }
 
 func (m *Get) Name() string { return "Mailbox/get" }
