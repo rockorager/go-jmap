@@ -2,7 +2,7 @@ package identity
 
 import (
 	"git.sr.ht/~rockorager/go-jmap"
-	"git.sr.ht/~rockorager/go-jmap/mail"
+	"git.sr.ht/~rockorager/go-jmap/mail/emailsubmission"
 )
 
 // An Identity/get request
@@ -26,7 +26,7 @@ type Get struct {
 
 func (m *Get) Name() string { return "Identity/get" }
 
-func (m *Get) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
+func (m *Get) Requires() []jmap.URI { return []jmap.URI{emailsubmission.URI} }
 
 // This is a standard “/get” method as described in [@!RFC8620], Section 5.1.
 type GetResponse struct {

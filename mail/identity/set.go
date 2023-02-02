@@ -2,7 +2,7 @@ package identity
 
 import (
 	"git.sr.ht/~rockorager/go-jmap"
-	"git.sr.ht/~rockorager/go-jmap/mail"
+	"git.sr.ht/~rockorager/go-jmap/mail/emailsubmission"
 )
 
 // An Identity/set method call
@@ -74,7 +74,7 @@ type Set struct {
 
 func (m *Set) Name() string { return "Identity/set" }
 
-func (m *Set) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
+func (m *Set) Requires() []jmap.URI { return []jmap.URI{emailsubmission.URI} }
 
 type SetResponse struct {
 	// The id of the account used for the call.

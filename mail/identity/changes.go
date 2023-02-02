@@ -2,7 +2,7 @@ package identity
 
 import (
 	"git.sr.ht/~rockorager/go-jmap"
-	"git.sr.ht/~rockorager/go-jmap/mail"
+	"git.sr.ht/~rockorager/go-jmap/mail/emailsubmission"
 )
 
 // An Identity/changes method call
@@ -26,7 +26,7 @@ type Changes struct {
 
 func (m *Changes) Name() string { return "Identity/changes" }
 
-func (m *Changes) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
+func (m *Changes) Requires() []jmap.URI { return []jmap.URI{emailsubmission.URI} }
 
 // An Identity/changes response
 type ChangesResponse struct {
