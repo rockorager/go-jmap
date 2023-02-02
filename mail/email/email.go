@@ -20,23 +20,24 @@ func init() {
 }
 
 type Email struct {
-	// The id of the Email object. Note that this is the JMAP object id,
-	// NOT the Message-ID header field value of the message [@!RFC5322].
+	// The ID of the Email. Note: this is _not_ the Message-ID
+	//
+	// immutable;server-set
 	ID jmap.ID `json:"id,omitempty"`
 
-	// The id representing the raw octets of the message [@!RFC5322] for
-	// this Email. This may be used to download the raw original message or
-	// to attach it directly to another Email, etc.
+	// The ID of the raw RFC5322 message
+	//
+	// immutable;server-set
 	BlobID jmap.ID `json:"blobId,omitempty"`
 
 	// The id of the Thread to which this Email belongs.
+	//
+	// immutable;server-set
 	ThreadID jmap.ID `json:"threadId,omitempty"`
 
 	// The set of Mailbox ids this Email belongs to. An Email in the mail
 	// store MUST belong to one or more Mailboxes at all times (until it
-	// is destroyed). The set is represented as an object, with each key
-	// being a Mailbox id. The value for each key in the object MUST be
-	// true.
+	// is destroyed).
 	MailboxIDs map[jmap.ID]bool `json:"mailboxIds,omitempty"`
 
 	// A set of keywords that apply to the Email. The set is represented as
@@ -47,72 +48,108 @@ type Email struct {
 	// The size, in octets, of the raw data for the message [@!RFC5322] (as
 	// referenced by the blobId, i.e., the number of octets in the file the
 	// user would download).
+	//
+	// immutable;server-set
 	Size uint64 `json:"size,omitempty"`
 
 	// The date the Email was received by the message store. This is the
 	// internal date in IMAP [@?RFC3501].
+	//
+	// immutable
 	ReceivedAt time.Time `json:"receivedAt,omitempty"`
 
 	// This is a list of all header fields [@!RFC5322], in the same order
 	// they appear in the message.
+	//
+	// immutable
 	Headers []*Header `json:"headers,omitempty"`
 
 	// The value is identical to the value of
 	// header:Message-ID:asMessageIds. For messages conforming to RFC 5322
 	// this will be an array with a single entry.
+	//
+	// immutable
 	MessageID []string `json:"messageId,omitempty"`
 
 	// The value is identical to the value of
 	// header:In-Reply-To:asMessageIds.
+	//
+	// immutable
 	InReplyTo []string `json:"inReplyTo,omitempty"`
 
 	// The value is identical to the value of
 	// header:References:asMessageIds.mailAccount
+	//
+	// immutable
 	References []string `json:"references,omitempty"`
 
 	// The value is identical to the value of header:Sender:asAddresses.
+	//
+	// immutable
 	Sender []*mail.Address `json:"sender,omitempty"`
 
 	// The value is identical to the value of header:From:asAddresses.
+	//
+	// immutable
 	From []*mail.Address `json:"from,omitempty"`
 
 	// The value is identical to the value of header:To:asAddresses.
+	//
+	// immutable
 	To []*mail.Address `json:"to,omitempty"`
 
 	// The value is identical to the value of header:Cc:asAddresses.
+	//
+	// immutable
 	CC []*mail.Address `json:"cc,omitempty"`
 
 	// The value is identical to the value of header:Bcc:asAddresses.
+	//
+	// immutable
 	BCC []*mail.Address `json:"bcc,omitempty"`
 
 	// The value is identical to the value of header:Reply-To:asAddresses.
+	//
+	// immutable
 	ReplyTo []*mail.Address `json:"replyTo,omitempty"`
 
 	// The value is identical to the value of header:Subject:asText.
+	//
+	// immutable
 	Subject string `json:"subject,omitempty"`
 
 	// The value is identical to the value of header:Date:asDate.
+	//
+	// immutable
 	SentAt time.Time `json:"sentAt,omitempty"`
 
 	// This is the full MIME structure of the message body, without
 	// recursing into message/rfc822 or message/global parts. Note that
 	// EmailBodyParts may have subParts if they are of type multipart/*.
+	//
+	// immutable
 	BodyStructure *BodyPart `json:"bodyStructure,omitempty"`
 
 	// This is a map of partId to an EmailBodyValue object for none, some,
 	// or all text/* parts. Which parts are included and whether the value
 	// is truncated is determined by various arguments to Email/get and
 	// Email/parse.
+	//
+	// immutable
 	BodyValues map[string]*BodyValue `json:"bodyValues,omitempty"`
 
 	// A list of text/plain, text/html, image/*, audio/*, and/or video/*
 	// parts to display (sequentially) as the message body, with a
 	// preference for text/plain when alternative versions are available.
+	//
+	// immutable
 	TextBody []*BodyPart `json:"textBody,omitempty"`
 
 	// A list of text/plain, text/html, image/*, audio/*, and/or video/*
 	// parts to display (sequentially) as the message body, with a
 	// preference for text/html when alternative versions are available.
+	//
+	// immutable
 	HTMLBody []*BodyPart `json:"htmlBody,omitempty"`
 
 	// A list, traversing depth-first, of all parts in bodyStructure that
@@ -130,6 +167,8 @@ type Email struct {
 	// Note that a text/html body part HTML may reference image parts in
 	// attachments by using cid: links to reference the Content-Id, as
 	// defined in [@!RFC2392], or by referencing the Content-Location.
+	//
+	// immutable
 	Attachments []*BodyPart `json:"attachments,omitempty"`
 
 	// This is true if there are one or more parts in the message that a
@@ -142,6 +181,8 @@ type Email struct {
 	//
 	// The server MAY set hasAttachment based on implementation-defined or
 	// site-configurable heuristics.
+	//
+	// immutable;server-set
 	HasAttachment bool `json:"hasAttachment,omitempty"`
 
 	// A plaintext fragment of the message body. This is intended to be
@@ -159,6 +200,8 @@ type Email struct {
 	// previous value is not considered incorrect, and the change SHOULD
 	// NOT cause the Email object to be considered as changed by the
 	// server.
+	//
+	// immutable;server-set
 	Preview string `json:"preview,omitempty"`
 
 	// If empty, there is no S/MIME signature. Otherwise will be one of the
