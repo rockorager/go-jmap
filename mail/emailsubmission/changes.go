@@ -2,7 +2,6 @@ package emailsubmission
 
 import (
 	"git.sr.ht/~rockorager/go-jmap"
-	"git.sr.ht/~rockorager/go-jmap/mail"
 )
 
 // This is a standard “/changes” method as described in [@!RFC8620], Section 5.2.
@@ -26,7 +25,7 @@ type Changes struct {
 
 func (m *Changes) Name() string { return "EmailSubmission/changes" }
 
-func (m *Changes) Requires() []jmap.URI { return []jmap.URI{mail.URI, URI} }
+func (m *Changes) Requires() []jmap.URI { return []jmap.URI{URI} }
 
 // This is a standard “/changes” method as described in [@!RFC8620], Section 5.2.
 type ChangesResponse struct {

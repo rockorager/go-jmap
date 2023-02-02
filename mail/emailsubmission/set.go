@@ -2,7 +2,6 @@ package emailsubmission
 
 import (
 	"git.sr.ht/~rockorager/go-jmap"
-	"git.sr.ht/~rockorager/go-jmap/mail"
 )
 
 // This is a standard “/set” method as described in [@!RFC8620], Section 5.3,
@@ -90,7 +89,7 @@ type Set struct {
 
 func (m *Set) Name() string { return "EmailSubmission/set" }
 
-func (m *Set) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
+func (m *Set) Requires() []jmap.URI { return []jmap.URI{URI} }
 
 type SetResponse struct {
 	// The id of the account used for the call.

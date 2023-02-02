@@ -2,7 +2,6 @@ package emailsubmission
 
 import (
 	"git.sr.ht/~rockorager/go-jmap"
-	"git.sr.ht/~rockorager/go-jmap/mail"
 )
 
 // This is a standard “/query” method as described in [@!RFC8620], Section 5.5,
@@ -86,7 +85,7 @@ type Query struct {
 
 func (m *Query) Name() string { return "EmailSubmission/query" }
 
-func (m *Query) Requires() []jmap.URI { return []jmap.URI{mail.URI, URI} }
+func (m *Query) Requires() []jmap.URI { return []jmap.URI{URI} }
 
 type QueryResponse struct {
 	// The id of the account used for the call.
