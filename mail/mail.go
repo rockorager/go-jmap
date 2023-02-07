@@ -1,8 +1,10 @@
-// Package mail is an implementation of JSON Metal Application Protocol (JMAP) 
+// Package mail is an implementation of JSON Metal Application Protocol (JMAP)
 // for MAIL (RFC 8621)
 package mail
 
 import (
+	"fmt"
+
 	"git.sr.ht/~rockorager/go-jmap"
 )
 
@@ -113,4 +115,11 @@ type Address struct {
 
 	// The addr-spec of the mailbox [@!RFC5322].
 	Email string `json:"email,omitempty"`
+}
+
+func (a *Address) String() string {
+	if a.Name == "" {
+		return a.Email
+	}
+	return fmt.Sprintf("%s <%s>", a.Name, a.Email)
 }
