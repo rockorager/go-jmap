@@ -1,8 +1,14 @@
 package jmap
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+)
 
 type Request struct {
+	// The context to make the request with
+	Context context.Context `json:"-"`
+
 	// The JMAP capabilities the request should use
 	Using []URI `json:"using"`
 

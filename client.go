@@ -113,7 +113,10 @@ func (c *Client) Do(req *Request) (*Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	httpReq, err := http.NewRequest("POST", c.Session.APIURL, bytes.NewReader(body))
+	if req.Context == nil {
+		req.Context = context.Background()
+	}
+	httpReq, err := http.NewRequestWithContext(req.Context, "POST", c.Session.APIURL, bytes.NewReader(body))
 	if err != nil {
 		return nil, err
 	}
