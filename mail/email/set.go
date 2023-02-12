@@ -136,7 +136,7 @@ type Set struct {
 	// also a valid PatchObject. The client may choose to optimise network
 	// usage by just sending the diff or may send the whole object; the
 	// server processes it the same either way.
-	Update map[jmap.ID]*jmap.Patch `json:"update,omitempty"`
+	Update map[jmap.ID]jmap.Patch `json:"update,omitempty"`
 
 	// A list of ids for Foo objects to permanently delete, or null if no
 	// objects are to be destroyed.

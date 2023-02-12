@@ -51,29 +51,10 @@ func (id ID) MarshalJSON() ([]byte, error) {
 //	slash) MUST already exist on the object being patched. There MUST NOT be
 //	two patches in the Patch where the pointer of one is the prefix of
 //	the pointer of the other, e.g., “alerts/1/offset” and “alerts”.
-type Patch struct {
-	Path  string
-	Value interface{}
-}
-
-func (p *Patch) MarshalJSON() ([]byte, error) {
-	m := make(map[string]interface{})
-	m[p.Path] = p.Value
-	return json.Marshal(m)
-}
-
-func (p *Patch) UnmarshalJSON(data []byte) error {
-	var patch map[string]interface{}
-	err := json.Unmarshal(data, &patch)
-	if err != nil {
-		return err
-	}
-	for k, v := range patch {
-		p.Path = k
-		p.Value = v
-	}
-	return nil
-}
+//
+// The keys are a JSON pointer path, and the value is the value to set the path
+// to
+type Patch map[string]interface{}
 
 // Operator is used when constructing FilterOperator. It MUST be "AND", "OR", or
 // "NOT"

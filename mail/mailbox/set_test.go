@@ -12,10 +12,9 @@ func TestSet(t *testing.T) {
 	assert := assert.New(t)
 	set := &Set{
 		Account: "xyz",
-		Update: map[jmap.ID]*jmap.Patch{
+		Update: map[jmap.ID]jmap.Patch{
 			"mailbox-id": {
-				Path:  "name",
-				Value: "New Name",
+				"name": "New Name",
 			},
 		},
 	}
@@ -26,10 +25,9 @@ func TestSet(t *testing.T) {
 
 	set = &Set{
 		Account: "xyz",
-		Update: map[jmap.ID]*jmap.Patch{
+		Update: map[jmap.ID]jmap.Patch{
 			"mailbox-id": {
-				Path:  "parentId",
-				Value: nil,
+				"parentId": nil,
 			},
 		},
 	}
