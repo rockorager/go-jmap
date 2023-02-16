@@ -9,12 +9,14 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"sync"
 
 	"golang.org/x/oauth2"
 )
 
 // A JMAP Client
 type Client struct {
+	sync.Mutex
 	// The HttpClient.Client to use for requests. The HttpClient.Client should handle
 	// authentication. Calling WithBasicAuth or WithAccessToken on the
 	// Client will set the HttpClient to one which uses authentication
@@ -61,9 +63,12 @@ func (c *Client) WithAccessToken(token string) *Client {
 // if you need to access information from the Session object prior to the first
 // request
 func (c *Client) Authenticate() error {
+	c.Lock()
 	if c.SessionEndpoint == "" {
+		c.Unlock()
 		return fmt.Errorf("no session url is set")
 	}
+	c.Unlock()
 
 	req, err := http.NewRequest("GET", c.SessionEndpoint, nil)
 	if err != nil {
@@ -96,15 +101,20 @@ func (c *Client) Authenticate() error {
 
 // Do performs a JMAP request and returns the response
 func (c *Client) Do(req *Request) (*Response, error) {
+	c.Lock()
 	if c.Session == nil {
+		c.Unlock()
 		err := c.Authenticate()
 		if err != nil {
 			return nil, err
 		}
 	}
+	c.Unlock()
 	// Check the required capabilities before making the request
 	for _, uri := range req.Using {
+		c.Lock()
 		_, ok := c.Session.Capabilities[uri]
+		c.Unlock()
 		if !ok {
 			return nil, fmt.Errorf("server doesn't support required capability '%s'", uri)
 		}
@@ -153,10 +163,13 @@ func (c *Client) Do(req *Request) (*Response, error) {
 // - Blob ID may become invalid after some time if it is unused.
 // - Blob ID is usable only by the uploader until it is used, even for shared accounts.
 func (c *Client) Upload(accountID ID, blob io.Reader) (*UploadResponse, error) {
+	c.Lock()
 	if c.SessionEndpoint == "" {
+		c.Unlock()
 		return nil, fmt.Errorf("jmap/client: SessionEndpoint is empty")
 	}
 	if c.Session == nil {
+		c.Unlock()
 		err := c.Authenticate()
 		if err != nil {
 			return nil, err
@@ -164,6 +177,7 @@ func (c *Client) Upload(accountID ID, blob io.Reader) (*UploadResponse, error) {
 	}
 
 	url := strings.ReplaceAll(c.Session.UploadURL, "{accountId}", string(accountID))
+	c.Unlock()
 	req, err := http.NewRequest("POST", url, blob)
 	if err != nil {
 		return nil, err
@@ -196,10 +210,13 @@ func (c *Client) Upload(accountID ID, blob io.Reader) (*UploadResponse, error) {
 
 // Download downloads binary data by its Blob ID from the server.
 func (c *Client) Download(accountID ID, blobID ID) (io.ReadCloser, error) {
+	c.Lock()
 	if c.SessionEndpoint == "" {
+		c.Unlock()
 		return nil, fmt.Errorf("jmap/client: SessionEndpoint is empty")
 	}
 	if c.Session == nil {
+		c.Unlock()
 		err := c.Authenticate()
 		if err != nil {
 			return nil, err
@@ -213,6 +230,7 @@ func (c *Client) Download(accountID ID, blobID ID) (io.ReadCloser, error) {
 		"{name}", "filename",
 	)
 	tgtUrl := urlRepl.Replace(c.Session.DownloadURL)
+	c.Unlock()
 	req, err := http.NewRequest("GET", tgtUrl, nil)
 	if err != nil {
 		return nil, err
