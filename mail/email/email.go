@@ -357,5 +357,5 @@ type BodyValue struct {
 	IsEncodingProblem bool `json:"isEncodingProblem,omitempty"`
 
 	// This is true if the value has been truncated
-	Istruncated bool `json:"isTruncated"`
+	IsTruncated bool `json:"isTruncated"`
 }
