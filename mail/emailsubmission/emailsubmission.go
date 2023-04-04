@@ -1,6 +1,7 @@
 package emailsubmission
 
 import (
+	"encoding/json"
 	"time"
 
 	"git.sr.ht/~rockorager/go-jmap"
@@ -27,7 +28,7 @@ type Capability struct {
 	// the client may use when creating an EmailSubmission object (see
 	// Section 7). Each key in the object is the ehlo-name, and the value is
 	// a list of ehlo-args.
-	SubmissionExtensions map[string]string `json:"submissionExtensions,omitempty"`
+	SubmissionExtensions json.RawMessage `json:"submissionExtensions,omitempty"`
 }
 
 func (m *Capability) URI() jmap.URI { return URI }
