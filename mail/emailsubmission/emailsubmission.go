@@ -64,7 +64,7 @@ type EmailSubmission struct {
 	// The date the submission was/will be released for delivery
 	//
 	// immutable;server-set
-	SendAt time.Time `json:"sendAt,omitempty"`
+	SendAt *time.Time `json:"sendAt,omitempty"`
 
 	// A status indicating if the send can be undone. One of:
 	// - "pending": it may be possible to cancel

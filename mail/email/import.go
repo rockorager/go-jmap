@@ -42,7 +42,7 @@ type EmailImport struct {
 	Keywords map[string]bool `json:"keywords,omitempty"`
 
 	// The "receivedAt" date to set on the Email. The value must be in UTC
-	ReceivedAt time.Time `json:"receivedAt,omitempty"`
+	ReceivedAt *time.Time `json:"receivedAt,omitempty"`
 }
 
 type ImportResponse struct {
