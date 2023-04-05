@@ -2,6 +2,7 @@ package emailsubmission
 
 import (
 	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
 )
 
 type QueryChanges struct {
@@ -46,7 +47,7 @@ type QueryChanges struct {
 
 func (m *QueryChanges) Name() string { return "EmailSubmission/queryChanges" }
 
-func (m *QueryChanges) Requires() []jmap.URI { return []jmap.URI{URI} }
+func (m *QueryChanges) Requires() []jmap.URI { return []jmap.URI{URI, mail.URI} }
 
 type QueryChangesResponse struct {
 	// The id of the account used for the call.

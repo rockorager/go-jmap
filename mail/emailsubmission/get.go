@@ -2,6 +2,7 @@ package emailsubmission
 
 import (
 	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
 )
 
 // This is a standard “/get” method as described in [@!RFC8620], Section 5.1.
@@ -30,7 +31,7 @@ type Get struct {
 
 func (m *Get) Name() string { return "EmailSubmission/get" }
 
-func (m *Get) Requires() []jmap.URI { return []jmap.URI{URI} }
+func (m *Get) Requires() []jmap.URI { return []jmap.URI{URI, mail.URI} }
 
 // This is a standard “/get” method as described in [@!RFC8620], Section 5.1.
 type GetResponse struct {

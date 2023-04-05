@@ -2,6 +2,7 @@ package emailsubmission
 
 import (
 	"git.sr.ht/~rockorager/go-jmap"
+	"git.sr.ht/~rockorager/go-jmap/mail"
 )
 
 // This is a standard “/set” method as described in [@!RFC8620], Section 5.3,
@@ -77,7 +78,7 @@ type Set struct {
 	// created in the same “/set” invocation, this is equivalent to a
 	// creation-reference, so the id will be the creation id prefixed with
 	// a #.)
-	OnSuccessUpdateEmail map[jmap.ID]*jmap.Patch `json:"onSuccessUpdateEmail,omitempty"`
+	OnSuccessUpdateEmail map[jmap.ID]jmap.Patch `json:"onSuccessUpdateEmail,omitempty"`
 
 	// A list of EmailSubmission ids for which the Email with the
 	// corresponding emailId should be destroyed if the
@@ -89,7 +90,7 @@ type Set struct {
 
 func (m *Set) Name() string { return "EmailSubmission/set" }
 
-func (m *Set) Requires() []jmap.URI { return []jmap.URI{URI} }
+func (m *Set) Requires() []jmap.URI { return []jmap.URI{URI, mail.URI} }
 
 type SetResponse struct {
 	// The id of the account used for the call.
