@@ -35,9 +35,9 @@ func (id ID) MarshalJSON() ([]byte, error) {
 	if len(string(id)) > 255 {
 		return nil, fmt.Errorf("invalid ID: too long")
 	}
-	if !idRegexp.MatchString(string(id)) {
-		return nil, fmt.Errorf("invalid ID: invalid characters")
-	}
+	// if !idRegexp.MatchString(string(id)) {
+	// 	return nil, fmt.Errorf("invalid ID: invalid characters")
+	// }
 	return json.Marshal(string(id))
 }
 
