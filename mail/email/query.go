@@ -15,7 +15,7 @@ type Query struct {
 	// objects in the account of this type are included in the results.
 	//
 	// Each implementation must implement it's own Filter
-	Filter interface{} `json:"filter,omitempty"`
+	Filter Filter `json:"filter,omitempty"`
 
 	// Lists the names of properties to compare between two Foo records,
 	// and how to compare them, to determine which comes first in the sort.
