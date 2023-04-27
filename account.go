@@ -9,6 +9,9 @@ import "encoding/json"
 // See draft-ietf-jmap-core-17, section 1.6.2 for details.
 // The documentation is taked from draft-ietf-jmap-core-17, section 2.
 type Account struct {
+	// The ID of the account
+	ID string `json:"-"`
+
 	// A user-friendly string to show when presenting content from this
 	// account, e.g. the email address representing the owner of the account.
 	Name string `json:"name"`
