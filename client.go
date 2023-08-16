@@ -142,12 +142,9 @@ func (c *Client) Do(req *Request) (*Response, error) {
 		return nil, decodeHttpError(httpResp)
 	}
 
-	data, err := io.ReadAll(httpResp.Body)
-	if err != nil {
-		return nil, err
-	}
 	resp := &Response{}
-	err = json.Unmarshal(data, resp)
+	dec := json.NewDecoder(httpReq.Body)
+	err = dec.Decode(resp)
 	if err != nil {
 		return nil, fmt.Errorf("error? %v", err)
 	}
