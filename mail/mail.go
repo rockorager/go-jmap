@@ -1,5 +1,9 @@
 // Package mail is an implementation of JSON Metal Application Protocol (JMAP)
 // for MAIL (RFC 8621)
+//
+// Documentation strings for most of the protocol objects are taken from (or
+// based on) contents of RFC 8621 and is subject to the IETF Trust Provisions.
+// See https://trustee.ietf.org/license-info for details.
 package mail
 
 import (

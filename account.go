@@ -6,8 +6,7 @@ import "encoding/json"
 // arbitrary set of data types, for example a collection of mail, contacts and
 // calendars.
 //
-// See draft-ietf-jmap-core-17, section 1.6.2 for details.
-// The documentation is taked from draft-ietf-jmap-core-17, section 2.
+// See RFC 8620 section 1.6.2 for details.
 type Account struct {
 	// The ID of the account
 	ID string `json:"-"`

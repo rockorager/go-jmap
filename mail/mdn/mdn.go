@@ -1,6 +1,10 @@
 // Package mdn is an implementation of RFC 9007: Handling Message Disposition
 // Notification with the JSON Meta Application Protocol (JMAP). In plain terms,
 // it handles read receipts of emails.
+//
+// Documentation strings for most of the protocol objects are taken from (or
+// based on) contents of RFC 9007 and is subject to the IETF Trust Provisions.
+// See https://trustee.ietf.org/license-info for details.
 package mdn
 
 import "git.sr.ht/~rockorager/go-jmap"
