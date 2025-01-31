@@ -2,7 +2,6 @@ package subscription
 
 import (
 	"git.sr.ht/~rockorager/go-jmap"
-	"git.sr.ht/~rockorager/go-jmap/core"
 )
 
 // Modify push subscription details
@@ -15,7 +14,7 @@ type Set struct {
 
 func (m *Set) Name() string { return "PushSubscription/set" }
 
-func (m *Set) Requires() []jmap.URI { return []jmap.URI{core.URI} }
+func (m *Set) Requires() []jmap.URI { return nil }
 
 type SetResponse struct {
 	Created      map[jmap.ID]*PushSubscription `json:"created,omitempty"`

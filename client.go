@@ -101,6 +101,9 @@ func (c *Client) Authenticate() error {
 	return nil
 }
 
+// The core capabilty must be included in all method calls
+const CoreURI URI = "urn:ietf:params:jmap:core"
+
 // Do performs a JMAP request and returns the response
 func (c *Client) Do(req *Request) (*Response, error) {
 	c.Lock()
@@ -112,6 +115,17 @@ func (c *Client) Do(req *Request) (*Response, error) {
 		}
 	} else {
 		c.Unlock()
+	}
+	// Ensure the core capability is always included
+	found := false
+	for _, uri := range req.Using {
+		if uri == CoreURI {
+			found = true
+			break
+		}
+	}
+	if !found {
+		req.Using = append(req.Using, CoreURI)
 	}
 	// Check the required capabilities before making the request
 	for _, uri := range req.Using {

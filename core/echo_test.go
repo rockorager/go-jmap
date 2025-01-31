@@ -17,6 +17,6 @@ func TestEcho(t *testing.T) {
 	req.Invoke(echo)
 	data, err := json.Marshal(req)
 	assert.NoError(t, err)
-	exp := `{"using":["urn:ietf:params:jmap:core"],"methodCalls":[["Core/echo",{"Hello":"world"},"0"]]}`
+	exp := `{"using":[],"methodCalls":[["Core/echo",{"Hello":"world"},"0"]]}`
 	assert.Equal(t, exp, string(data))
 }

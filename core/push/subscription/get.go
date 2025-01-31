@@ -2,7 +2,6 @@ package subscription
 
 import (
 	"git.sr.ht/~rockorager/go-jmap"
-	"git.sr.ht/~rockorager/go-jmap/core"
 )
 
 // Get push subscription details
@@ -14,7 +13,7 @@ type Get struct {
 
 func (m *Get) Name() string { return "PushSubscription/get" }
 
-func (m *Get) Requires() []jmap.URI { return []jmap.URI{core.URI} }
+func (m *Get) Requires() []jmap.URI { return nil }
 
 type GetResponse struct {
 	List     []*PushSubscription `json:"list,omitempty"`

@@ -2,7 +2,6 @@ package blob
 
 import (
 	"git.sr.ht/~rockorager/go-jmap"
-	"git.sr.ht/~rockorager/go-jmap/core"
 )
 
 // Copy a binary blob from one account to another
@@ -17,7 +16,7 @@ type Copy struct {
 
 func (m *Copy) Name() string { return "Blob/copy" }
 
-func (m *Copy) Requires() []jmap.URI { return []jmap.URI{core.URI} }
+func (m *Copy) Requires() []jmap.URI { return nil }
 
 type CopyResponse struct {
 	FromAccount jmap.ID `json:"fromAccountId,omitempty"`
