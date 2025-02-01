@@ -127,15 +127,20 @@ func (c *Client) Do(req *Request) (*Response, error) {
 	if !found {
 		req.Using = append(req.Using, CoreURI)
 	}
+
 	// Check the required capabilities before making the request
+	c.Lock()
 	for _, uri := range req.Using {
-		c.Lock()
-		_, ok := c.Session.Capabilities[uri]
-		c.Unlock()
+		// Check RawCapabilities in case we have asked for unparsed
+		// capabilities, or the core capability
+		_, ok := c.Session.RawCapabilities[uri]
 		if !ok {
+			c.Unlock()
 			return nil, fmt.Errorf("server doesn't support required capability '%s'", uri)
 		}
 	}
+	c.Unlock()
+
 	body, err := json.Marshal(req)
 	if err != nil {
 		return nil, err
