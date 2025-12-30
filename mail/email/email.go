@@ -266,7 +266,7 @@ func (e *Email) MarshalJSON() ([]byte, error) {
 	}
 	headerResult := make([]byte, 0)
 	isAppended := false
-	//fmt.Println(string(result[:]))
+	// fmt.Println(string(result[:]))
 
 	for _, h := range e.CustomHeaders {
 		if isAppended {

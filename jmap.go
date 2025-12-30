@@ -5,7 +5,6 @@ package jmap
 import (
 	"encoding/json"
 	"fmt"
-	"regexp"
 )
 
 func init() {
@@ -17,8 +16,6 @@ type URI string
 
 // ID is a unique identifier assigned by the server
 type ID string
-
-var idRegexp = regexp.MustCompile(`^[A-Za-z0-9\-_]+$`)
 
 // Valid checks to make sure that the given ID is valid according to the
 // specification.
@@ -42,7 +39,7 @@ func (id ID) MarshalJSON() ([]byte, error) {
 
 // Patch is a JMAP patch object which can be used in set.Update calls. The keys
 // are json pointer paths, and the value is the value to set the path to.
-type Patch map[string]interface{}
+type Patch map[string]any
 
 // Operator is used when constructing FilterOperator. It MUST be "AND", "OR", or
 // "NOT"

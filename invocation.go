@@ -10,13 +10,13 @@ type Invocation struct {
 	// The name of the method call or response
 	Name string
 	// Object containing the named arguments for the method or response
-	Args interface{}
+	Args any
 	// Arbitrary string set by client, echoed back with responses
 	CallID string
 }
 
 func (i *Invocation) MarshalJSON() ([]byte, error) {
-	j := []interface{}{
+	j := []any{
 		i.Name,
 		i.Args,
 		i.CallID,
@@ -32,7 +32,7 @@ func (i *Invocation) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	if len(raw) != 3 {
-		return fmt.Errorf("Not enough values in invocation")
+		return fmt.Errorf("not enough values in invocation")
 	}
 	if err := json.Unmarshal(raw[0], &i.Name); err != nil {
 		return err

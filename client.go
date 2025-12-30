@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"slices"
 	"strings"
 	"sync"
 
@@ -77,7 +78,7 @@ func (c *Client) Authenticate() error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() // nolint:errcheck
 
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("couldn't authenticate")
@@ -117,13 +118,7 @@ func (c *Client) Do(req *Request) (*Response, error) {
 		c.Unlock()
 	}
 	// Ensure the core capability is always included
-	found := false
-	for _, uri := range req.Using {
-		if uri == CoreURI {
-			found = true
-			break
-		}
-	}
+	found := slices.Contains(req.Using, CoreURI)
 	if !found {
 		req.Using = append(req.Using, CoreURI)
 	}
@@ -158,7 +153,7 @@ func (c *Client) Do(req *Request) (*Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer httpResp.Body.Close()
+	defer httpResp.Body.Close() // nolint:errcheck
 
 	if httpResp.StatusCode != 200 {
 		return nil, decodeHttpError(httpResp)
@@ -225,7 +220,7 @@ func (c *Client) UploadWithContext(
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() // nolint:errcheck
 
 	if resp.StatusCode != 200 && resp.StatusCode != 201 {
 		return nil, decodeHttpError(resp)
@@ -288,7 +283,7 @@ func (c *Client) DownloadWithContext(
 		return nil, err
 	}
 	if resp.StatusCode != 200 {
-		defer resp.Body.Close()
+		defer resp.Body.Close() // nolint:errcheck
 		return nil, decodeHttpError(resp)
 	}
 

@@ -124,6 +124,6 @@ func (e *EventSource) Listen() error {
 // Closes the stream
 func (e *EventSource) Close() {
 	if e.resp != nil && e.resp.Body != nil {
-		e.resp.Body.Close()
+		e.resp.Body.Close() // nolint:errcheck
 	}
 }

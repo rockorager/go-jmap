@@ -22,7 +22,7 @@ func (e *RequestError) Error() string {
 	if e.Limit != nil {
 		return fmt.Sprintf("%s: %s", e.Detail, *e.Limit)
 	}
-	return fmt.Sprintf(e.Detail)
+	return e.Detail
 }
 
 // A MethodError is returned when an error occurred while the server was
