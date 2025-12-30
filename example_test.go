@@ -1,6 +1,7 @@
 package jmap_test
 
 import (
+	"context"
 	"fmt"
 
 	"git.sr.ht/~rockorager/go-jmap"
@@ -19,7 +20,7 @@ func Example() {
 	}
 	// Set the authentication mechanism. This also sets the HttpClient of
 	// the jmap client
-	client.WithAccessToken("my-access-token")
+	client.WithAccessToken(context.TODO(), "my-access-token")
 
 	// Authenticate the client. This gets a Session object. Session objects
 	// are cacheable, and have their own state string clients can use to
