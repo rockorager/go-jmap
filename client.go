@@ -187,7 +187,7 @@ func (c *Client) Upload(accountID ID, blob io.Reader) (*UploadResponse, error) {
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
 		return nil, decodeHttpError(resp)
 	}
 
