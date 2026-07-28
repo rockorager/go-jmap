@@ -2,9 +2,7 @@ package jmap
 
 import "encoding/json"
 
-// An account is a collection of data. A single account may contain an
-// arbitrary set of data types, for example a collection of mail, contacts and
-// calendars.
+// An account is a collection of data the authenticated user has access to
 //
 // See RFC 8620 section 1.6.2 for details.
 type Account struct {
@@ -15,20 +13,12 @@ type Account struct {
 	// account, e.g. the email address representing the owner of the account.
 	Name string `json:"name"`
 
-	// This is true if the account belongs to the authenticated user, rather
-	// than a group account or a personal account of another user that has been
-	// shared with them.
+	// True if this account belongs to the authenticated user
 	IsPersonal bool `json:"isPersonal"`
 
-	// This is true if the entire account is read-only.
 	IsReadOnly bool `json:"isReadOnly"`
 
 	// The set of capability URIs for the methods supported in this account.
-	// Each key is a URI for a capability that has methods you can use with
-	// this account. The value for each of these keys is an object with further
-	// information about the account’s permissions and restrictions with
-	// respect to this capability, as defined in the capability’s
-	// specification.
 	Capabilities map[URI]Capability `json:"-"`
 
 	// The raw JSON of accountCapabilities

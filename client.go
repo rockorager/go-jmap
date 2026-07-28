@@ -63,6 +63,15 @@ func (c *Client) WithAccessToken(token string) *Client {
 // if you need to access information from the Session object prior to the first
 // request
 func (c *Client) Authenticate() error {
+	return c.AuthenticateWithContext(context.Background())
+}
+
+// AuthenticateWithContext authenticates the client and retrieves the Session object.
+// Authenticate will be called automatically when Do is called if the Session
+// object hasn't already been initialized. Call Authenticate before any requests
+// if you need to access information from the Session object prior to the first
+// request
+func (c *Client) AuthenticateWithContext(ctx context.Context) error {
 	c.Lock()
 	if c.SessionEndpoint == "" {
 		c.Unlock()
@@ -70,7 +79,7 @@ func (c *Client) Authenticate() error {
 	}
 	c.Unlock()
 
-	req, err := http.NewRequest("GET", c.SessionEndpoint, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", c.SessionEndpoint, nil)
 	if err != nil {
 		return err
 	}
@@ -95,30 +104,54 @@ func (c *Client) Authenticate() error {
 	if err != nil {
 		return err
 	}
+
+	c.Lock()
 	c.Session = s
+	c.Unlock()
+
 	return nil
 }
+
+// The core capabilty must be included in all method calls
+const CoreURI URI = "urn:ietf:params:jmap:core"
 
 // Do performs a JMAP request and returns the response
 func (c *Client) Do(req *Request) (*Response, error) {
 	c.Lock()
 	if c.Session == nil {
 		c.Unlock()
-		err := c.Authenticate()
+		err := c.AuthenticateWithContext(req.Context)
 		if err != nil {
 			return nil, err
 		}
-	}
-	c.Unlock()
-	// Check the required capabilities before making the request
-	for _, uri := range req.Using {
-		c.Lock()
-		_, ok := c.Session.Capabilities[uri]
+	} else {
 		c.Unlock()
+	}
+	// Ensure the core capability is always included
+	found := false
+	for _, uri := range req.Using {
+		if uri == CoreURI {
+			found = true
+			break
+		}
+	}
+	if !found {
+		req.Using = append(req.Using, CoreURI)
+	}
+
+	// Check the required capabilities before making the request
+	c.Lock()
+	for _, uri := range req.Using {
+		// Check RawCapabilities in case we have asked for unparsed
+		// capabilities, or the core capability
+		_, ok := c.Session.RawCapabilities[uri]
 		if !ok {
+			c.Unlock()
 			return nil, fmt.Errorf("server doesn't support required capability '%s'", uri)
 		}
 	}
+	c.Unlock()
+
 	body, err := json.Marshal(req)
 	if err != nil {
 		return nil, err
@@ -142,9 +175,12 @@ func (c *Client) Do(req *Request) (*Response, error) {
 		return nil, decodeHttpError(httpResp)
 	}
 
+	data, err := io.ReadAll(httpResp.Body)
+	if err != nil {
+		return nil, err
+	}
 	resp := &Response{}
-	dec := json.NewDecoder(httpReq.Body)
-	err = dec.Decode(resp)
+	err = json.Unmarshal(data, resp)
 	if err != nil {
 		return nil, fmt.Errorf("error? %v", err)
 	}
@@ -160,6 +196,19 @@ func (c *Client) Do(req *Request) (*Response, error) {
 // - Blob ID may become invalid after some time if it is unused.
 // - Blob ID is usable only by the uploader until it is used, even for shared accounts.
 func (c *Client) Upload(accountID ID, blob io.Reader) (*UploadResponse, error) {
+	return c.UploadWithContext(context.Background(), accountID, blob)
+}
+
+// UploadWithContext sends binary data to the server and returns blob ID and
+// some associated meta-data.
+//
+// There are some caveats to keep in mind:
+// - Server may return the same blob ID for multiple uploads of the same blob.
+// - Blob ID may become invalid after some time if it is unused.
+// - Blob ID is usable only by the uploader until it is used, even for shared accounts.
+func (c *Client) UploadWithContext(
+	ctx context.Context, accountID ID, blob io.Reader,
+) (*UploadResponse, error) {
 	c.Lock()
 	if c.SessionEndpoint == "" {
 		c.Unlock()
@@ -167,15 +216,17 @@ func (c *Client) Upload(accountID ID, blob io.Reader) (*UploadResponse, error) {
 	}
 	if c.Session == nil {
 		c.Unlock()
-		err := c.Authenticate()
+		err := c.AuthenticateWithContext(ctx)
 		if err != nil {
 			return nil, err
 		}
+
+		c.Lock()
 	}
 
 	url := strings.ReplaceAll(c.Session.UploadURL, "{accountId}", string(accountID))
 	c.Unlock()
-	req, err := http.NewRequest("POST", url, blob)
+	req, err := http.NewRequestWithContext(ctx, "POST", url, blob)
 	if err != nil {
 		return nil, err
 	}
@@ -207,6 +258,13 @@ func (c *Client) Upload(accountID ID, blob io.Reader) (*UploadResponse, error) {
 
 // Download downloads binary data by its Blob ID from the server.
 func (c *Client) Download(accountID ID, blobID ID) (io.ReadCloser, error) {
+	return c.DownloadWithContext(context.Background(), accountID, blobID)
+}
+
+// DownloadWithContext downloads binary data by its Blob ID from the server.
+func (c *Client) DownloadWithContext(
+	ctx context.Context, accountID ID, blobID ID,
+) (io.ReadCloser, error) {
 	c.Lock()
 	if c.SessionEndpoint == "" {
 		c.Unlock()
@@ -214,10 +272,12 @@ func (c *Client) Download(accountID ID, blobID ID) (io.ReadCloser, error) {
 	}
 	if c.Session == nil {
 		c.Unlock()
-		err := c.Authenticate()
+		err := c.AuthenticateWithContext(ctx)
 		if err != nil {
 			return nil, err
 		}
+
+		c.Lock()
 	}
 
 	urlRepl := strings.NewReplacer(
@@ -228,7 +288,7 @@ func (c *Client) Download(accountID ID, blobID ID) (io.ReadCloser, error) {
 	)
 	tgtUrl := urlRepl.Replace(c.Session.DownloadURL)
 	c.Unlock()
-	req, err := http.NewRequest("GET", tgtUrl, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", tgtUrl, nil)
 	if err != nil {
 		return nil, err
 	}

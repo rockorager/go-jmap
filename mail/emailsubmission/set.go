@@ -5,86 +5,21 @@ import (
 	"git.sr.ht/~rockorager/go-jmap/mail"
 )
 
-// This is a standard “/set” method as described in [@!RFC8620], Section 5.3,
-// but with the following additional request argument: onDestroyRemoveEmails
+// Create, delete or modify an email submission
+// https://www.rfc-editor.org/rfc/rfc8621.html#section-7.5
 type Set struct {
-	// The id of the account to use.
 	Account jmap.ID `json:"accountId,omitempty"`
 
-	// This is a state string as returned by the Foo/get method
-	// (representing the state of all objects of this type in the account).
-	// If supplied, the string must match the current state; otherwise, the
-	// method will be aborted and a stateMismatch error returned. If null,
-	// any changes will be applied to the current state.
 	IfInState string `json:"ifInState,omitempty"`
 
-	// A map of a creation id (a temporary id set by the client) to Foo
-	// objects, or null if no objects are to be created.
-	//
-	// The Foo object type definition may define default values for
-	// properties. Any such property may be omitted by the client.
-	//
-	// The client MUST omit any properties that may only be set by the
-	// server (for example, the id property on most object types).
 	Create map[jmap.ID]*EmailSubmission `json:"create,omitempty"`
 
-	// A map of an id to a Patch object to apply to the current Foo object
-	// with that id, or null if no objects are to be updated.
-	//
-	// A PatchObject is of type String[*] and represents an unordered set
-	// of patches. The keys are a path in JSON Pointer Format [@!RFC6901],
-	// with an implicit leading “/” (i.e., prefix each key with “/” before
-	// applying the JSON Pointer evaluation algorithm).
-	//
-	// All paths MUST also conform to the following restrictions; if there
-	// is any violation, the update MUST be rejected with an invalidPatch
-	// error:
-	//
-	//     The pointer MUST NOT reference inside an array (i.e., you MUST
-	//     NOT insert/delete from an array; the array MUST be replaced in
-	//     its entirety instead). All parts prior to the last (i.e., the
-	//     value after the final slash) MUST already exist on the object
-	//     being patched. There MUST NOT be two patches in the PatchObject
-	//     where the pointer of one is the prefix of the pointer of the
-	//     other, e.g., “alerts/1/offset” and “alerts”.
-	//
-	// The value associated with each pointer determines how to apply that
-	// patch:
-	//
-	//     If null, set to the default value if specified for this
-	//     property; otherwise, remove the property from the patched
-	//     object. If the key is not present in the parent, this a no-op.
-	//     Anything else: The value to set for this property (this may be a
-	//     replacement or addition to the object being patched).
-	//
-	// Any server-set properties MAY be included in the patch if their
-	// value is identical to the current server value (before applying the
-	// patches to the object). Otherwise, the update MUST be rejected with
-	// an invalidProperties SetError.
-	//
-	// This patch definition is designed such that an entire Foo object is
-	// also a valid PatchObject. The client may choose to optimise network
-	// usage by just sending the diff or may send the whole object; the
-	// server processes it the same either way.
 	Update map[jmap.ID]jmap.Patch `json:"update,omitempty"`
 
-	// A list of ids for Foo objects to permanently delete, or null if no
-	// objects are to be destroyed.
 	Destroy []jmap.ID `json:"destroy,omitempty"`
 
-	// A map of EmailSubmission id to an object containing properties to
-	// update on the Email object referenced by the EmailSubmission if the
-	// create/update/destroy succeeds. (For references to EmailSubmissions
-	// created in the same “/set” invocation, this is equivalent to a
-	// creation-reference, so the id will be the creation id prefixed with
-	// a #.)
 	OnSuccessUpdateEmail map[jmap.ID]jmap.Patch `json:"onSuccessUpdateEmail,omitempty"`
 
-	// A list of EmailSubmission ids for which the Email with the
-	// corresponding emailId should be destroyed if the
-	// create/update/destroy succeeds. (For references to EmailSubmission
-	// creations, this is equivalent to a creation-reference so the id will
-	// be the creation id prefixed with a #.)
 	OnSuccessDestroyEmail []jmap.ID `json:"onSuccessDestroyEmail,omitempty"`
 }
 
@@ -93,48 +28,22 @@ func (m *Set) Name() string { return "EmailSubmission/set" }
 func (m *Set) Requires() []jmap.URI { return []jmap.URI{URI, mail.URI} }
 
 type SetResponse struct {
-	// The id of the account used for the call.
 	Account jmap.ID `json:"accountId,omitempty"`
 
-	// The state string that would have been returned by Foo/get before
-	// making the requested changes, or null if the server doesn’t know
-	// what the previous state string was.
 	OldState string `json:"oldState,omitempty"`
 
-	// The state string that will now be returned by Foo/get.
 	NewState string `json:"newState,omitempty"`
 
-	// A map of the creation id to an object containing any properties of
-	// the created Foo object that were not sent by the client. This
-	// includes all server-set properties (such as the id in most object
-	// types) and any properties that were omitted by the client and thus
-	// set to a default by the server.
-	//
-	// This argument is null if no Foo objects were successfully created.
 	Created map[jmap.ID]*EmailSubmission `json:"created,omitempty"`
 
-	// The keys in this map are the ids of all Foos that were successfully
-	// updated.
-	//
-	// The value for each id is a Foo object containing any property that
-	// changed in a way not explicitly requested by the PatchObject sent to
-	// the server, or null if none. This lets the client know of any
-	// changes to server-set or computed properties.
-	//
-	// This argument is null if no Foo objects were successfully updated.
 	Updated map[jmap.ID]*EmailSubmission `json:"updated,omitempty"`
 
-	// An array of ids for records that have been destroyed since the old
-	// state.
 	Destroyed []jmap.ID `json:"destroyed,omitempty"`
 
-	// A map of ID to a SetError for each record that failed to be created
 	NotCreated map[jmap.ID]*jmap.SetError `json:"notCreated,omitempty"`
 
-	// A map of ID to a SetError for each record that failed to be updated
 	NotUpdated map[jmap.ID]*jmap.SetError `json:"notUpdated,omitempty"`
 
-	// A map of ID to a SetError for each record that failed to be destroyed
 	NotDestroyed map[jmap.ID]*jmap.SetError `json:"notDestroyed,omitempty"`
 }
 

@@ -18,6 +18,6 @@ func TestSort(t *testing.T) {
 	}
 	data, err := json.Marshal(query)
 	assert.NoError(err)
-	expected := `{"sort":[{"property":"name"}]}`
+	expected := `{"sort":[{"property":"name","isAscending":false}]}`
 	assert.Equal(expected, string(data))
 }

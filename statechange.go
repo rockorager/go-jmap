@@ -3,6 +3,8 @@ package jmap
 // An EventType is the name of a Type provided by a capability which may be
 // subscribed to using a PushSubscription or an EventSource connection. Each
 // specification may define their own types and events
+//
+// EventType is the type of object the Event is for ("Mailbox", "Email")
 type EventType string
 
 // Subscribe to all events

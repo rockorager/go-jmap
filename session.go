@@ -5,50 +5,33 @@ import (
 )
 
 type Session struct {
-	// An object specifying the capabilities of this server. Each key is a URI
-	// for a capability supported by the server. The value for each of these
-	// keys is an object with further information about the server’s
-	// capabilities in relation to that capability.
+	// Capabilities specifies the capabililities the server has.
 	Capabilities map[URI]Capability `json:"-"`
 
 	RawCapabilities map[URI]json.RawMessage `json:"capabilities"`
 
-	// A map of account id to Account object for each account the user has
-	// access to.
 	Accounts map[ID]Account `json:"accounts"`
 
-	// A map of capability URIs (as found in Capabilities) to the
-	// account id to be considered the user’s main or default account for data
-	// pertaining to that capability.
+	// PrimaryAccounts maps a Capability to the primary account associated
+	// with it
 	PrimaryAccounts map[URI]ID `json:"primaryAccounts"`
 
-	// The username associated with the given credentials, or the empty string
-	// if none.
+	// The username associated with the given credentials
 	Username string `json:"username"`
 
 	// The URL to use for JMAP API requests.
 	APIURL string `json:"apiUrl"`
 
-	// The URL endpoint to use when downloading files, in RFC 6570 URI
-	// Template (level 1) format.
+	// The URL endpoint to use when downloading files
 	DownloadURL string `json:"downloadUrl"`
 
-	// The URL endpoint to use when uploading files, in RFC 6570 URI
-	// Template (level 1) format.
+	// The URL endpoint to use when uploading files
 	UploadURL string `json:"uploadUrl"`
 
-	// The URL to connect to for push events, as described in section 7.3, in
-	// RFC 6570 URI Template (level 1) format.
+	// The URL to connect to for push events
 	EventSourceURL string `json:"eventSourceUrl"`
 
-	// A string representing the state of this object on the server. If the
-	// value of any other property on the session object changes, this string
-	// will change.
-	//
-	// The current value is also returned on the API Response object, allowing
-	// clients to quickly determine if the session information has changed
-	// (e.g. an account has been added or removed) and so they need to refetch
-	// the object.
+	// A string representing the state of this object on the server
 	State string `json:"state"`
 }
 

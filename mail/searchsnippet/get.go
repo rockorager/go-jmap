@@ -5,20 +5,15 @@ import (
 	"git.sr.ht/~rockorager/go-jmap/mail"
 )
 
+// Get search snippet details
+// https://www.rfc-editor.org/rfc/rfc8621.html#section-5.1
 type Get struct {
-	// The id of the account to use.
 	Account jmap.ID `json:"accountId,omitempty"`
 
-	// Determines the set of Foos returned in the results. If null, all
-	// objects in the account of this type are included in the results.
-	//
-	// Each implementation must implement it's own Filter
 	Filter interface{} `json:"filter,omitempty"`
 
-	// The ids of the Emails to fetch snippets for.
 	EmailIDs []jmap.ID `json:"emailIds,omitempty"`
 
-	// Use IDs from a previous call
 	ReferenceIDs *jmap.ResultReference `json:"#emailIds,omitempty"`
 }
 
@@ -27,16 +22,10 @@ func (m *Get) Name() string { return "Mailbox/get" }
 func (m *Get) Requires() []jmap.URI { return []jmap.URI{mail.URI} }
 
 type GetResponse struct {
-	// The id of the account used for the call
 	Account jmap.ID `json:"accountId,omitempty"`
 
-	// An array of SearchSnippet objects for the requested Email ids.
-	// This may not be in the same order as the ids that were in the
-	// request.
 	List []*SearchSnippet `json:"list,omitempty"`
 
-	// An array of Email ids requested that could not be found, or null
-	// if all ids were found.
 	NotFound []jmap.ID `json:"notFound,omitempty"`
 }
 
